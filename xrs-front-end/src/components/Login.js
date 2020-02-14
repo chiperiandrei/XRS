@@ -1,7 +1,6 @@
 import React from "react";
 
 const Login = props =>{
-    let content = (<h1>login</h1>);
-    return content;
+    return <h1>login</h1>;
 };
 export default Login;
