@@ -1,0 +1,17 @@
+{
+  "name": "user-management",
+  "version": "1.0.0",
+  "description": "User management microservice( auth & authorize)",
+  "main": "src/index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrei Chiperi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
