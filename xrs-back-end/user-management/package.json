@@ -2,13 +2,13 @@
   "name": "user-management",
   "version": "1.0.0",
   "description": "User management microservice( auth & authorize)",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "nodemon src/index.js"
+    "start-dev": "nodemon src/server.js"
   },
   "author": "Andrei Chiperi",
   "license": "ISC",
