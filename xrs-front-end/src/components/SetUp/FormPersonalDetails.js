@@ -13,7 +13,7 @@ export class FormPersonalDetails extends Component {
     render() {
         const { values, handleChange } = this.props;
         return (
-            <div>
+            <div id="centru">
                 <h1>User Login Details</h1>
                 <div className='row'>
                     <div className='six columns'>

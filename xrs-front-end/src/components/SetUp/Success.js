@@ -13,9 +13,9 @@ export class Success extends Component {
 
     render() {
         return (
-
-            <h1>Thank You For Your Submission</h1>
-
+            <div id="centru">
+                <h1>Thank You For Your Submission</h1>
+            </div>
         );
     }
 }

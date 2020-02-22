@@ -1,6 +1,11 @@
 import React from "react";
+import Header from "./Header";
+import '../assets/css/NotFound.css'
+import Footer from "./Footer";
 
-const NotFound = props =>{
-    return <h1>not found, error 404</h1>;
+const NotFound = props => {
+    return [<Header companyname="X"/>,
+        <div><b id="text">Oups... This page doesn't not exists...</b><img src={require('../assets/img/404.png')} alt="Not found" id="notfound"/></div>,
+        <Footer datecreated='2020' authorname='Andrei Chiperi'/>]
 };
 export default NotFound;

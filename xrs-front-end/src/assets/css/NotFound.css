@@ -1,0 +1,29 @@
+#notfound {
+    /* max-height: 40%; */
+    display: flex;
+    position: relative;
+    left: 43%;
+    height: 278px;
+}
+#text{
+    position: relative;
+    left: 40%;
+    color: dodgerblue;
+    font-size: 30px;
+    font-family: "Squada One", cursive;
+}
+@media screen and (max-width: 500px) {
+    #notfound{
+        height: 80px;
+        display: flex;
+        position: relative;
+        left: 36%;
+    }
+    #text{
+        position: relative;
+        left: 20%;
+        color: dodgerblue;
+        font-size: 15px;
+        font-family: "Squada One", cursive;
+    }
+}

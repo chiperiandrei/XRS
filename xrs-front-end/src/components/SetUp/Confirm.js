@@ -17,7 +17,7 @@ export class Confirm extends Component {
             values: { firstName, lastName, email, password }
         } = this.props;
         return (
-            <div>
+            <div id="centru">
                 <h2>You're gonna register with these informations</h2>
                 <b>First name</b> {firstName}<br/>
                 <b>Last name</b> {lastName}<br/>
