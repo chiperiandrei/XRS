@@ -1,20 +1,25 @@
 const express = require('express');
-var morgan = require('morgan');
-var https = require('https');
-var fs = require('fs');
-const app = express();
-const port = 4000;
-const router = require('./routes');
-var httpOptions = {
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const port = 3000;
+const path = require('path');
+app = express();
 
-    key: fs.readFileSync("./privatekey.pem"),
+var options = {
+    key: fs.readFileSync(path.resolve('certificates/server.key')),
+    cert: fs.readFileSync(path.resolve('certificates/server.cert'))
+};
 
-    cert: fs.readFileSync("./certificate.pem")
-}
-var server = http.createServer(app);
-var server = https.createServer(httpOptions, app);
-app.use(morgan('dev'));
-app.use('/usm', router);
-app.use(express.static('public'));
-app.get('/', (req, res) => res.send('Hello World!'));
-app.listen(port, () => console.log(`Example app listening on port ${port}`));
+
+//GET home route
+app.get('/', (req, res) => {
+    res.send('Hello World.');
+});
+
+var httpsServer = https.createServer(options, app);
+
+
+httpsServer.listen(port, () => {
+    console.log("Https server listing on port : " + port)
+});
