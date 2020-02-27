@@ -1,10 +1,18 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, TouchableOpacity, Alert, Image} from 'react-native';
 import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
 import axios from 'axios';
+import NativeImageLoader from "react-native/Libraries/Image/NativeImageLoader";
 
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            image: ""
+        }
+    }
+
     componentDidMount() {
         NfcManager.start();
         NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
@@ -13,7 +21,7 @@ class App extends React.Component {
                     axios
                         .get('https://api.thecatapi.com/v1/images/search')
                         .then(response => {
-                            console.log(response.data[0].url);
+                            this.setState({image: response.data[0].url})
                         });
                 },
             }]);
@@ -27,6 +35,8 @@ class App extends React.Component {
     }
 
     render() {
+        if (this.state.image == "")
+            this.state.image = 'https://web.uri.edu/visit/files/CAMK-Aerials-169.jpg';
         return (
             <View style={{padding: 20}}>
                 <Text>XRS Confirm Products</Text>
@@ -53,6 +63,8 @@ class App extends React.Component {
                     onPress={this._cancel}>
                     <Text>Cancel Test</Text>
                 </TouchableOpacity>
+                <Text>{this.state.image}</Text>
+                <Image source={{uri: this.state.image}}/>
             </View>
         );
     }
