@@ -64,7 +64,9 @@ class App extends React.Component {
                     <Text>Cancel Test</Text>
                 </TouchableOpacity>
                 <Text>{this.state.image}</Text>
-                <Image source={{uri: this.state.image}}/>
+                <Image source={{uri: this.state.image}}
+                       style={{width: 200, height: 200}}
+                />
             </View>
         );
     }
