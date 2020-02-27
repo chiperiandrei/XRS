@@ -30,6 +30,7 @@ app.use(express.json());
 app.use(morgan('combined', {stream: logfile}));
 
 //MIDDLEWARE ROUTES
+
 app.use(process.env.API_URL, authRoute);
 
 
