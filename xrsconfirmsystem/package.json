@@ -13,6 +13,7 @@
     "axios": "^0.19.2",
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-animated-loader": "0.0.8",
     "react-native-nfc-manager": "^2.1.1"
   },
   "devDependencies": {
