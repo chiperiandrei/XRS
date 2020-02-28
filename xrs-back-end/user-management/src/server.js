@@ -35,7 +35,12 @@ app.use(process.env.API_URL, authRoute);
 
 var httpsServer = https.createServer(options, app);
 
+// if (process.env.NODE_ENV !== 'production')
+//     httpsServer.listen(process.env.PORT, () => {
+//         console.log("Https server listing on port : " + process.env.PORT)
+//     });
+//
 
-httpsServer.listen(process.env.PORT, () => {
-    console.log("Https server listing on port : " + process.env.PORT)
-});
+app.get('/', (req, res) => res.send('Hello World!'));
+
+app.listen(process.env.PORT, () => console.log(`Example app listening on port ${process.env.PORT}!`))
