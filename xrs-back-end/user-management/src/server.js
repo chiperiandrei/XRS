@@ -1,14 +1,13 @@
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
-const dotenv = require('dotenv');
 const path = require('path');
 const app = express();
 const mongose = require('mongoose');
 const morgan = require('morgan');
 const logfile = fs.createWriteStream('access.log', {flags: 'a'});
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 //CERTIFICATES
 var options = {
