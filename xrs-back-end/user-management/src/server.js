@@ -18,6 +18,7 @@ var options = {
 
 //USE ROUTES
 const authRoute = require('./routes/auth');
+const borrowRoute = require('./routes/borrowObject');
 
 //CONNECT TO DATABASE
 mongose.connect(process.env.DBCONNSTRINNG, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
@@ -31,6 +32,7 @@ app.use(morgan('combined', {stream: logfile}));
 //MIDDLEWARE ROUTES
 
 app.use(process.env.API_URL, authRoute);
+app.use(process.env.API_URL + '/borrow', borrowRoute);
 
 
 var httpsServer = https.createServer(options, app);
