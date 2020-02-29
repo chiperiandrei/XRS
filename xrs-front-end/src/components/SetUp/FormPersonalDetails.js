@@ -17,6 +17,30 @@ export class FormPersonalDetails extends Component {
                 <h1>User Login Details</h1>
                 <div className='row'>
                     <div className='six columns'>
+                        <label>First Name</label>
+                        <input
+                            className='u-full-width'
+                            type='text'
+                            placeholder="Enter Your First Name"
+                            onChange={handleChange('firstName')}
+                            defaultValue={values.firstName}
+                        />
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='six columns'>
+                        <label>Last Name</label>
+                        <input
+                            className='u-full-width'
+                            type='text'
+                            placeholder="Enter Your Last Name"
+                            onChange={handleChange('lastName')}
+                            defaultValue={values.lastName}
+                        />
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='six columns'>
                         <label>Your email</label>
                         <input
                             className='u-full-width required'
@@ -30,18 +54,6 @@ export class FormPersonalDetails extends Component {
                 </div>
                 <div className='row'>
                     <div className='six columns'>
-                        <label>Confirm email</label>
-                        <input
-                            className='u-full-width'
-                            placeholder='Confirm email'
-                            type='email'
-                            onChange={handleChange('emailConfirm')}
-                            defaultValue={values.emailConfirm}
-                        />
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='six columns'>
                         <label>Password</label>
                         <input
                             className='u-full-width required'
@@ -50,18 +62,6 @@ export class FormPersonalDetails extends Component {
                             onChange={handleChange('password')}
                             defaultValue={values.password}
                             autoFocus
-                        />
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='six columns'>
-                        <label>Confirm password</label>
-                        <input
-                            className='u-full-width'
-                            placeholder='Confirm Password'
-                            type='password'
-                            onChange={handleChange('passwordConfirm')}
-                            defaultValue={values.passwordConfirm}
                         />
                     </div>
                 </div>

@@ -10,28 +10,16 @@ export class FormUserDetails extends Component {
         const {values, handleChange} = this.props;
         return (
             <div id="centru">
-                <h1>User Personal Info</h1>
+                <h1>Company Info</h1>
                 <div className='row'>
                     <div className='six columns'>
-                        <label>Last Name</label>
+                        <label>Company name</label>
                         <input
                             className='u-full-width'
                             type='text'
-                            placeholder="Enter Your Last Name"
-                            onChange={handleChange('lastName')}
-                            defaultValue={values.lastName}
-                        />
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='six columns'>
-                        <label>First Name</label>
-                        <input
-                            className='u-full-width'
-                            type='text'
-                            placeholder="Enter Your First Name"
-                            onChange={handleChange('firstName')}
-                            defaultValue={values.firstName}
+                            placeholder="Company name"
+                            onChange={handleChange('companyName')}
+                            defaultValue={values.companyName}
                         />
                     </div>
                 </div>

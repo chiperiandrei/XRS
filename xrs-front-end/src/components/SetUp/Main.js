@@ -11,9 +11,8 @@ export class Main extends Component {
         firstName: '',
         lastName: '',
         email: '',
-        occupation: '',
-        city: '',
-        bio: ''
+        company_name: '',
+        username:''
     };
 
     nextStep = () => {
@@ -35,8 +34,8 @@ export class Main extends Component {
 
     render() {
         const { step } = this.state;
-        const { firstName, lastName, email, emailConfirm, password, passwordConfirm} = this.state;
-        const values = { firstName, lastName, email, emailConfirm, password, passwordConfirm };
+        const { firstName, lastName, email, password, companyName} = this.state;
+        const values = { firstName, lastName, email,password, companyName };
 
         switch (step) {
             case 1:

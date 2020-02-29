@@ -5,9 +5,10 @@ router.post('/setup', verifyToken, (req, res) => {
 
     const appcfg = {
         "app-name": req.body.appname,
-        "operator-name": req.body.opname,
+        "operator-fname": req.body.opfname,
+        "operator-lname": req.body.oplname,
         "email": req.body.email,
-        "username": req.body.username,
+        "password": req.body.password,
         "lauch-day": `${Date.now()}`
     };
     const data = JSON.stringify(appcfg);
