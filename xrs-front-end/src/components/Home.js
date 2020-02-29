@@ -26,7 +26,7 @@ class Home extends React.Component {
     render() {
         if (this.state.exists === true) {
             return [<Header companyname={this.state.company_name}/>, <h1>Hello</h1>,
-                <Footer datecreated='2020' authorname={this.state.created_by}/>]
+                <Footer datecreated='2020' authorname={this.state.opfname}/>]
         }
         if (this.state.exists === false) {
             return [<Header companyname="X"/>, <SetUp/>, <Footer datecreated='2020' authorname='Andrei Chiperi'/>]

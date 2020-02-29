@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const verifyToken = require('./verifyToken');
 const fs = require('fs');
-router.post('/setup', verifyToken, (req, res) => {
+router.post('/setup', (req, res) => {
 
     const appcfg = {
         "app-name": req.body.appname,

@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
+const cors = require('cors');
 const morgan = require('morgan');
 const logfile = fs.createWriteStream('access.log', {flags: 'a'});
 
@@ -13,10 +14,7 @@ const setuppage = require('./routes/create-config-file');
 //MIDDLEWARE
 app.use(express.json());
 app.use(morgan('combined', {stream: logfile}));
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});
+app.use(cors());
 //MIDDLEWARE ROUTES
 app.use(process.env.FILE_API_URL, setuppage);
 

@@ -11,8 +11,7 @@ export class Main extends Component {
         firstName: '',
         lastName: '',
         email: '',
-        company_name: '',
-        username:''
+        company_name: ''
     };
 
     nextStep = () => {

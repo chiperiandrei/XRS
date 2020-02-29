@@ -9,15 +9,26 @@ export class Confirm extends Component {
         const {
             values: {firstName, lastName, email, password, companyName}
         } = this.props;
+        console.log(firstName)
+        console.log(lastName)
+        console.log(email)
+        console.log(password)
+        console.log(companyName)
         const data = {
-            appname:companyName,
-            opfname:firstName,
-            oplname:lastName,
-            email:email,
-            password:password
+            appname: companyName,
+            opfname: firstName,
+            oplname: lastName,
+            email: email,
+            password: password
 
         };
-        axios.post('http://localhost:4000/api/files/setup',data);
+        axios.post('http://localhost:4000/api/files/setup', data)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         //TODO insert data into database via REST API
         this.props.nextStep();
     };
@@ -29,7 +40,7 @@ export class Confirm extends Component {
 
     render() {
         const {
-            values: {firstName, lastName, email, password, companyName, username}
+            values: {firstName, lastName, email, password, companyName}
         } = this.props;
         return (
             <div id="centru">
