@@ -28,11 +28,14 @@ mongose.connect(process.env.DBCONNSTRINNG, {useNewUrlParser: true, useUnifiedTop
 //MIDDLEWARE
 app.use(express.json());
 app.use(morgan('combined', {stream: logfile}));
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 //MIDDLEWARE ROUTES
 
-app.use(process.env.API_URL, authRoute);
-app.use(process.env.API_URL + '/borrow', borrowRoute);
+app.use(process.env.USER_API_URL, authRoute);
+app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
 
 
 var httpsServer = https.createServer(options, app);

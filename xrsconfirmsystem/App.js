@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Alert, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Alert, Image, Vibration} from 'react-native';
 import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
 import axios from 'axios';
 import NativeImageLoader from "react-native/Libraries/Image/NativeImageLoader";
@@ -9,13 +9,15 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: ""
+            image: "",
+            DURATION: 100
         }
     }
 
     componentDidMount() {
         NfcManager.start();
         NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+            Vibration.vibrate(this.state.DURATION);
             Alert.alert('Hello', tag.id, [{
                 text: 'Ask me later', onPress: () => {
                     axios
@@ -39,7 +41,11 @@ class App extends React.Component {
             this.state.image = 'https://web.uri.edu/visit/files/CAMK-Aerials-169.jpg';
         return (
             <View style={{padding: 20}}>
-                <Text>XRS Confirm Products</Text>
+                <Image
+                    style={{width: 50, height: 50}}
+                    source={require('./assets/img/logo.png')}/>
+                <Text style={{color: 'dodgerblue', fontFamily: 'Squada One, cursive', fontWeight: 'bold'}}>XRS Confirm
+                    Products</Text>
                 <TouchableOpacity
                     style={{
                         padding: 10,
