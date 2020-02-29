@@ -1,14 +1,13 @@
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
-const dotenv = require('dotenv');
 const path = require('path');
 const app = express();
 const mongose = require('mongoose');
 const morgan = require('morgan');
 const logfile = fs.createWriteStream('access.log', {flags: 'a'});
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 //CERTIFICATES
 var options = {
@@ -19,6 +18,7 @@ var options = {
 
 //USE ROUTES
 const authRoute = require('./routes/auth');
+const borrowRoute = require('./routes/borrowObject');
 
 //CONNECT TO DATABASE
 mongose.connect(process.env.DBCONNSTRINNG, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
@@ -28,15 +28,24 @@ mongose.connect(process.env.DBCONNSTRINNG, {useNewUrlParser: true, useUnifiedTop
 //MIDDLEWARE
 app.use(express.json());
 app.use(morgan('combined', {stream: logfile}));
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 //MIDDLEWARE ROUTES
 
-app.use(process.env.API_URL, authRoute);
+app.use(process.env.USER_API_URL, authRoute);
+app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
 
 
 var httpsServer = https.createServer(options, app);
 
+// if (process.env.NODE_ENV !== 'production')
+//     httpsServer.listen(process.env.PORT, () => {
+//         console.log("Https server listing on port : " + process.env.PORT)
+//     });
+//
 
-httpsServer.listen(process.env.PORT, () => {
-    console.log("Https server listing on port : " + process.env.PORT)
-});
+app.get('/', (req, res) => res.send('Hello World!'));
+
+app.listen(process.env.PORT, () => console.log(`Example app listening on port ${process.env.PORT}!`))

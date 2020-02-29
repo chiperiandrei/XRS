@@ -1,21 +1,36 @@
 const router = require('express').Router();
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
+//VALIDATE FIELDS
+// TODO : validate fields
 router.post('/register', async (req, res) => {
+    const salt = await bcrypt.genSalt(10);
+    const hPassword = await bcrypt.hash(req.body.password, salt);
     const user = new User({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: hPassword
     });
+    const existsEmail = await User.findOne({email: req.body.email});
+    if (existsEmail) return res.status(400).send('Users exists');
     try {
         const usersave = await user.save();
-        res.send(usersave);
+        res.send({user: user._id});
     } catch (e) {
         res.status(400).send(e);
     }
 });
-router.get('/',(req,res)=>{
-    res.send('sal')
-});
+router.post('/login', async (req, res) => {
+    const existsEmail = await User.findOne({email: req.body.email});
+    if (!existsEmail) return res.status(400).send(`Email doesn't exists!`);
+    const comparePassoword = await bcrypt.compare(req.body.password, existsEmail.password);
+    if (!comparePassoword) return res.status(400).send("Invalid password!");
+    //create token for login
+    const token = jwt.sign({_id: existsEmail._id}, process.env.SECRET_JWT_TOKEN);
+    res.header('auth-token', token).send(token);
 
+
+});
 module.exports = router;
