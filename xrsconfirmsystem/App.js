@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Alert, Image, Vibration} from 'react-native';
 import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
 import axios from 'axios';
-import NativeImageLoader from "react-native/Libraries/Image/NativeImageLoader";
 
 
 class App extends React.Component {
@@ -11,7 +10,7 @@ class App extends React.Component {
         this.state = {
             image: "",
             DURATION: 100
-        }
+        };
     }
 
     componentDidMount() {

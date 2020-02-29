@@ -22,7 +22,11 @@ export class Confirm extends Component {
             password: password
 
         };
-        axios.post('http://localhost:4000/api/files/setup', data)
+        axios.post('http://localhost:4000/api/files/setup', data,{
+            headers:{
+                "auth-token" : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTU5NmEyNzI5YmE3YTAwMTcwYzUwZTMiLCJpYXQiOjE1ODMwMDkzOTl9.8s2D-X9WLaAb8XQfOJbZnJkloQVCcxJWEhM0he6yT5E'
+            }
+        })
             .then(function (response) {
                 console.log(response);
             })
