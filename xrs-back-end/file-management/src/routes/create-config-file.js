@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const verifyToken = require('./verifyToken');
 const fs = require('fs');
-router.post('/setup',verifyToken, (req, res) => {
+router.post('/setup', verifyToken, (req, res) => {
 
     const appcfg = {
         "appName": req.body.appname,
@@ -28,8 +28,8 @@ router.get('/setup', (req, res) => {
         if (fs.existsSync(path)) {
             let rawdata = fs.readFileSync(path);
             let infos = JSON.parse(rawdata);
-            const date_obj=new Date(infos.lauchDay);
-            const year=date_obj.getFullYear();
+            const date_obj = new Date(infos.lauchDay);
+            const year = date_obj.getFullYear();
 
             res.status(200).send({
                 value: true,
@@ -37,7 +37,8 @@ router.get('/setup', (req, res) => {
                 "operatorLname": infos.operatorLname,
                 "operatorFname": infos.operatorFname,
                 "email": infos.email,
-                "date_created": year
+                "date_created": year,
+                "NFCADMINID": infos.NFCADMINID
             })
         } else
             res.status(404).send('File not exists!')
