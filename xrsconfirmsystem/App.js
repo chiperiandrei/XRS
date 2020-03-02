@@ -98,7 +98,7 @@ class App extends React.Component {
             NfcManager.unregisterTagEvent().catch(() => 0);
         });
 
-        axios.get('http://192.168.43.73:4000/api/files/setup')
+        axios.get('https://xrs-files-management.herokuapp.com/api/files/setup')
             .then(response => this.setState({
                 exists: response.data.value,
                 company_name: response.data.company_name,
