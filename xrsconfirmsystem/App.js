@@ -90,7 +90,6 @@ class App extends React.Component {
 
 
     componentDidMount() {
-        console.log('did')
         const trigger = this.triggerNFC();
         NfcManager.start();
         NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
@@ -109,8 +108,6 @@ class App extends React.Component {
                 ADMINNFCID_SERVER: response.data.NFCADMINID
             }))
             .catch(err => console.log(err))
-
-
     }
 
     render() {

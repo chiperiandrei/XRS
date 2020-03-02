@@ -41,6 +41,18 @@ export class FormPersonalDetails extends Component {
                 </div>
                 <div className='row'>
                     <div className='six columns'>
+                        <label>NFC ID</label>
+                        <input
+                            className='u-full-width'
+                            type='text'
+                            placeholder="Enter Your NFC ID"
+                            onChange={handleChange('NFCADMINID')}
+                            defaultValue={values.NFCADMINID}
+                        />
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='six columns'>
                         <label>Your email</label>
                         <input
                             className='u-full-width required'

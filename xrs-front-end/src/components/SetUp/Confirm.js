@@ -7,7 +7,7 @@ export class Confirm extends Component {
         e.preventDefault();
 
         const {
-            values: {firstName, lastName, email, password, companyName}
+            values: {firstName, lastName, email, password, companyName, NFCADMINID}
         } = this.props;
         console.log(firstName)
         console.log(lastName)
@@ -19,12 +19,13 @@ export class Confirm extends Component {
             opfname: firstName,
             oplname: lastName,
             email: email,
-            password: password
+            password: password,
+            NFCADMINID: NFCADMINID
 
         };
-        axios.post('http://localhost:4000/api/files/setup', data,{
-            headers:{
-                "auth-token" : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTU5NmEyNzI5YmE3YTAwMTcwYzUwZTMiLCJpYXQiOjE1ODMwMDkzOTl9.8s2D-X9WLaAb8XQfOJbZnJkloQVCcxJWEhM0he6yT5E'
+        axios.post('http://localhost:4000/api/files/setup', data, {
+            headers: {
+                "auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTU5NmEyNzI5YmE3YTAwMTcwYzUwZTMiLCJpYXQiOjE1ODMwMDkzOTl9.8s2D-X9WLaAb8XQfOJbZnJkloQVCcxJWEhM0he6yT5E'
             }
         })
             .then(function (response) {
@@ -33,7 +34,6 @@ export class Confirm extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-        //TODO insert data into database via REST API
         this.props.nextStep();
     };
 
@@ -44,16 +44,16 @@ export class Confirm extends Component {
 
     render() {
         const {
-            values: {firstName, lastName, email, password, companyName}
+            values: {firstName, lastName, email, companyName, NFCADMINID}
         } = this.props;
         return (
             <div id="centru">
                 <h2>You're gonna register with these informations</h2>
+                <b>Company Name</b> {companyName}<br/>
                 <b>First name</b> {firstName}<br/>
                 <b>Last name</b> {lastName}<br/>
                 <b>Email</b> {email}<br/>
-                <b>pass</b> {password}<br/>
-                <b>cn</b> {companyName}<br/>
+                <b>NFC ID ACCESS CARD</b> {NFCADMINID}<br/>
                 <button
                     color="secondary"
                     onClick={this.back}

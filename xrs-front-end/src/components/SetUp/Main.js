@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FormUserDetails from './FormUserDetails';
 import FormPersonalDetails from './FormPersonalDetails';
 import Confirm from './Confirm';
@@ -11,30 +11,31 @@ export class Main extends Component {
         firstName: '',
         lastName: '',
         email: '',
-        company_name: ''
+        company_name: '',
+        NFCADMINID: ''
     };
 
     nextStep = () => {
-        const { step } = this.state;
+        const {step} = this.state;
         this.setState({
             step: step + 1
         });
     };
 
     prevStep = () => {
-        const { step } = this.state;
+        const {step} = this.state;
         this.setState({
             step: step - 1
         });
     };
     handleChange = input => e => {
-        this.setState({ [input]: e.target.value });
+        this.setState({[input]: e.target.value});
     };
 
     render() {
-        const { step } = this.state;
-        const { firstName, lastName, email, password, companyName} = this.state;
-        const values = { firstName, lastName, email,password, companyName };
+        const {step} = this.state;
+        const {firstName, lastName, email, password, companyName, NFCADMINID} = this.state;
+        const values = {firstName, lastName, email, password, companyName, NFCADMINID};
 
         switch (step) {
             case 1:
@@ -63,7 +64,7 @@ export class Main extends Component {
                     />
                 );
             case 4:
-                return <Success />;
+                return <Success/>;
             default:
                 return <Home/>
         }

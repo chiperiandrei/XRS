@@ -9,6 +9,7 @@ router.post('/setup', verifyToken, (req, res) => {
         "operatorLname": req.body.oplname,
         "email": req.body.email,
         "password": req.body.password,
+        "NFCADMINID": req.body.NFCADMINID,
         "lauchDay": Date.now()
     };
     const data = JSON.stringify(appcfg);
