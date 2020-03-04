@@ -60,13 +60,12 @@ class App extends React.Component {
             created_by: '',
             email: '',
             ADMINNFCID_CLIENT: '',
-            valid_nfc: false
+            valid_nfc: null
         };
         this.savedCompanyName = '';
     }
 
     validate = (email) => {
-        console.log(email);
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(text) === false) {
             this.setState({email: email});
@@ -110,10 +109,23 @@ class App extends React.Component {
                 }
             })
             .catch(err => console.log(err));
-        axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyNFC', {NFCID: this.state.ADMINNFCID_CLIENT})
-            .then(response => {
-                console.log(response)
-            }).catch(e => console.log(e));
+
+    }
+
+    componentDidUpdate() {
+        if (this.state.valid_nfc == null) {
+            axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyNFC', {'NFCID': this.state.ADMINNFCID_CLIENT})
+                .then(response => {
+                    this.setState({
+                        valid_nfc: response.data.value
+                    })
+                }).catch(e => {
+                    this.setState({
+                        valid_nfc: null
+                    })
+                }
+            );
+        }
     }
 
     logInWithEmailAndPassword(email, password) {
@@ -122,14 +134,15 @@ class App extends React.Component {
 
     render() {
 
-        if (this.state.ADMINNFCID_CLIENT === this.state.ADMINNFCID_SERVER && this.state.ADMINNFCID_SERVER !== '' && this.state.ADMINNFCID_CLIENT !== '') {
+        if (this.state.valid_nfc === true) {
             this.cancelNFC();
             return <Home/>
-        } else if (this.state.ADMINNFCID_SERVER !== '' && this.state.ADMINNFCID_CLIENT !== '') {
+        } else if (this.state.valid_nfc === false) {
             Alert.alert('Tag error', 'Your ACCESS CARD IS INVALID', [{
                 text: 'Close'
             }]);
         }
+
         return <>
             <StatusBar barStyle="dark-content"/>
             <SafeAreaView>

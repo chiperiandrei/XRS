@@ -64,13 +64,13 @@ class App extends React.Component {
             this.setState({"company_name": value});
         })
             .then(res => {
-                console.log(res);
+             //
             });
         AsyncStorage.getItem("created_by").then((value) => {
             this.setState({"created_by": value});
         })
             .then(res => {
-                console.log(res);
+              //
             });
     }
 
