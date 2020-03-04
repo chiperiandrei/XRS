@@ -51,7 +51,7 @@ router.post('/verifyNFC', (req, res) => {
         if (fs.existsSync(path)) {
             let rawdata = fs.readFileSync(path);
             let infos = JSON.parse(rawdata);
-            if (infos.NFCADMINID === req.NFCID)
+            if (infos.NFCADMINID === req.body.NFCID)
                 res.status(200).send({value: true});
             else {
                 res.status(401).send({value: false});
