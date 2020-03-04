@@ -37,15 +37,31 @@ router.get('/setup', (req, res) => {
                 "company_name": infos.appName,
                 "operatorLname": infos.operatorLname,
                 "operatorFname": infos.operatorFname,
-                "email": infos.email,
-                "date_created": year,
-                "NFCADMINID": infos.NFCADMINID
+                "date_created": year
             })
         } else
             res.status(404).send('File not exists!')
     } catch (err) {
         res.status(400).send(e)
     }
+});
+router.post('/verifyNFC', (req, res) => {
+    const path = './settings.json';
+    try {
+        if (fs.existsSync(path)) {
+            let rawdata = fs.readFileSync(path);
+            let infos = JSON.parse(rawdata);
+            if (infos.NFCADMINID === req.NFCID)
+                res.status(200).send({value: true});
+            else {
+                res.status(401).send({value: false});
+            }
+        } else
+            res.status(404).send('File not exists!')
+    } catch (err) {
+        res.status(400).send(e)
+    }
+
 });
 
 module.exports = router;

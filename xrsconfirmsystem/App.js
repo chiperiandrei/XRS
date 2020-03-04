@@ -1,29 +1,17 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import {
+    AsyncStorage,
+    Alert,
+    Button,
     SafeAreaView,
+    StatusBar,
     StyleSheet,
-    ScrollView,
-    View,
     Text,
     TextInput,
-    StatusBar,
-    Button,
-    Alert, Vibration, TouchableOpacity
+    Vibration,
+    View
 } from 'react-native';
-import {
-    LearnMoreLinks,
-    Colors,
-    DebugInstructions,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors,} from 'react-native/Libraries/NewAppScreen';
 import axios from 'axios';
 import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
 import Home from './components/Home';
@@ -62,6 +50,8 @@ const styles = StyleSheet.create({
 });
 
 class App extends React.Component {
+    savedCompanyName: string;
+
     constructor() {
         super();
         this.state = {
@@ -70,8 +60,9 @@ class App extends React.Component {
             created_by: '',
             email: '',
             ADMINNFCID_CLIENT: '',
-            ADMINNFCID_SERVER: ''
-        }
+            valid_nfc: false
+        };
+        this.savedCompanyName = '';
     }
 
     validate = (email) => {
@@ -99,20 +90,37 @@ class App extends React.Component {
         });
 
         axios.get('https://xrs-files-management.herokuapp.com/api/files/setup')
-            .then(response => this.setState({
-                exists: response.data.value,
-                company_name: response.data.company_name,
-                created_by: `${response.data.operatorLname} ${response.data.operatorFname}`,
-                email: response.data.email,
-                year: response.data.date_created,
-                ADMINNFCID_SERVER: response.data.NFCADMINID
-            }))
-            .catch(err => console.log(err))
+            .then(async response => {
+                this.setState({
+                    exists: response.data.value,
+                    company_name: response.data.company_name,
+                    created_by: `${response.data.operatorLname} ${response.data.operatorFname}`,
+                    email: response.data.email,
+                    year: response.data.date_created
+                });
+                try {
+                    await AsyncStorage.setItem('company_name', response.data.company_name);
+                } catch (error) {
+                    console.log(error.message);
+                }
+                try {
+                    await AsyncStorage.setItem('created_by', response.data.operatorLname);
+                } catch (error) {
+                    console.log(error.message);
+                }
+            })
+            .catch(err => console.log(err));
+        axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyNFC', {NFCID: this.state.ADMINNFCID_CLIENT})
+            .then(response => {
+                console.log(response)
+            }).catch(e => console.log(e));
+    }
+
+    logInWithEmailAndPassword(email, password) {
+
     }
 
     render() {
-        console.log('NFC TAG ' + this.state.ADMINNFCID_CLIENT)
-        console.log('NFC SERVER ' + this.state.ADMINNFCID_SERVER)
 
         if (this.state.ADMINNFCID_CLIENT === this.state.ADMINNFCID_SERVER && this.state.ADMINNFCID_SERVER !== '' && this.state.ADMINNFCID_CLIENT !== '') {
             this.cancelNFC();

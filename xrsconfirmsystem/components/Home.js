@@ -1,6 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Alert, Image, Button, StyleSheet, Vibration} from 'react-native';
-import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
+import {Alert, AsyncStorage, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import axios from 'axios';
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import Return from "./Return";
@@ -49,17 +48,30 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            company_name: ''
+            company_name: '',
+            created_by: ''
         };
     }
 
     componentDidMount() {
-
-        axios.get('https://xrs-files-management.herokuapp.com/api/files/setup')
-            .then(response => this.setState({
-                company_name: response.data.company_name
-            }))
-            .catch(err => console.log(err))
+        //
+        // axios.get('https://xrs-files-management.herokuapp.com/api/files/setup')
+        //     .then(response => this.setState({
+        //         company_name: response.data.company_name
+        //     }))
+        //     .catch(err => console.log(err));
+        AsyncStorage.getItem("company_name").then((value) => {
+            this.setState({"company_name": value});
+        })
+            .then(res => {
+                console.log(res);
+            });
+        AsyncStorage.getItem("created_by").then((value) => {
+            this.setState({"created_by": value});
+        })
+            .then(res => {
+                console.log(res);
+            });
     }
 
     componentWillUnmount() {
@@ -72,6 +84,7 @@ class App extends React.Component {
                         style={{width: 50, height: 50}}
                         source={require('../assets/img/logo.png')}/>
                     <Text style={styles.title}>{this.state.company_name} Objects Management</Text>
+                    <Text style={styles.title}>Hello, {this.state.created_by}</Text>
                 </View>
                 <View>
                     <TouchableOpacity style={styles.confirmReserve}
