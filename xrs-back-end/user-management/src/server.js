@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const app = express();
+const cors = require('cors');
 const mongose = require('mongoose');
 const morgan = require('morgan');
 const logfile = fs.createWriteStream('access.log', {flags: 'a'});
