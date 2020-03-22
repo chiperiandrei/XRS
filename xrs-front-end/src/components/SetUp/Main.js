@@ -3,7 +3,7 @@ import FormUserDetails from './FormUserDetails';
 import FormPersonalDetails from './FormPersonalDetails';
 import Confirm from './Confirm';
 import Success from './Success';
-import Home from "../Home";
+import Home from "../../pages/Home";
 
 export class Main extends Component {
     state = {

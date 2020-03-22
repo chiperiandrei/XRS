@@ -19,7 +19,8 @@
     "mongoose": "^5.9.2",
     "morgan": "^1.9.1",
     "nodemon": "^2.0.2",
-    "bcrypt": "^4.0.0"
+    "bcrypt": "^4.0.0",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
