@@ -26,11 +26,13 @@ class Home extends React.Component {
                 year: response.data.date_created
             }))
             .catch(err => console.log(err))
+            
     }
 
     render() {
         const arr = [['/signin','Sign in'],['/signup','SIGN UP'],['/','Home']];
         if (this.state.exists === true) {
+            document.title = `${this.state.company_name} Reserve System`
             return [<Header companyname={this.state.company_name} elements={arr}/>, <h1>Hello</h1>,
                 <Footer datecreated={this.state.year} authorname={this.state.created_by}/>]
         }

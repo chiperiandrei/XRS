@@ -1,9 +1,9 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Register from '../components/Register';
+import LoginForm from '../components/Login';
 
-class Home extends React.Component {
+class Login extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -20,10 +20,10 @@ class Home extends React.Component {
 
     render() {
 
-            return [<Header companyname="X"/>,<Register/>
+            return [<Header companyname="X"/>,<LoginForm/>
                 , <Footer datecreated='2020' authorname='Andrei Chiperi'/>]
         
     }
 }
 
-export default Home;
+export default Login;
