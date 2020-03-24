@@ -7,7 +7,7 @@ const Header = props => {
             <Link to='/' style={{color: 'dodgerblue', fontSize:'30px', fontFamily: 'Squada One, cursive'}}>{props.companyname} Reserve System</Link>
             <img src={require('../assets/img/logo.png')} alt='Logo Img' id='logo'/>
         </div>
-
+        
         <div className="header-right">
             <Link to='/' className='active'>Home</Link>
             <Link to='/createAccount' >Create Account</Link>

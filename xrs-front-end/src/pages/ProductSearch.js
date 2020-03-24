@@ -7,17 +7,29 @@ import {ContainerProducts} from '../assets/styles/ProductSearchPage';
 
 const ProductSearch = props => {
     const data = {
-        name : "Numele produsului",
-        avalaible : "True",
-        image_url : "../assets/img/logo.png"
+        name : "Cablu retea",
+        specs : [
+            ["Lungime ","30m"],
+            ["An fabricatie",Date(Date.now()).toString()],
+            ["Tip", "retea"]
+        ],
+        avalaible : true,
+        image_url : '../assets/img/cablu_retea.jpg'
     }
     const datano = {
-        name : "Numele produsului1",
-        avalaible : "False",
-        image_url : "../assets/img/logo.png"
+        name : "Monitor LOGITEQ",
+        specs : [
+            ["Frecventa ","144hz"],
+            ["An fabricatie",Date(Date.now()).toString()],
+            ["Tip", "monitor"],
+            ["Firma", "HP de la hq"]
+        ],
+        avalaible : false,
+        image_url : '../assets/img/monitor.jpg',
+        date_until_reserved : Date(Date.now()).toString()
     }
     return [<Header companyname="X"/>,
-        <ContainerProducts><Product infos={data}/><Product infos={datano}/><Product infos={data}/><Product infos={data}/><Product infos={datano}/><Product infos={datano}/><Product infos={data}/><Product infos={data}/><Product infos={data}/></ContainerProducts>,
+        <ContainerProducts><Product infos={data}/><Product infos={datano}/></ContainerProducts>,
         <Footer datecreated='2020' authorname='Andrei Chiperi'/>]
 };
 export default ProductSearch;
