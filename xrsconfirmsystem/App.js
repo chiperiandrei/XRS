@@ -2,7 +2,6 @@ import React from 'react';
 import {
     AsyncStorage,
     Alert,
-    Button,
     SafeAreaView,
     StatusBar,
     StyleSheet,
@@ -11,10 +10,12 @@ import {
     Vibration,
     View
 } from 'react-native';
-import {Colors,} from 'react-native/Libraries/NewAppScreen';
+import { Colors, } from 'react-native/Libraries/NewAppScreen';
 import axios from 'axios';
-import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
+import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
 import Home from './components/Home';
+import { Button, Input } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -38,19 +39,10 @@ const styles = StyleSheet.create({
         paddingTop: '10%',
         fontSize: 30,
         paddingBottom: '10%'
-    },
-    textInput: {
-        borderColor: 'dodgerblue',
-        borderWidth: 1,
-        borderRadius: 1,
-        width: '90%',
-        left: '1.2%',
-        marginBottom: 10
     }
 });
 
 class App extends React.Component {
-    savedCompanyName: string;
 
     constructor() {
         super();
@@ -60,19 +52,21 @@ class App extends React.Component {
             created_by: '',
             email: '',
             ADMINNFCID_CLIENT: '',
-            valid_nfc: null
+            valid_nfc: null,
+            valid_credintials: null
         };
         this.savedCompanyName = '';
+        // console.disableYellowBox = true;
     }
 
-    validate = (email) => {
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (reg.test(text) === false) {
-            this.setState({email: email});
-            return false;
-        } else {
-            this.setState({email: email});
-        }
+    handlerEmail = (email) => {
+        this.setState({ email: email });
+        console.log(email)
+
+    };
+    handlerPassword = (password) => {
+        this.setState({ password: password });
+        console.log(password)
     };
     cancelNFC = () => {
         NfcManager.unregisterTagEvent().catch(() => 0);
@@ -83,7 +77,7 @@ class App extends React.Component {
         const trigger = this.triggerNFC();
         NfcManager.start();
         NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
-            this.setState({ADMINNFCID_CLIENT: tag.id});
+            this.setState({ ADMINNFCID_CLIENT: tag.id });
             Vibration.vibrate(this.state.DURATION);
             NfcManager.unregisterTagEvent().catch(() => 0);
         });
@@ -114,7 +108,7 @@ class App extends React.Component {
 
     componentDidUpdate() {
         if (this.state.valid_nfc == null) {
-            axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyNFC', {'NFCID': this.state.ADMINNFCID_CLIENT})
+            axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyNFC', { 'NFCID': this.state.ADMINNFCID_CLIENT })
                 .then(response => {
                     this.setState({
                         valid_nfc: response.data.value
@@ -124,43 +118,97 @@ class App extends React.Component {
                         valid_nfc: null
                     })
                 }
-            );
+                );
         }
     }
 
-    logInWithEmailAndPassword(email, password) {
+    logInWithEmailAndPassword() {
+        console.log(this.state.email)
+        console.log(this.state.password)
+        data = {
+            email: this.state.email,
+            password: this.state.password,
+        }
+        axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyEmailAndPassword', data)
+            .then(response => {
+                this.setState({
+                    valid_credintials: response.data.value
+                })
+            }).catch(e => {
+                this.setState({
+                    valid_credintials: null
+                })
+            }
+            );
 
     }
 
     render() {
 
-        if (this.state.valid_nfc === true) {
+        if (this.state.valid_nfc === true || this.state.valid_credintials === true) {
             this.cancelNFC();
-            return <Home/>
-        } else if (this.state.valid_nfc === false) {
+            return <Home />
+        }
+        if (this.state.valid_nfc === false) {
             Alert.alert('Tag error', 'Your ACCESS CARD IS INVALID', [{
+                text: 'Close'
+            }]);
+        }
+        if (this.state.valid_credintials === false) {
+            Alert.alert('Login error', 'Your email or password is invalid', [{
                 text: 'Close'
             }]);
         }
 
         return <>
-            <StatusBar barStyle="dark-content"/>
+            <StatusBar barStyle="dark-content" />
             <SafeAreaView>
                 <View><Text style={styles.title}>Welcome to {this.state.company_name}</Text>
                 </View>
+                <View>
+
+
+                </View>
                 <View><Text style={styles.titleForm}>Please log in into operator admin area</Text></View>
                 <View>
-                    <Text>Email</Text>
-                    <TextInput style={styles.textInput} placeholder="Email..."
-                               onChangeText={(text) => this.validate(text)}/>
+                    <Input
+                        placeholder='Email'
+                        leftIcon={
+                            <Icon
+                                name='at'
+                                size={24}
+                                color='black'
+                            />
+                        }
+                        onChangeText={text => this.handlerEmail(text)}
+                        value={this.state.email}
+                    />
+                    <Input
+                        placeholder='Password'
+                        leftIcon={
+                            <Icon
+                                name='key'
+                                size={24}
+                                color='black'
+                            />
 
-                    <Text>Password</Text>
-                    <TextInput style={styles.textInput} secureTextEntry={true} placeholder="Password..."/>
+
+                        }
+                        onChangeText={text => this.handlerPassword(text)}
+                        secureTextEntry={true}
+                    />
+
                     <Button
                         title="Login"
-                        onPress={() => Alert.alert('Hello', 'Login form bro', [{
-                            text: 'Close'
-                        }])}
+                        onPress={() => this.logInWithEmailAndPassword()}
+                        large
+                        icon={
+                            <Icon
+                                name="arrow-right"
+                                size={15}
+                                color="white"
+                            />
+                        }
                     />
                 </View>
                 <View><Text style={styles.title}>Or place your ACCESS CARD on back of the phone after press the

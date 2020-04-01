@@ -63,5 +63,23 @@ router.post('/verifyNFC', (req, res) => {
     }
 
 });
+router.post('/verifyEmailAndPassword', (req, res) => {
+    const path = './settings.json';
+    try {
+        if (fs.existsSync(path)) {
+            let rawdata = fs.readFileSync(path);
+            let infos = JSON.parse(rawdata);
+            if (infos.email === req.body.email && infos.password === req.body.password)
+                res.status(200).send({value: true});
+            else {
+                res.status(401).send({value: false});
+            }
+        } else
+            res.status(404).send('File not exists!')
+    } catch (err) {
+        res.status(400).send(e)
+    }
+
+});
 
 module.exports = router;

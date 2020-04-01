@@ -34,3 +34,5 @@ width: 100%;
 font-size: 18px;`;
 export const ImgProduct=styled.img`width:80%`;
 export const ReservedDate=styled.h1`font-size:x-large`;
+export const Avalaible=styled.span`color:green`;
+export const Reserved=styled.span`color:red`;

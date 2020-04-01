@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import CreateAccount from './pages/CreateAccount';
 import ProductSearch from './pages/ProductSearch';
+import ProductAdd from './pages/admin/ProductAdd';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
             <Route exact path='/login' component={Login}/>
             <Route exact path='/createaccount' component={CreateAccount}/>
             <Route exact path='/search' component={ProductSearch}/>
+            <Route exact path='/productadd' component={ProductAdd}/>
             <Route exact path='*' component={NotFound}/>
         </Switch>
     );

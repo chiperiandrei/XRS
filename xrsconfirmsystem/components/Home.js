@@ -1,8 +1,10 @@
 import React from 'react';
-import {Alert, AsyncStorage, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { Alert, AsyncStorage, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import axios from 'axios';
-import {Colors} from "react-native/Libraries/NewAppScreen";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 import Return from "./Return";
+import { Button } from 'react-native-elements';
+import Confirm from "./Confirm";
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -22,7 +24,6 @@ const styles = StyleSheet.create({
         paddingTop: '2%'
     },
     confirmReserve: {
-        backgroundColor: 'green',
         height: '28%',
         width: '80%',
         left: '5%',
@@ -34,12 +35,21 @@ const styles = StyleSheet.create({
         left: '25%',
         top: '13%'
     },
-    confirmReturn: {
-        backgroundColor: 'black',
-        height: '28%',
-        width: '80%',
-        left: '5%',
-        top: '20%'
+    buttonReserve: {
+        backgroundColor: 'green',
+        borderRadius: 5,
+        marginBottom: 20,
+        height: 60
+    },
+    buttonReturn: {
+        backgroundColor: 'red',
+        borderRadius: 5,
+        height: 60
+    },
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        marginTop: 80
     }
 });
 
@@ -49,28 +59,24 @@ class App extends React.Component {
         super(props);
         this.state = {
             company_name: '',
-            created_by: ''
+            created_by: '',
+            showReturn: false,
+            showConfirm: false
         };
     }
 
     componentDidMount() {
-        //
-        // axios.get('https://xrs-files-management.herokuapp.com/api/files/setup')
-        //     .then(response => this.setState({
-        //         company_name: response.data.company_name
-        //     }))
-        //     .catch(err => console.log(err));
         AsyncStorage.getItem("company_name").then((value) => {
-            this.setState({"company_name": value});
+            this.setState({ "company_name": value });
         })
             .then(res => {
-             //
+                //
             });
         AsyncStorage.getItem("created_by").then((value) => {
-            this.setState({"created_by": value});
+            this.setState({ "created_by": value });
         })
             .then(res => {
-              //
+                //
             });
     }
 
@@ -78,31 +84,43 @@ class App extends React.Component {
     }
 
     render() {
-        return (<>
-                <View style={{padding: 20}}>
-                    <Image
-                        style={{width: 50, height: 50}}
-                        source={require('../assets/img/logo.png')}/>
-                    <Text style={styles.title}>{this.state.company_name} Objects Management</Text>
-                    <Text style={styles.title}>Hello, {this.state.created_by}</Text>
-                </View>
-                <View>
-                    <TouchableOpacity style={styles.confirmReserve}
-                                      onPress={() => Alert.alert('Hello', 'Login form bro', [{
-                                          text: 'Close'
-                                      }])}>
-                        <Text style={styles.textButton}>Confirm reserve</Text>
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity style={styles.confirmReturn} onPress={() => {
-                        return <Return/>
-                    }}>
-                        <Text style={styles.textButton}>Confirm return</Text>
-                    </TouchableOpacity>
-                </View>
-            </>
-        );
+        if (this.state.showReturn) {
+            return <Return />
+        }
+        else
+            if (this.state.showConfirm) {
+                return <Confirm />
+            }
+            else
+                return (<>
+                    <View style={{ padding: 20 }}>
+                        <Image
+                            style={{ width: 50, height: 50 }}
+                            source={require('../assets/img/logo.png')} />
+                        <Text style={styles.title}>{this.state.company_name} Objects Management</Text>
+                        <Text style={styles.title}>Hello, {this.state.created_by}</Text>
+                    </View>
+
+
+                    <View style={styles.container}>
+                        <Button
+                            buttonStyle={styles.buttonReserve}
+                            icon={{ name: 'check' }}
+                            title='Confirm Reserve'
+                            onPress={() => {
+                                this.setState({ showConfirm: true });
+                            }} />
+                        <Button
+                            buttonStyle={styles.buttonReturn}
+                            icon={{ name: 'check' }}
+                            title='Confirm Return'
+                            onPress={() => {
+                                this.setState({ showReturn: true });
+                            }} />
+                    </View>
+
+                </>
+                );
     }
 
 }
