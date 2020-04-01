@@ -53,7 +53,8 @@ class App extends React.Component {
             email: '',
             ADMINNFCID_CLIENT: '',
             valid_nfc: null,
-            valid_credintials: null
+            valid_credintials: null,
+            scannedTAG: false
         };
         this.savedCompanyName = '';
         // console.disableYellowBox = true;
@@ -61,12 +62,10 @@ class App extends React.Component {
 
     handlerEmail = (email) => {
         this.setState({ email: email });
-        console.log(email)
 
     };
     handlerPassword = (password) => {
         this.setState({ password: password });
-        console.log(password)
     };
     cancelNFC = () => {
         NfcManager.unregisterTagEvent().catch(() => 0);
@@ -74,13 +73,7 @@ class App extends React.Component {
 
 
     componentDidMount() {
-        const trigger = this.triggerNFC();
-        NfcManager.start();
-        NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
-            this.setState({ ADMINNFCID_CLIENT: tag.id });
-            Vibration.vibrate(this.state.DURATION);
-            NfcManager.unregisterTagEvent().catch(() => 0);
-        });
+
 
         axios.get('https://xrs-files-management.herokuapp.com/api/files/setup')
             .then(async response => {
@@ -104,27 +97,39 @@ class App extends React.Component {
             })
             .catch(err => console.log(err));
 
-    }
 
-    componentDidUpdate() {
-        if (this.state.valid_nfc == null) {
-            axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyNFC', { 'NFCID': this.state.ADMINNFCID_CLIENT })
-                .then(response => {
-                    this.setState({
-                        valid_nfc: response.data.value
-                    })
-                }).catch(e => {
-                    this.setState({
-                        valid_nfc: null
-                    })
-                }
-                );
-        }
+
+
+
+
+    }
+    scanNFCcard() {
+        const trigger = this.triggerNFC();
+
+        NfcManager.start();
+        NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+            this.setState({ ADMINNFCID_CLIENT: tag.id });
+            this.setState({ scannedTAG:true});
+            Vibration.vibrate(this.state.DURATION);
+            NfcManager.unregisterTagEvent().catch(() => 0);
+        });
+        
+    }
+    logInWithNFC() {
+        axios.post('https://xrs-files-management.herokuapp.com/api/files/verifyNFC', { 'NFCID': this.state.ADMINNFCID_CLIENT })
+            .then(response => {
+                this.setState({
+                    valid_nfc: response.data.value
+                })
+            }).catch(e => {
+                this.setState({
+                    valid_nfc: null
+                })
+            }
+            );
     }
 
     logInWithEmailAndPassword() {
-        console.log(this.state.email)
-        console.log(this.state.password)
         data = {
             email: this.state.email,
             password: this.state.password,
@@ -213,6 +218,29 @@ class App extends React.Component {
                 </View>
                 <View><Text style={styles.title}>Or place your ACCESS CARD on back of the phone after press the
                     following button</Text>
+                    {this.state.scannedTAG === false ? <Button
+                        title="SCAN NFC"
+                        onPress={() => this.scanNFCcard()}
+                        large
+                        icon={
+                            <Icon
+                                name="arrow-right"
+                                size={15}
+                                color="white"
+                            />
+                        }
+                    /> : <Button
+                            title="LOGIN WITH NFC TAG"
+                            onPress={() => this.logInWithNFC()}
+                            large
+                            icon={
+                                <Icon
+                                    name="arrow-right"
+                                    size={15}
+                                    color="white"
+                                />
+                            }
+                        />}
                 </View>
             </SafeAreaView>
         </>
