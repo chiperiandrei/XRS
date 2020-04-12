@@ -4,25 +4,17 @@ import Footer from "../components/Footer";
 import Register from '../components/Register';
 
 class CreateAccount extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            exists: false,
-            company_name: '',
-            created_by: '',
-            email: ''
-        }
-        
-    }
-
-    componentDidMount() {
-    }
-
     render() {
 
-            return [<Header companyname="X"/>,<Register/>
-                , <Footer datecreated='2020' authorname='Andrei Chiperi'/>]
-        
+        if (localStorage.getItem("exists") === "true") {
+            return [<Header companyname={localStorage.getItem("companyName")} />, <Register />
+                , <Footer datecreated={localStorage.getItem("year")} authorname={localStorage.getItem("author_name")} />]
+        }
+        else {
+            return [<Header companyname="X" />, <Register />
+                , <Footer datecreated='2020' authorname='Andrei Chiperi' />]
+        }
+
     }
 }
 

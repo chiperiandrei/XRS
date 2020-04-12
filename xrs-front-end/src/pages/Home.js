@@ -8,36 +8,37 @@ class Home extends React.Component {
     constructor() {
         super();
         this.state = {
-            exists: false,
-            company_name: '',
-            created_by: '',
-            email: ''
+            nrIter: 0
         }
-        
     }
 
     componentDidMount() {
         axios.get('http://localhost:4000/api/files/setup')
-            .then(response => this.setState({
-                exists: response.data.value,
-                company_name: response.data.company_name,
-                created_by: `${response.data.operatorLname} ${response.data.operatorFname}`,
-                email: response.data.email,
-                year: response.data.date_created
-            }))
-            .catch(err => console.log(err))
-            
+            .then(response => {
+                localStorage.setItem("exists", response.data.value);
+                localStorage.setItem("companyName", response.data.company_name);
+                localStorage.setItem("author_name", `${response.data.operatorLname} ${response.data.operatorFname}`);
+                localStorage.setItem("year", response.data.date_created);
+                let nrIterNew = this.state.nrIter + 1;
+                this.setState({
+                    nrIter: nrIterNew
+                })
+                
+
+            })
+            .catch(err => console.log(err));
+
     }
 
     render() {
-        const arr = [['/signin','Sign in'],['/signup','SIGN UP'],['/','Home']];
-        if (this.state.exists === true) {
-            document.title = `${this.state.company_name} Reserve System`
-            return [<Header companyname={this.state.company_name} elements={arr}/>, <h1>Hello</h1>,
-                <Footer datecreated={this.state.year} authorname={this.state.created_by}/>]
+        const arr = [['/signin', 'Sign in'], ['/signup', 'SIGN UP'], ['/', 'Home']];
+        if (localStorage.getItem("exists") === "true") {
+            document.title = `${localStorage.getItem("companyName")} Reserve System`
+            return [<Header companyname={localStorage.getItem("companyName")} elements={arr} />, <h1>Hello</h1>,
+            <Footer datecreated={localStorage.getItem("year")} authorname={localStorage.getItem("author_name")} />]
         }
-        if (this.state.exists === false) {
-            return [<Header companyname="X" elements={arr}/>, <SetUp/>, <Footer datecreated='2020' authorname='Andrei Chiperi'/>]
+        else {
+            return [<Header companyname="X" elements={arr} />, <SetUp />, <Footer datecreated='2020' authorname='Andrei Chiperi' />]
         }
     }
 }

@@ -3,7 +3,8 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProductAddComponent from '../../components/ProductAdd'
 const ProductAdd = props => {
-    return [<Header companyname="X"/>,<ProductAddComponent/>,
-        <Footer datecreated='2020' authorname='Andrei Chiperi'/>]
+    return [<Header companyname={localStorage.getItem("exists") === "true" ? localStorage.getItem("companyName") : "X"} />,
+    <ProductAddComponent />,
+    <Footer datecreated={localStorage.getItem("exists") === "true" ? localStorage.getItem("year") : "2020"} authorname={localStorage.getItem("exists") === "true" ? localStorage.getItem("author_name") : "Andrei Chiperi"} />]
 };
 export default ProductAdd;

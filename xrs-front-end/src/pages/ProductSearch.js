@@ -9,9 +9,9 @@ const ProductSearch = props => {
     const data = {
         name: "Cablu retea",
         specs: [
-            ["Lungime ", "30m"],
-            ["An fabricatie", Date(Date.now()).toString()],
-            ["Tip", "retea"]
+            { property: "Lungime ", value: "30m" },
+            { property: "An fabricatie ", value: Date(Date.now()).toString() },
+            { property: "Tip ", value: "retea" },
         ],
         avalaible: true,
         image_url: '../assets/img/cablu_retea.jpg'
@@ -19,19 +19,19 @@ const ProductSearch = props => {
     const datano = {
         name: "Monitor LOGITEQ",
         specs: [
-            ["Frecventa ", "144hz"],
-            ["An fabricatie", Date(Date.now()).toString()],
-            ["Tip", "monitor"],
-            ["Firma", "HP de la hq"]
+            { property: "Frecventa ", value: "144hz" },
+            { property: "salut ", value: "plm" },
+
         ],
         avalaible: false,
         image_url: '../assets/img/monitor.jpg',
         date_until_reserved: Date(Date.now()).toString()
     }
     return (<React.Fragment>
-        <Header companyname="X" />
+        <Header companyname={localStorage.getItem("exists") === "true" ? localStorage.getItem("companyName") : "X"} />
         <ContainerProducts>
             <Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} />
-            </ContainerProducts><Footer datecreated='2020' authorname='Andrei Chiperi' /></React.Fragment>)
+        </ContainerProducts>
+        <Footer datecreated={localStorage.getItem("exists") === "true" ? localStorage.getItem("year") : "2020"} authorname={localStorage.getItem("exists") === "true" ? localStorage.getItem("author_name") : "Andrei Chiperi"} /></React.Fragment>)
 };
 export default ProductSearch;

@@ -15,6 +15,7 @@ const Header = props => {
             {url === '/login' ? <Link to='/login' className='active' >Login</Link> : <Link to='/login' >Login</Link>}
             {url === '/contact' ? <Link to='/contact' className='active' >Contact</Link> : <Link to='/contact' >Contact</Link>}
             {url === '/about' ? <Link to='/about' className='active' >About</Link> : <Link to='/about' >About</Link>}
+            {url === '/productadd' ? <Link to='/productadd' className='active' >productadd</Link> : <Link to='/productadd' >productadd</Link>}
         </div>
     </div>
 };
