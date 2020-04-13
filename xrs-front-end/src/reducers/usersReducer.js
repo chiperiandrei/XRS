@@ -1,15 +1,8 @@
-const initialState = {
-    users: [],
-    loading: true
-}
-export const usersReducer = (state = initialState, action) => {
+
+export const usersReducer = (state = null, action) => {
     switch (action.type) {
-        case 'ADD_USER':
-            const newState = Object.assign({},state);
-            newState.users.push(action.payload)
-            return newState
-        case 'REMOVE_USER':
-            return state
+        case 'LOGIN_USER':
+            return action.payload
         default:
             return state
     }

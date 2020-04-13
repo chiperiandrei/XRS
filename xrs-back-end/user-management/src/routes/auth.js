@@ -13,31 +13,31 @@ router.post('/register', async (req, res) => {
         email: req.body.email,
         password: hPassword
     });
-    const existsEmail = await User.findOne({email: req.body.email});
+    const existsEmail = await User.findOne({ email: req.body.email });
     if (existsEmail) return res.status(400).send('Users exists');
     try {
         const usersave = await user.save();
-        res.send({user: user._id});
+        res.send({ user: user._id });
     } catch (e) {
         res.status(400).send(e);
     }
 });
 router.post('/login', async (req, res) => {
-    const existsEmail = await User.findOne({email: req.body.email});
+    const existsEmail = await User.findOne({ email: req.body.email });
     if (!existsEmail) return res.status(400).send("Email not exists");
     const comparePassoword = await bcrypt.compare(req.body.password, existsEmail.password);
     if (!comparePassoword) return res.status(400).send("Wrong password");
     //create token for login
-    const token = jwt.sign({_id: existsEmail._id}, process.env.SECRET_JWT_TOKEN);
-    const user = User.findOne({email:req.body.email},(req,user)=>{
+    const token = jwt.sign({ email: existsEmail.email }, process.env.SECRET_JWT_TOKEN);
+    const user = User.findOne({ email: req.body.email }, (req, user) => {
         res.header('auth-token', token).send({
             isOperator: user.isOperator,
-            name : user.name,
-            email : user.email
+            name: user.name,
+            email: user.email
         });
     })
-    
-    
+
+
 
 
 });

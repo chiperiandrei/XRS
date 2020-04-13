@@ -12,6 +12,7 @@ window.onbeforeunload = function () {
     localStorage.clear();
     return this.alert("Your informations will be lost on page quit.")
 }
+
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
