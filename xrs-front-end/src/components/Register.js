@@ -27,13 +27,9 @@ const Register = props => {
         setLName(e.target.value)
     };
     const signUpHandler = e => {
-        console.log('starting register');
-        console.log(password);
-        console.log(email);
+ 
         const name = `${fname} ${lname}`;
-        console.log(name);
-        console.log(process.env.API_SIGNUP);
-
+ 
         axios.post('http://localhost:5000/api/ums/register', {
             name: name,
             email: email,

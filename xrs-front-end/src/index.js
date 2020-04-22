@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { createStore } from 'redux';
 import { rootReducer } from './reducers/rootReducer';
 import { Provider } from 'react-redux';
+import jwt from "jwt-decode";
+
 function loadFromLocalStorage() {
     const users = JSON.parse(localStorage.getItem('user_info'));
 
@@ -13,7 +15,8 @@ function loadFromLocalStorage() {
         return undefined;
     }
 
-    return users;
+
+    return jwt(users);
 }
 const savedInfo = loadFromLocalStorage();
 

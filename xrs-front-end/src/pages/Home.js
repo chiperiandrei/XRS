@@ -23,6 +23,8 @@ class Home extends React.Component {
                 this.setState({
                     nrIter: nrIterNew
                 })
+                
+
             })
             .catch(err => console.log(err));
 

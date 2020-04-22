@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useSelector, useDispatch } from "react-redux";
 import { logInUser } from "../actions/userActions";
 
-
 const Login = props => {
     let history = useHistory();
     const [email, setEmail] = useState('');
@@ -35,17 +34,7 @@ const Login = props => {
         }
         axios.post('http://localhost:5000/api/ums/login', data)
             .then(response => {
-                const response_object = {
-                    isLogged: true,
-                    email: response.data.email,
-                    username: response.data.name,
-                    isOperator: response.data.isOperator,
-                    token: response.data.token
-                }
-                dispatch(logInUser(response_object))
-
-
-                // localStorage.setItem("token", response.data.token);
+                dispatch(logInUser(response.data.token))
                 history.push("/dashboard")
             })
             .catch(err => {
@@ -56,7 +45,6 @@ const Login = props => {
         <h1>Login</h1>
         <p>Please fill in this form to login.</p>
         <h1>{errorMessage}</h1>
-        {console.log(userData)}
         <label htmlFor="email"><b>Email</b></label>
         <input type="email" onChange={handlerEmailInput} placeholder="Enter Email" name="email" required />
         <label htmlFor="psw"><b>Password</b></label>

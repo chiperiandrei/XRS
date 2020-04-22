@@ -13,24 +13,22 @@ const Header = props => {
     }
 
     if (userData !== null) {
-        console.log(userData)
-        if (userData.isLogged === true) {
-            return <div className="header">
-                <div className="header-left">
-                    <Link to='/' style={{ color: 'dodgerblue', fontSize: '30px', fontFamily: 'Squada One, cursive' }}>{props.companyname} Reserve System</Link>
-                    <img src={require('../assets/img/logo.png')} alt='Logo Img' id='logo' />
-                </div>
-
-                <div className="header-right">
-                    {url === '/' ? <Link to='/' className='active' >Home</Link> : <Link to='/' >Home</Link>}
-                    {url === '/contact' ? <Link to='/contact' className='active' >Contact</Link> : <Link to='/contact' >Contact</Link>}
-                    {url === '/about' ? <Link to='/about' className='active' >About</Link> : <Link to='/about' >About</Link>}
-                    {url === '/productadd' ? <Link to='/productadd' className='active' >productadd</Link> : <Link to='/productadd' >productadd</Link>}
-                    {<Link to='/' onClick={handleLogOut} >Logout</Link>}
-
-                </div>
+        return <div className="header">
+            <div className="header-left">
+                <Link to='/' style={{ color: 'dodgerblue', fontSize: '30px', fontFamily: 'Squada One, cursive' }}>{props.companyname} Reserve System</Link>
+                <img src={require('../assets/img/logo.png')} alt='Logo Img' id='logo' />
             </div>
-        }
+
+            <div className="header-right">
+                {url === '/' ? <Link to='/' className='active' >Home</Link> : <Link to='/' >Home</Link>}
+                {url === '/contact' ? <Link to='/contact' className='active' >Contact</Link> : <Link to='/contact' >Contact</Link>}
+                {url === '/about' ? <Link to='/about' className='active' >About</Link> : <Link to='/about' >About</Link>}
+                {url === '/productadd' ? <Link to='/productadd' className='active' >productadd</Link> : <Link to='/productadd' >productadd</Link>}
+                {<Link to='/' onClick={handleLogOut} >Logout</Link>}
+
+            </div>
+        </div>
+
     }
     else {
         return <div className="header">

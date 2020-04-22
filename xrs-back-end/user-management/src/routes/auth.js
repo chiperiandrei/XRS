@@ -28,12 +28,14 @@ router.post('/login', async (req, res) => {
     const comparePassoword = await bcrypt.compare(req.body.password, existsEmail.password);
     if (!comparePassoword) return res.status(400).send("Wrong password");
     //create token for login
-    const token = jwt.sign({ email: existsEmail.email }, process.env.SECRET_JWT_TOKEN);
+    const token = jwt.sign({
+        email: existsEmail.email,
+        isOperator: existsEmail.isOperator,
+        name: existsEmail.name
+    }, process.env.SECRET_JWT_TOKEN);
     const user = User.findOne({ email: req.body.email }, (req, user) => {
         res.header('auth-token', token).send({
-            isOperator: user.isOperator,
-            name: user.name,
-            email: user.email
+            token: token
         });
     })
 

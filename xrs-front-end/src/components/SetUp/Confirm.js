@@ -23,7 +23,6 @@ export class Confirm extends Component {
             email: email,
             password: password
         }
-        console.log(data_for_login)
         axios.post('http://localhost:5000/api/ums/register', data_for_login)
             .then(function (response) {
                 console.log(response);
