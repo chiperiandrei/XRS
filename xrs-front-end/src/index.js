@@ -6,12 +6,23 @@ import { BrowserRouter } from "react-router-dom";
 import { createStore } from 'redux';
 import { rootReducer } from './reducers/rootReducer';
 import { Provider } from 'react-redux';
-const store = createStore(rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-window.onbeforeunload = function () {
-    localStorage.clear();
-    return this.alert("Your informations will be lost on page quit.")
+function loadFromLocalStorage() {
+    const users = JSON.parse(localStorage.getItem('user_info'));
+
+    if (users === null) {
+        return undefined;
+    }
+
+    return users;
 }
+const savedInfo = loadFromLocalStorage();
+
+const store = createStore(rootReducer,
+    {
+        user_information: savedInfo
+    },
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
 
 ReactDOM.render(
     <Provider store={store}>

@@ -12,7 +12,7 @@ const Login = props => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
-    const userData = useSelector(state => state.users)
+    const userData = useSelector(state => state.user_information)
 
     const handlerEmailInput = e => {
         setEmail(e.target.value)
@@ -36,13 +36,16 @@ const Login = props => {
         axios.post('http://localhost:5000/api/ums/login', data)
             .then(response => {
                 const response_object = {
+                    isLogged: true,
                     email: response.data.email,
                     username: response.data.name,
                     isOperator: response.data.isOperator,
                     token: response.data.token
                 }
                 dispatch(logInUser(response_object))
-                localStorage.setItem("token", response.data.token);
+
+
+                // localStorage.setItem("token", response.data.token);
                 history.push("/dashboard")
             })
             .catch(err => {
