@@ -8,7 +8,7 @@ import { rootReducer } from './reducers/rootReducer';
 import { Provider } from 'react-redux';
 import jwt from "jwt-decode";
 
-function loadFromLocalStorage() {
+function loadUserFromLocalStorage() {
     const users = JSON.parse(localStorage.getItem('user_info'));
 
     if (users === null) {
@@ -18,11 +18,23 @@ function loadFromLocalStorage() {
 
     return jwt(users);
 }
-const savedInfo = loadFromLocalStorage();
+function loadCompanyFromSessionStorage() {
+    const company_info = JSON.parse(window.sessionStorage.getItem('company_info'));
+
+    if (company_info === null) {
+        return undefined;
+    }
+
+
+    return company_info;
+}
+const savedInfoUser = loadUserFromLocalStorage();
+const savedCompanyInfoS = loadCompanyFromSessionStorage()
 
 const store = createStore(rootReducer,
     {
-        user_information: savedInfo
+        user_information: savedInfoUser,
+        company_info: savedCompanyInfoS
     },
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 

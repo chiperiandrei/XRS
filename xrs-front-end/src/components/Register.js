@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, RegisterBTN } from '../assets/styles/Register';
+import { Container, RegisterBTN, Error } from '../assets/styles/Register';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
@@ -27,18 +27,32 @@ const Register = props => {
         setLName(e.target.value)
     };
     const signUpHandler = e => {
- 
-        const name = `${fname} ${lname}`;
- 
+
         axios.post('http://localhost:5000/api/ums/register', {
-            name: name,
+            firstname: fname,
+            lastname: lname,
             email: email,
             password: password
-        }).then(function (response) {
-            history.pushState("/")
+        }).then(response => {
+            console.log(response)
+            history.push("/login")
         })
             .catch(err => {
-                err.response.data.message !== undefined ? setErrMessage(err.response.data.message) : setErrMessage(err.response.data)
+                if (err.response !== undefined) {
+                    console.log(err.response)
+                    if (err.response.data.errors !== undefined) {
+                        const errors = err.response.data.errors;
+                        const errorMessages = [
+                            errors.firstname.message,
+                            errors.lastname.message,
+                            errors.email.message
+                        ]
+                        const errorsForShow = errorMessages.map(element => <li>{element}</li>)
+                        setErrMessage(errorsForShow)
+                    }
+                    else
+                        err.response.data.message !== undefined ? setErrMessage(err.response.data.message) : setErrMessage(err.response.data)
+                }
             });
 
 
@@ -47,7 +61,7 @@ const Register = props => {
     const registerform = <Container>
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
-        {errMessage}
+        <Error>{errMessage}</Error>
         <label htmlFor="email"><b>Email</b></label>
         <input type="email" onChange={handlerEmailInput} placeholder="Enter Email" name="email" required />
         <label htmlFor="fname"><b>First name</b></label>

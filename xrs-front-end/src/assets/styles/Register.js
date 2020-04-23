@@ -20,5 +20,8 @@ background-color: #45a1ff;
 &:hover{
     opacity:1;
 }`;
-
+export const Error = styled.ul`
+color:red;
+display:block;
+list-style:cambodian`;
 

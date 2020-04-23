@@ -1,46 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SetUp from '../components/SetUp/SetUp'
 import axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
+import { saveCompanyInfo } from "../actions/companyInfoActions";
 
-class Home extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            nrIter: 0
-        }
-    }
+const Home = props => {
+    const dispatch = useDispatch();
+    const company_info = useSelector(state => state.company_info)
 
-    componentDidMount() {
+    useEffect(() => {
         axios.get('http://localhost:4000/api/files/setup')
             .then(response => {
-                localStorage.setItem("exists", response.data.value);
-                localStorage.setItem("companyName", response.data.company_name);
-                localStorage.setItem("author_name", `${response.data.operatorLname} ${response.data.operatorFname}`);
-                localStorage.setItem("year", response.data.date_created);
-                let nrIterNew = this.state.nrIter + 1;
-                this.setState({
-                    nrIter: nrIterNew
-                })
-                
-
+                dispatch(saveCompanyInfo(response.data))
             })
             .catch(err => console.log(err));
-
+    }, [dispatch]);
+    if (company_info !== null) {
+        document.title = `${company_info.company_name} Reserve System`
+        return [<Header companyname={company_info.company_name} />, <h1>Hello</h1>,
+        <Footer datecreated={company_info.date_created} authorname={`${company_info.operatorFname} ${company_info.operatorLname}`} />]
+    }
+    else {
+        return [<Header companyname="X" />, <SetUp />, <Footer datecreated='2020' authorname='Andrei Chiperi' />]
     }
 
-    render() {
-        const arr = [['/signin', 'Sign in'], ['/signup', 'SIGN UP'], ['/', 'Home']];
-        if (localStorage.getItem("exists") === "true") {
-            document.title = `${localStorage.getItem("companyName")} Reserve System`
-            return [<Header companyname={localStorage.getItem("companyName")} elements={arr} />, <h1>Hello</h1>,
-            <Footer datecreated={localStorage.getItem("year")} authorname={localStorage.getItem("author_name")} />]
-        }
-        else {
-            return [<Header companyname="X" elements={arr} />, <SetUp />, <Footer datecreated='2020' authorname='Andrei Chiperi' />]
-        }
-    }
 }
 
 export default Home;

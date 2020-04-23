@@ -19,7 +19,8 @@ export class Confirm extends Component {
 
         };
         const data_for_login = {
-            name: `${firstName} ${lastName}`,
+            lastName: lastName,
+            firstname: firstName,
             email: email,
             password: password
         }

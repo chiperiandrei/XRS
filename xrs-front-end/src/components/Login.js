@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, RegisterBTN } from '../assets/styles/Register';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logInUser } from "../actions/userActions";
 
 const Login = props => {
@@ -11,7 +11,6 @@ const Login = props => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
-    const userData = useSelector(state => state.user_information)
 
     const handlerEmailInput = e => {
         setEmail(e.target.value)

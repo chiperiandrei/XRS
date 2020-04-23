@@ -12,6 +12,7 @@ const Header = props => {
         dispatch(logOutUser());
     }
 
+
     if (userData !== null) {
         return <div className="header">
             <div className="header-left">
@@ -21,11 +22,12 @@ const Header = props => {
 
             <div className="header-right">
                 {url === '/' ? <Link to='/' className='active' >Home</Link> : <Link to='/' >Home</Link>}
+                {url === '/search' ? <Link to='/search' className='active' >Product Search</Link> : <Link to='/search' >Product Search</Link>}
+                {userData.isOperator === true ? url === '/admin' ? <Link to='/admin' className='active' >Admin Panel</Link> : <Link to='/admin' >Admin Panel</Link> : null}
                 {url === '/contact' ? <Link to='/contact' className='active' >Contact</Link> : <Link to='/contact' >Contact</Link>}
                 {url === '/about' ? <Link to='/about' className='active' >About</Link> : <Link to='/about' >About</Link>}
-                {url === '/productadd' ? <Link to='/productadd' className='active' >productadd</Link> : <Link to='/productadd' >productadd</Link>}
-                {<Link to='/' onClick={handleLogOut} >Logout</Link>}
 
+                {<Link to='/' onClick={handleLogOut} >Logout</Link>}
             </div>
         </div>
 
@@ -43,7 +45,6 @@ const Header = props => {
                 {url === '/login' ? <Link to='/login' className='active' >Login</Link> : <Link to='/login' >Login</Link>}
                 {url === '/contact' ? <Link to='/contact' className='active' >Contact</Link> : <Link to='/contact' >Contact</Link>}
                 {url === '/about' ? <Link to='/about' className='active' >About</Link> : <Link to='/about' >About</Link>}
-                {url === '/productadd' ? <Link to='/productadd' className='active' >productadd</Link> : <Link to='/productadd' >productadd</Link>}
             </div>
         </div>
     }
