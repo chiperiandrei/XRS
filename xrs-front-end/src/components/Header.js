@@ -3,7 +3,7 @@ import '../assets/css/Header.css'
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from '../actions/userActions';
-
+import { isLogged } from '../utils';
 const Header = props => {
     const url = window.location.pathname;
     const userData = useSelector(state => state.user_information);
@@ -16,7 +16,9 @@ const Header = props => {
     if (userData !== null) {
         return <div className="header">
             <div className="header-left">
-                <Link to='/' style={{ color: 'dodgerblue', fontSize: '30px', fontFamily: 'Squada One, cursive' }}>{props.companyname} Reserve System</Link>
+                {isLogged() ?
+                    <Link to='/dashboard' style={{ color: 'dodgerblue', fontSize: '30px', fontFamily: 'Squada One, cursive' }}>{props.companyname} Reserve System</Link> :
+                    <Link to='/dashboard' style={{ color: 'dodgerblue', fontSize: '30px', fontFamily: 'Squada One, cursive' }}>{props.companyname} Reserve System</Link>}
                 <img src={require('../assets/img/logo.png')} alt='Logo Img' id='logo' />
             </div>
 

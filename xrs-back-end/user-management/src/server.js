@@ -6,7 +6,7 @@ const app = express();
 const cors = require('cors');
 const mongose = require('mongoose');
 const morgan = require('morgan');
-const logfile = fs.createWriteStream('access.log', {flags: 'a'});
+const logfile = fs.createWriteStream('access.log', { flags: 'a' });
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -20,20 +20,23 @@ var options = {
 //USE ROUTES
 const authRoute = require('./routes/auth');
 const borrowRoute = require('./routes/borrowObject');
+const profileRoute = require('./routes/profile');
 
 //CONNECT TO DATABASE
-mongose.connect(process.env.DBCONNSTRINNG, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
+mongose.connect(process.env.DBCONNSTRINNG, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log('Connected to db.')
 });
 
 //MIDDLEWARE
+app.use(express.static('public'));
 app.use(express.json());
-app.use(morgan('combined', {stream: logfile}));
+app.use(morgan('combined', { stream: logfile }));
 app.use(cors());
 //MIDDLEWARE ROUTES
 
 app.use(process.env.USER_API_URL, authRoute);
 app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
+app.use(process.env.USER_API_URL + '/profile', profileRoute);
 
 
 var httpsServer = https.createServer(options, app);

@@ -33,7 +33,8 @@ router.post('/login', async (req, res) => {
         email: existsEmail.email,
         isOperator: existsEmail.isOperator,
         firstname: existsEmail.firstname,
-        lastname: existsEmail.lastname
+        lastname: existsEmail.lastname,
+        photoPath: existsEmail.avatarPath
     }, process.env.SECRET_JWT_TOKEN);
     const user = User.findOne({ email: req.body.email }, (req, user) => {
         res.header('auth-token', token).send({

@@ -30,6 +30,10 @@ const userModel = new mongoose.Schema({
     joined: {
         type: Date,
         default: Date.now
+    },
+    avatarPath: {
+        type: String,
+        default: ''
     }
 });
 
