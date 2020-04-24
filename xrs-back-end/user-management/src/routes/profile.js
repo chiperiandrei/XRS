@@ -15,9 +15,6 @@ router.post('/default_avatar', verifyToken, async (req, res) => {
     res.send({
         token: token
     })
-
-
-
 });
 
 module.exports = router;

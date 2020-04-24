@@ -20,6 +20,7 @@ function App() {
             <Route exact path='/search' component={ProductSearch} />
             <Route exact path='/productadd' component={ProductAdd} />
             <PrivateRouteAdminPanel exact path="/admin" component={Admin} />
+            <PrivateRouteAdminPanel exact path="/productadd" component={ProductAdd} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <Route exact path='*' component={NotFound} />
         </Switch>

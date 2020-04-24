@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { Container, RegisterBTN, Error } from '../assets/styles/Register';
+import { Container, RegisterBTN } from '../assets/styles/Register';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
+
+//Notification section
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const Register = props => {
     let history = useHistory();
@@ -10,7 +15,7 @@ const Register = props => {
     const [password, setPassword] = useState('');
     const [fname, setFName] = useState('');
     const [lname, setLName] = useState('');
-    const [errMessage, setErrMessage] = useState('');
+
     const handlerEmailInput = e => {
         setEmail(e.target.value)
     };
@@ -26,6 +31,9 @@ const Register = props => {
 
         setLName(e.target.value)
     };
+    const handleAfterSubmit = () => {
+        history.push("/login")
+    }
     const signUpHandler = e => {
 
         axios.post('http://localhost:5000/api/ums/register', {
@@ -34,12 +42,12 @@ const Register = props => {
             email: email,
             password: password
         }).then(response => {
-            console.log(response)
-            history.push("/login")
+            toast.success("Account successfully created!")
+            // eslint-disable-next-line
+            const lets_go = setTimeout(handleAfterSubmit, 2000);
         })
             .catch(err => {
                 if (err.response !== undefined) {
-                    console.log(err.response)
                     if (err.response.data.errors !== undefined) {
                         const errors = err.response.data.errors;
                         const errorMessages = [
@@ -47,11 +55,12 @@ const Register = props => {
                             errors.lastname.message,
                             errors.email.message
                         ]
-                        const errorsForShow = errorMessages.map(element => <li>{element}</li>)
-                        setErrMessage(errorsForShow)
+                        errorMessages.forEach(element => {
+                            toast.error(element)
+                        });
                     }
                     else
-                        err.response.data.message !== undefined ? setErrMessage(err.response.data.message) : setErrMessage(err.response.data)
+                        err.response.data.message !== undefined ? toast.error(err.response.data.message) : toast.error(err.response.data)
                 }
             });
 
@@ -61,7 +70,6 @@ const Register = props => {
     const registerform = <Container>
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
-        <Error>{errMessage}</Error>
         <label htmlFor="email"><b>Email</b></label>
         <input type="email" onChange={handlerEmailInput} placeholder="Enter Email" name="email" required />
         <label htmlFor="fname"><b>First name</b></label>
@@ -72,6 +80,8 @@ const Register = props => {
         <label htmlFor="psw"><b>Password</b></label>
         <input type="password" onChange={handlerPasswordInput} placeholder="Password" name="psw" required />
         <RegisterBTN type='submit' onClick={signUpHandler}>Register</RegisterBTN>
+        <ToastContainer autoClose={2000} />
+
     </Container>;
     return registerform;
 };

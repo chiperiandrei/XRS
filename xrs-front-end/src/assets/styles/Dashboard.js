@@ -1,11 +1,23 @@
 import styled from 'styled-components';
 
 export const WelcomeContainer = styled.div`
-display:flex;`;
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+grid-template-rows: 0.18fr 1fr;
+grid-column-gap: 12px;
+grid-row-gap: 6px;`;
 export const WelcomeLeftSide = styled.div`
-flex:0.3;`;
+grid-area: 1 / 1 / 3 / 2;
+background-color:red;
+height: 85vh;`;
+export const WelcomeCenterSide = styled.div`
+grid-area: 1 / 2 / 3 / 3;
+background-color:blue;
+`;
 export const WelcomeRightSide = styled.div`
-flex:1;`;
+grid-area: 1 / 3 / 3 / 4; 
+background-color:cyan;
+`;
 
 export const ImageSetupGrid = styled.div`
 display: grid;

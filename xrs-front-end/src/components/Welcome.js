@@ -1,44 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { WelcomeContainer, WelcomeRightSide, WelcomeLeftSide, TitleImageEvent, BoxLeft, BoxRight, BoxCenter, ImageSetupGrid, Lately, Submit } from "../assets/styles/Dashboard";
+import { WelcomeContainer, WelcomeRightSide, WelcomeLeftSide, TitleImageEvent, BoxLeft, BoxRight, BoxCenter, ImageSetupGrid, Lately, Submit, WelcomeCenterSide } from "../assets/styles/Dashboard";
 import { useSelector, useDispatch } from "react-redux";
 import Axios from "axios";
-import { updateToken, forceUpdate } from "../actions/userActions";
-import { useHistory } from "react-router-dom";
-
-const useForceUpdate = () => useState()[1];
+import { updateToken } from "../actions/userActions";
 const WelcomeComponent = props => {
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.user_information)
-    const [user, setUser] = useState(userInfo.iat);
+    const [ok, setOk] = useState(false);
 
     useEffect(() => {
-        console.log('actualizare vro')
-    }, [user]);
+        if (ok === true) {
+            handleDefaultAvatar();
+        }
+    }, [ok]);
     const handleDefaultAvatar = async () => {
 
-        await Axios.post('http://localhost:5000/api/ums/profile/default_avatar', {
-            info: 'infos'
-        }, {
+        await Axios.post('http://localhost:5000/api/ums/profile/default_avatar', {}, {
             headers: {
                 "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2)
             }
         })
             .then((response) => {
-                console.log(localStorage.getItem('user_info'))
-                localStorage.setItem('user_info', JSON.stringify(response.data.token))
                 userInfo.photoPath = "avatars/default.png";
+                const token = JSON.stringify(response.data.token)
+                localStorage.setItem("user_info", token)
                 dispatch(updateToken(response.data.token))
-                dispatch(forceUpdate())
-
+                setOk(true)
             })
             .catch((error) => {
                 console.log(error.response);
             });
     }
-    if (userInfo.photoPath !== "") {
+    if (userInfo.photoPath !== '') {
         return <WelcomeContainer>
-            <img src={`http://localhost:5000/${userInfo.photoPath}`} alt="iamginie" />
             <WelcomeLeftSide>Profile</WelcomeLeftSide>
+            <WelcomeCenterSide>
+                <img src={`http://localhost:5000/${userInfo.photoPath}`} alt="iamginie" width="100%" height="100%" />
+            </WelcomeCenterSide>
             <WelcomeRightSide>Actions</WelcomeRightSide>
         </WelcomeContainer>
     }
@@ -53,6 +51,7 @@ const WelcomeComponent = props => {
             <BoxCenter>OR</BoxCenter>
             <BoxRight>
                 <Lately onClick={handleDefaultAvatar}>Or choose another lately</Lately>
+
             </BoxRight>
         </ImageSetupGrid>
     }
