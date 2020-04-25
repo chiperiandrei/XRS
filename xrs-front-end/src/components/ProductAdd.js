@@ -1,6 +1,4 @@
 import React, { useState, Fragment } from "react";
-import { Container } from '@material-ui/core';
-import { Property } from '../assets/styles/ProductAdd'
 
 
 const ProductAdd = props => {
@@ -37,71 +35,62 @@ const ProductAdd = props => {
         e.preventDefault();
         console.log({ list: inputValues, productName: productName });
     }
-    return <Container>
-        <h1>Add a product</h1>
-        <form onSubmit={handleSubmit}>
-            <div id="name">
-                <label htmlFor="name">Name</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    name="name"
-                    value={productName}
-                    onChange={event => handleName(event)}
-                />
-            </div>
-            <div>
-                {inputValues.map((inputValue, index) => (
-                    <Fragment key={`${inputValue}~${index}`}>
-                        <Property>
-                            <label htmlFor="property">Property</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="property"
-                                name="property"
-                                value={inputValue.property}
-                                onChange={event => handleInputChange(index, event)}
-                            />
-                            <label htmlFor="value">Value</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="value"
-                                name="value"
-                                value={inputValue.value}
-                                onChange={event => handleInputChange(index, event)}
-                            />
-                            <button
-                                className="btn btn-link"
-                                type="button"
-                                onClick={() => handleRemoveSpec(index)}
-                            >
-                                Remove this property
-                            </button>
+    return <form onSubmit={handleSubmit}>
 
-                        </Property>
-                    </Fragment>
-                ))}
-            </div>
-            <button
-                className="btn btn-link"
-                type="button"
-                onClick={() => handleAddSpec()}
-            >
-                Add new property
+        <span>Name</span>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value={productName}
+            onChange={event => handleName(event)}
+        />
+        <div>
+            {inputValues.map((inputValue, index) => (
+                <Fragment key={`${inputValue}~${index}`}>
+                    <div id="property">
+                        <span>Property</span>
+                        <input
+                            type="text"
+                            id="property"
+                            name="property"
+                            value={inputValue.property}
+                            onChange={event => handleInputChange(index, event)}
+                        />
+                        <span>Value</span>
+                        <input
+                            type="text"
+                            id="value"
+                            name="value"
+                            value={inputValue.value}
+                            onChange={event => handleInputChange(index, event)}
+                        />
+                        <button
+                            type="button"
+                            id="remove"
+                            onClick={() => handleRemoveSpec(index)} >
+                            Remove this property
                         </button>
-            <div>
-                <button
-                    type="submit"
-                    onSubmit={handleSubmit}
-                >
-                    Save
-                </button>
-            </div>
-        </form >
 
-    </Container>
+                    </div>
+                </Fragment>
+            ))}
+        </div>
+        <button
+            type="button"
+            id="add"
+            onClick={() => handleAddSpec()}
+        >
+            Add new property
+        </button>
+        <div>
+            <button
+                type="submit"
+                onSubmit={handleSubmit}
+            >
+                Save
+            </button>
+        </div>
+    </form >
 };
 export default ProductAdd;

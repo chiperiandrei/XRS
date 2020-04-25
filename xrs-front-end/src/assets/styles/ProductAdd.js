@@ -1,4 +1,4 @@
 import styled from 'styled-components';
-export const Property=styled.div`
+export const Property = styled.div`
 display:flex;
   `;

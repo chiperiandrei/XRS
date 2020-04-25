@@ -23,7 +23,11 @@ const productModel = new mongoose.Schema({
     category: {
         type: String,
         default: ''
-    }
+    },
+    type: {
+        type: String,
+        default: ''
+    },
 });
 
 module.exports = mongoose.model('Product', productModel);

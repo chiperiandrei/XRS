@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import CreateAccount from './pages/CreateAccount';
 import ProductSearch from './pages/ProductSearch';
-import ProductAdd from './pages/admin/ProductAdd';
 import Admin from "./pages/admin/Admin";
 import PrivateRouteAdminPanel from "./components/PrivateRouteAdminPanel";
 import PrivateRoute from './components/PrivateRoute';
@@ -18,9 +17,7 @@ function App() {
             <Route exact path='/login' component={Login} />
             <Route exact path='/createaccount' component={CreateAccount} />
             <Route exact path='/search' component={ProductSearch} />
-            <Route exact path='/productadd' component={ProductAdd} />
             <PrivateRouteAdminPanel exact path="/admin" component={Admin} />
-            <PrivateRouteAdminPanel exact path="/productadd" component={ProductAdd} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <Route exact path='*' component={NotFound} />
         </Switch>

@@ -34,6 +34,8 @@ const ProductSearch = props => {
         <React.Fragment>
             <Header companyname={company_info !== null ? company_info.company_name : "X"} />
             <ContainerProducts>
+            <input id="search" placeholder="Searching for..."></input>
+
                 <Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} />
             </ContainerProducts>
             <Footer datecreated={company_info !== null ? company_info.date_created : "2020"} authorname={company_info !== null ? `${company_info.operatorFname} ${company_info.operatorLname}` : "Andrei Chiperi"} />
