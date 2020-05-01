@@ -75,16 +75,34 @@ overflow-y:auto;
         color:white;
         border-color: black;
     }
+    & #main-info{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: flex-start;
+        & input{
+            margin-left:8%;
+        }
+    }
     
 } `;
 
-export const RemoveComponent = styled.div`
+export const EditComponent = styled.div`
 grid-area: 1 / 2 / 2 / 3;
 overflow-y:auto;
 color:#45a1ff;
-margin:2% 0 0 32%;
 & h1{
     color:white;
     -webkit-text-stroke: 1px black;
-    margin-bottom:6%;
-}`
+}
+& #loading{
+    margin:2% 0 0 32%;
+    & h1{
+        color:white;
+        -webkit-text-stroke: 1px black;
+        margin-bottom:6%;
+    }
+}
+`

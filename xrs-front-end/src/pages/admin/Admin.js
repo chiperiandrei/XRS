@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 //Pages section
 import ProductAdd from '../../components/ProductAdd';
-import ProductRemove from '../../components/ProductRemove';
+import ProductEdit from '../../components/ProductEdit';
 
 //Components section
 import Header from '../../components/Header';
@@ -13,7 +13,7 @@ import Footer from '../../components/Footer';
 import { useSelector } from "react-redux";
 
 //Styles section
-import { LayOut, CommandMenu, AddComponent, RemoveComponent } from '../../assets/styles/Admin';
+import { LayOut, CommandMenu, AddComponent, EditComponent } from '../../assets/styles/Admin';
 
 
 const Admin = props => {
@@ -22,9 +22,6 @@ const Admin = props => {
     }
     const handleEditProduct = () => {
         setAction('productedit')
-    }
-    const handleRemoveProduct = () => {
-        setAction('productremove')
     }
     const [action, setAction] = useState('productadd');
     const company_info = useSelector(state => state.company_info);
@@ -36,9 +33,6 @@ const Admin = props => {
         </button>
             <button id="edit" onClick={handleEditProduct}>
                 Edit product
-        </button>
-            <button id="remove" onClick={handleRemoveProduct}>
-                Remove product
         </button>
         </div>
     </CommandMenu>
@@ -54,13 +48,10 @@ const Admin = props => {
     if (action === 'productadd') {
         let component = <AddComponent><ProductAdd /></AddComponent>
         return render(component)
-    } else if (action === 'productremove') {
-        let component = <RemoveComponent><ProductRemove /></RemoveComponent>
+    } else if (action === 'productedit') {
+        let component = <EditComponent><ProductEdit /></EditComponent>
         return render(component)
     }
-
-
-    return render(null)
 
 };
 export default Admin;

@@ -7,7 +7,6 @@ const cors = require('cors');
 const mongose = require('mongoose');
 const morgan = require('morgan');
 const logfile = fs.createWriteStream('access.log', { flags: 'a' });
-const bodyparser =require("body-parser");
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -19,7 +18,7 @@ var options = {
 
 
 //USE ROUTES
-const crud_product = require('./routes/crud_product');
+const crud_borrows = require('./routes/crud_borrows');
 
 //CONNECT TO DATABASE
 mongose.connect(process.env.DBCONNSTRINNG, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -31,12 +30,9 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(morgan('combined', { stream: logfile }));
 app.use(cors());
-
-app.use(bodyparser.urlencoded({extended:true}))
-app.use(bodyparser.json())
 //MIDDLEWARE ROUTES
 
-app.use(process.env.PRODUCT_API_URL, crud_product);
+app.use(process.env.BORROW_API_URL, crud_borrows);
 
 
 var httpsServer = https.createServer(options, app);
@@ -47,6 +43,6 @@ var httpsServer = https.createServer(options, app);
 //     });
 //
 
-app.get('/', (req, res) => res.send('Product microservice'));
+app.get('/', (req, res) => res.send('Borrow microservice'));
 
-app.listen(process.env.PORT_PRODUCT, () => console.log(`Example app listening on port ${process.env.PORT_PRODUCT}!`))
+app.listen(process.env.PORT_BORROW, () => console.log(`Example app listening on port ${process.env.PORT_BORROW}!`))

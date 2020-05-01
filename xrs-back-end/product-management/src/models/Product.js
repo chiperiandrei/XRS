@@ -7,18 +7,15 @@ const productModel = new mongoose.Schema({
     },
     specs: {
         type: Object,
-        default: {
-            salut: 'test',
-            depinde: 'test'
-        }
+        default: null
     },
     added: {
         type: Date,
         default: Date.now
     },
-    imagePath: {
+    imagesPath: {
         type: String,
-        default: ''
+        default: '/public/uploads/'
     },
     category: {
         type: String,

@@ -18,6 +18,7 @@ function App() {
             <Route exact path='/createaccount' component={CreateAccount} />
             <Route exact path='/search' component={ProductSearch} />
             <PrivateRouteAdminPanel exact path="/admin" component={Admin} />
+            <PrivateRouteAdminPanel exact path="/admin/editproduct/:id" component={Admin} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <Route exact path='*' component={NotFound} />
         </Switch>
