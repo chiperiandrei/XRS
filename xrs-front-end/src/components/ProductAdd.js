@@ -17,11 +17,23 @@ const ProductAdd = props => {
     const [category, setCategory] = useState(null);
     const [incomingid, setIncomingid] = useState('');
     const token = localStorage.getItem("user_info");
-    const formData = new FormData();
+    const [uploadData, setUpload] = useState(null);  
+
     const handleImageChange = e => {
+
+        const temp = new FormData();
         var files = e.target.files;
         for (const key of Object.keys(files)) {
-            formData.append('imgCollection', files[key])
+            temp.append('imgCollection', files[key])
+        }
+        if(uploadData == null){
+            setUpload(temp);
+        }
+        else {
+            for (var pair of uploadData.entries()) {
+                temp.append(pair[0], pair[1]);
+            }
+            setUpload(temp);
         }
     }
 
@@ -59,21 +71,22 @@ const ProductAdd = props => {
         const data = {
             name: productName,
             specs: convertedObject,
-            category: "it"
+            category: category.value
         }
         Axios.post('http://localhost:4001/api/products/', data, {
             headers: {
                 "auth-token": token.substr(1, token.length - 2)
             }
         }).then(res => {
-            setIncomingid(res.data.product)
-            Axios.post('http://localhost:4001/api/products/upload', formData, {
+
+            for (var value of uploadData.values()) {
+                console.log(value); 
+             }
+
+            Axios.post(`http://localhost:4001/api/products/upload/${res.data.product}`, uploadData, {
                 headers: {
                     "auth-token": token.substr(1, token.length - 2),
                     'Content-Type': 'multipart/form-data'
-                },
-                params:{
-                    id: incomingid
                 }
             })
                 .then(res => {
