@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert, Image, Button, StyleSheet, BackHandler, FlatList, ActivityIndicator, Vibration } from 'react-native';
+import { View, Text, ToastAndroid, Alert, Image, Button, StyleSheet, BackHandler, FlatList, ActivityIndicator, Vibration } from 'react-native';
 import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
 import axios from 'axios';
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Home from './Home';
 import Axios from 'axios';
-import { GET_USERS, SECRET_CODE } from "react-native-dotenv";
+import { GET_USERS, SECRET_CODE, ADD_NFC_TAG } from "react-native-dotenv";
 import { ListItem, SearchBar } from 'react-native-elements';
 import Modal from 'react-native-modal';
+import FlashMessage from "react-native-flash-message";
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -63,6 +64,15 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 50,
     },
+    flashMessage: {
+        position: 'absolute',
+        backgroundColor: 'green',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
+        top: 0
+    }
 });
 
 class AddUsersAccessCard extends React.Component {
@@ -82,6 +92,8 @@ class AddUsersAccessCard extends React.Component {
             user_avatarpath: '',
             modal_active: false,
             ADMINNFCID_CLIENT: null,
+            confirm_message: null,
+            flashMessage: false
         };
         this.arrayholder = [];
     }
@@ -118,9 +130,9 @@ class AddUsersAccessCard extends React.Component {
     };
     fetchUsers = () => {
         this.setState({ loading: true });
-        Axios.post('https://xrs-users-management.herokuapp.com/api/ums/users', null, {
+        Axios.post(`${GET_USERS}`, null, {
             headers: {
-                token: 'MOBILE_JWT'
+                token: `${SECRET_CODE}`
             }
         })
             .then(response => {
@@ -205,10 +217,32 @@ class AddUsersAccessCard extends React.Component {
             onPress={() => this._onPressItem(item)}
         />
     )
+    closeFlashMessage() {
+        this.setState({
+            flashMessage: false
+        })
+    }
+
     saveChanges = () => {
-        console.log(this.state.user_email)
-        console.log(this.state.ADMINNFCID_CLIENT)
-        console.log('scanned')
+        Axios.post(`${ADD_NFC_TAG}${this.state.user_email}`, {
+            tag: this.state.ADMINNFCID_CLIENT
+        }, {
+            headers: {
+                token: `${SECRET_CODE}`
+            }
+        })
+            .then(res => {
+                this.setState({
+                    flashMessage: true,
+                    confirm_message: res.data
+                }, () => { setTimeout(() => this.closeFlashMessage(), 3000) })
+            })
+            .catch(err => {
+                this.setState({
+                    flashMessage: true,
+                    confirm_message: err
+                }, () => { setTimeout(() => this.closeFlashMessage(), 3000) })
+            })
         this.setState({ modal_active: false, ADMINNFCID_CLIENT: null })
     }
 
@@ -258,6 +292,11 @@ class AddUsersAccessCard extends React.Component {
                     <Text style={styles.title}>Asign Users Access Card</Text>
                 </View>
                 <View>
+                    {this.state.flashMessage == true ?
+                        <Text>{this.state.confirm_message}</Text>
+                        :
+                        null
+                    }
                     <FlatList
                         data={this.state.data}
                         renderItem={this._handleItem}
