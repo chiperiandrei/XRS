@@ -21,6 +21,7 @@ var options = {
 const authRoute = require('./routes/auth');
 const borrowRoute = require('./routes/borrowObject');
 const profileRoute = require('./routes/profile');
+const usersRoute = require('./routes/users')
 
 //CONNECT TO DATABASE
 mongose.connect(process.env.DBCONNSTRINNG, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -37,6 +38,8 @@ app.use(cors());
 app.use(process.env.USER_API_URL, authRoute);
 app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
 app.use(process.env.USER_API_URL + '/profile', profileRoute);
+app.use(process.env.USER_API_URL + '/users', usersRoute);
+
 
 
 var httpsServer = https.createServer(options, app);
@@ -49,4 +52,4 @@ var httpsServer = https.createServer(options, app);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-app.listen(process.env.PORT, () => console.log(`Example app listening on port ${process.env.PORT}!`))
+app.listen(process.env.PORT, () => console.log(`User management listening on port ${process.env.PORT}!`))
