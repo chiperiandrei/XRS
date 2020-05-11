@@ -17,7 +17,8 @@ const ProductAdd = props => {
     const [category, setCategory] = useState(null);
     const [incomingid, setIncomingid] = useState('');
     const token = localStorage.getItem("user_info");
-    const [uploadData, setUpload] = useState(null);  
+    const [uploadData, setUpload] = useState(null);
+    const [options, setOptions] = useState(null);
 
     const handleImageChange = e => {
 
@@ -26,7 +27,7 @@ const ProductAdd = props => {
         for (const key of Object.keys(files)) {
             temp.append('imgCollection', files[key])
         }
-        if(uploadData == null){
+        if (uploadData == null) {
             setUpload(temp);
         }
         else {
@@ -36,7 +37,24 @@ const ProductAdd = props => {
             setUpload(temp);
         }
     }
-
+    useEffect(() => {
+        Axios.get('http://localhost:4001/api/products/', {
+            headers: {
+                "auth-token": token.substr(1, token.length - 2)
+            }
+        })
+            .then(res => {
+                let temp = res.data.map(product => product.category)
+                let categories = Array.from(new Set(temp)).map(category => {
+                    return {
+                        value: category,
+                        label: category
+                    }
+                })
+                setOptions(categories)
+            })
+            .catch(err => console.log(err))
+    })
 
 
     const handleAddSpec = () => {
@@ -80,8 +98,8 @@ const ProductAdd = props => {
         }).then(res => {
 
             for (var value of uploadData.values()) {
-                console.log(value); 
-             }
+                console.log(value);
+            }
 
             Axios.post(`http://localhost:4001/api/products/upload/${res.data.product}`, uploadData, {
                 headers: {
@@ -90,17 +108,14 @@ const ProductAdd = props => {
                 }
             })
                 .then(res => {
+                    console.log(res)
                     toast.success("Files uploaded successfully!")
                 })
                 .catch(err => toast.error(err.response.data))
         })
             .catch(err => toast.error(err.response.data))
     }
-    const options = [
-        { value: 'IT', label: 'IT' },
-        { value: 'CONSTRUCTII', label: 'CONSTRUCTII' },
-        { value: 'CONSTRUCTII2', label: 'CONSTRUCTII2' }
-    ]
+    
     return <form onSubmit={handleSubmit} encType="multipart/form-data">
         <ToastContainer autoClose={2000} />
         <div id="main-info">

@@ -45,4 +45,4 @@ var httpsServer = https.createServer(options, app);
 
 app.get('/', (req, res) => res.send('Borrow microservice'));
 
-app.listen(process.env.PORT_BORROW, () => console.log(`Example app listening on port ${process.env.PORT_BORROW}!`))
+app.listen(process.env.PORT_BORROW, () => console.log(`Borrow management listening on port ${process.env.PORT_BORROW}!`))

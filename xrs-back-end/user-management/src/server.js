@@ -10,11 +10,11 @@ const logfile = fs.createWriteStream('access.log', { flags: 'a' });
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
-//CERTIFICATES
-var options = {
-    key: fs.readFileSync(path.resolve('certificates/server.key')),
-    cert: fs.readFileSync(path.resolve('certificates/server.cert'))
-};
+// //CERTIFICATES
+// var options = {
+//     key: fs.readFileSync(path.resolve('certificates/server.key')),
+//     cert: fs.readFileSync(path.resolve('certificates/server.cert'))
+// };
 
 
 //USE ROUTES
@@ -42,7 +42,7 @@ app.use(process.env.USER_API_URL + '/users', usersRoute);
 
 
 
-var httpsServer = https.createServer(options, app);
+// var httpsServer = https.createServer(options, app);
 
 // if (process.env.NODE_ENV !== 'production')
 //     httpsServer.listen(process.env.PORT, () => {

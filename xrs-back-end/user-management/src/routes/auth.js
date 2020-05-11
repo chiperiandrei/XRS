@@ -41,9 +41,5 @@ router.post('/login', async (req, res) => {
             token: token
         });
     })
-
-
-
-
 });
 module.exports = router;

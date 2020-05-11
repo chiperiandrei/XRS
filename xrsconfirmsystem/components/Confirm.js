@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Alert, Image, Button, StyleSheet} from 'react-native';
-import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
+import { View, Text, TouchableOpacity, Alert, Image, Button, StyleSheet,BackHandler } from 'react-native';
+import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
 import axios from 'axios';
-import {Colors} from "react-native/Libraries/NewAppScreen";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import Home from './Home';
+
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -44,36 +46,56 @@ const styles = StyleSheet.create({
 });
 
 
-class App extends React.Component {
+class Confirm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             image: "",
             DURATION: 100,
-            NFC_ID: ""
+            NFC_ID: "",
+            back: false,
         };
     }
 
+    backAction = () => {
+        Alert.alert("Hold on!", "Are you sure you want to go back?", [
+            {
+                text: "Cancel",
+                onPress: () => null,
+                style: "cancel"
+            },
+            { text: "YES", onPress: () => this.setState({ back: true }) }
+        ]);
+        return true;
+    };
     componentDidMount() {
+        this.backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            this.backAction
+        );
 
     }
 
     componentWillUnmount() {
+        this.backHandler.remove();
     }
 
     render() {
-        return (<>
-                <View style={{padding: 20}}>
+        if (this.state.back) {
+            return <Home />
+        } else
+            return (<>
+                <View style={{ padding: 20 }}>
                     <Image
-                        style={{width: 50, height: 50}}
-                        source={require('../assets/img/logo.png')}/>
+                        style={{ width: 50, height: 50 }}
+                        source={require('../assets/img/logo.png')} />
                     <Text style={styles.title}>CONFIRM PAGE</Text>
                 </View>
                 <View><Text>Hello</Text></View>
             </>
-        );
+            );
     }
 
 }
 
-export default App;
+export default Confirm;

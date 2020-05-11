@@ -4,6 +4,8 @@ import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
 import axios from 'axios';
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Home from './Home';
+import Axios from 'axios';
+import { GET_USERS, SECRET_CODE } from "react-native-dotenv";
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 
-class Return extends React.Component {
+class AddUsersAccessCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,7 +55,11 @@ class Return extends React.Component {
             DURATION: 100,
             NFC_ID: "",
             back: false,
+            loading: false,
+            data: [],
+            error: null,
         };
+        this.arrayholder = [];
     }
 
     backAction = () => {
@@ -67,12 +73,22 @@ class Return extends React.Component {
         ]);
         return true;
     };
+    fetchUsers = () => {
+        console.log('getcj')
+        Axios.post('http://172.17.245.17:5000/api/ums/users', null, {
+            headers: {
+                token: 'MOBILE_JWT'
+            }
+        })
+            .then(response => console.log(response))
+            .catch(e => console.log(e))
+    }
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
             this.backAction
         );
-
+        this.fetchUsers();
     }
 
     componentWillUnmount() {
@@ -88,7 +104,7 @@ class Return extends React.Component {
                     <Image
                         style={{ width: 50, height: 50 }}
                         source={require('../assets/img/logo.png')} />
-                    <Text style={styles.title}>XRS Return Object</Text>
+                    <Text style={styles.title}>Asign Users Access Card</Text>
                 </View>
                 <View><Text>Hello</Text></View>
             </>
@@ -97,4 +113,4 @@ class Return extends React.Component {
 
 }
 
-export default Return;
+export default AddUsersAccessCard;

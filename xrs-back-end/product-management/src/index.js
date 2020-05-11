@@ -39,6 +39,7 @@ app.use(bodyparser.json())
 app.use(process.env.PRODUCT_API_URL, crud_product);
 
 
+
 var httpsServer = https.createServer(options, app);
 
 // if (process.env.NODE_ENV !== 'production')
@@ -49,4 +50,4 @@ var httpsServer = https.createServer(options, app);
 
 app.get('/', (req, res) => res.send('Product microservice'));
 
-app.listen(process.env.PORT_PRODUCT, () => console.log(`Example app listening on port ${process.env.PORT_PRODUCT}!`))
+app.listen(process.env.PORT_PRODUCT, () => console.log(`Product management listening on port ${process.env.PORT_PRODUCT}!`))

@@ -5,6 +5,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import Return from "./Return";
 import { Button } from 'react-native-elements';
 import Confirm from "./Confirm";
+import AddUsersAccessCard from "./AddUsersAccessCard";
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -50,18 +51,25 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         marginTop: 80
-    }
+    },
+
+    buttonAsignNFCID: {
+        marginTop: 20,
+        borderRadius: 5,
+        height: 60
+    },
 });
 
 
-class App extends React.Component {
+class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             company_name: '',
             created_by: '',
             showReturn: false,
-            showConfirm: false
+            showConfirm: false,
+            showEditUsers: false,
         };
     }
 
@@ -92,37 +100,47 @@ class App extends React.Component {
                 return <Confirm />
             }
             else
-                return (<>
-                    <View style={{ padding: 20 }}>
-                        <Image
-                            style={{ width: 50, height: 50 }}
-                            source={require('../assets/img/logo.png')} />
-                        <Text style={styles.title}>{this.state.company_name} Objects Management</Text>
-                        <Text style={styles.title}>Hello, {this.state.created_by}</Text>
-                    </View>
+                if (this.state.showEditUsers) {
+                    return <AddUsersAccessCard />
+                } else
+                    return (<>
+                        <View style={{ padding: 20 }}>
+                            <Image
+                                style={{ width: 50, height: 50 }}
+                                source={require('../assets/img/logo.png')} />
+                            <Text style={styles.title}>{this.state.company_name} Objects Management</Text>
+                            <Text style={styles.title}>Hello, {this.state.created_by}</Text>
+                        </View>
 
 
-                    <View style={styles.container}>
-                        <Button
-                            buttonStyle={styles.buttonReserve}
-                            icon={{ name: 'check' }}
-                            title='Confirm Reserve'
-                            onPress={() => {
-                                this.setState({ showConfirm: true });
-                            }} />
-                        <Button
-                            buttonStyle={styles.buttonReturn}
-                            icon={{ name: 'check' }}
-                            title='Confirm Return'
-                            onPress={() => {
-                                this.setState({ showReturn: true });
-                            }} />
-                    </View>
+                        <View style={styles.container}>
+                            <Button
+                                buttonStyle={styles.buttonReserve}
+                                icon={{ name: 'check' }}
+                                title='Confirm Reserve'
+                                onPress={() => {
+                                    this.setState({ showConfirm: true });
+                                }} />
+                            <Button
+                                buttonStyle={styles.buttonReturn}
+                                icon={{ name: 'check', type: 'font-awesome' }}
+                                title='Confirm Return'
+                                onPress={() => {
+                                    this.setState({ showReturn: true });
+                                }} />
+                            <Button
+                                buttonStyle={styles.buttonAsignNFCID}
+                                icon={{ name: 'id-card', type: 'font-awesome' }}
+                                title='Asign Access Card for Users'
+                                onPress={() => {
+                                    this.setState({ showEditUsers: true });
+                                }} />
+                        </View>
 
-                </>
-                );
+                    </>
+                    );
     }
 
 }
 
-export default App;
+export default Home;
