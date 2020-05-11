@@ -35,10 +35,10 @@ app.use(morgan('combined', { stream: logfile }));
 app.use(cors());
 //MIDDLEWARE ROUTES
 
-app.use(process.env.USER_API_URL, authRoute);
-app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
-app.use(process.env.USER_API_URL + '/profile', profileRoute);
-app.use(process.env.USER_API_URL + '/users', usersRoute);
+app.use(process.env.USER_API_URL, usersRoute);
+// app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
+// app.use(process.env.USER_API_URL + '/profile', profileRoute);
+// app.use(process.env.USER_API_URL + '/users', usersRoute);
 
 
 
