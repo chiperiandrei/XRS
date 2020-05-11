@@ -21,7 +21,9 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const authRoute = require('./routes/auth');
 const borrowRoute = require('./routes/borrowObject');
 const profileRoute = require('./routes/profile');
-const usersRoute = require('./routes/users')
+const usersRoute = require('./routes/users');
+const asignNFCtags = require('./routes/assign_tags');
+
 
 //CONNECT TO DATABASE
 mongose.connect(process.env.DBCONNSTRINNG, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -39,6 +41,7 @@ app.use(process.env.USER_API_URL, authRoute);
 app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
 app.use(process.env.USER_API_URL + '/profile', profileRoute);
 app.use(process.env.USER_API_URL + '/users', usersRoute);
+app.use(process.env.USER_API_URL + '/nfctags', asignNFCtags);
 
 
 

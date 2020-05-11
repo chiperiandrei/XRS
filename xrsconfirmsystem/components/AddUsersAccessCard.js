@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert, Image, Button, StyleSheet, BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, Image, Button, StyleSheet, BackHandler, FlatList, ActivityIndicator, Vibration } from 'react-native';
 import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
 import axios from 'axios';
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Home from './Home';
 import Axios from 'axios';
 import { GET_USERS, SECRET_CODE } from "react-native-dotenv";
+import { ListItem, SearchBar } from 'react-native-elements';
+import Modal from 'react-native-modal';
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -43,9 +45,25 @@ const styles = StyleSheet.create({
         width: '80%',
         left: '5%',
         top: '20%'
-    }
+    },
+    content: {
+        backgroundColor: 'white',
+        padding: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    contentTitle: {
+        fontSize: 20,
+        marginBottom: 12,
+    },
+    tinyLogo: {
+        width: 150,
+        height: 150,
+        borderRadius: 50,
+    },
 });
-
 
 class AddUsersAccessCard extends React.Component {
     constructor(props) {
@@ -58,9 +76,34 @@ class AddUsersAccessCard extends React.Component {
             loading: false,
             data: [],
             error: null,
+            user_lastName: '',
+            user_firstName: '',
+            user_email: '',
+            user_avatarpath: '',
+            modal_active: false,
+            ADMINNFCID_CLIENT: null,
         };
         this.arrayholder = [];
     }
+    scanNFCcard() {
+        const trigger = this.triggerNFC();
+
+        NfcManager.start();
+        NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+            this.setState({ ADMINNFCID_CLIENT: tag.id });
+            this.setState({ scannedTAG: true });
+            Vibration.vibrate(2);
+            NfcManager.unregisterTagEvent().catch(() => 0);
+        });
+    }
+    triggerNFC = async () => {
+        try {
+            await NfcManager.registerTagEvent();
+        } catch (e) {
+            console.warn('EXCEPTION', e);
+            NfcManager.unregisterTagEvent().catch(() => 0);
+        }
+    };
 
     backAction = () => {
         Alert.alert("Hold on!", "Are you sure you want to go back?", [
@@ -74,13 +117,20 @@ class AddUsersAccessCard extends React.Component {
         return true;
     };
     fetchUsers = () => {
-        console.log('getcj')
-        Axios.post('http://172.17.245.17:5000/api/ums/users', null, {
+        this.setState({ loading: true });
+        Axios.post('https://xrs-users-management.herokuapp.com/api/ums/users', null, {
             headers: {
                 token: 'MOBILE_JWT'
             }
         })
-            .then(response => console.log(response))
+            .then(response => {
+                this.setState({
+                    data: response.data,
+                    error: null,
+                    loading: false,
+                });
+                this.arrayholder = response.data;
+            })
             .catch(e => console.log(e))
     }
     componentDidMount() {
@@ -89,24 +139,133 @@ class AddUsersAccessCard extends React.Component {
             this.backAction
         );
         this.fetchUsers();
+
     }
 
     componentWillUnmount() {
         this.backHandler.remove();
+        NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
+        NfcManager.unregisterTagEvent().catch(() => 0);
     }
+    renderHeader = () => {
+        return (
+            <SearchBar
+                placeholder="Search for...."
+                lightTheme
+                round
+                onChangeText={text => this.searchFilterFunction(text)}
+                autoCorrect={false}
+                value={this.state.value}
+            />
+        );
+    };
+    searchFilterFunction = text => {
+        this.setState({
+            value: text,
+        });
+
+        const newData = this.arrayholder.filter(item => {
+            const itemData = `${item.email.toUpperCase()} ${item.lastName.toUpperCase()} ${item.firstName.toUpperCase()}`;
+            const textData = text.toUpperCase();
+
+            return itemData.indexOf(textData) > -1;
+        });
+        this.setState({
+            data: newData,
+        });
+    };
+    separatorBoxes = () => {
+        return (
+            <View
+                style={{
+                    height: 1,
+                    width: '86%',
+                    backgroundColor: '#CED0CE',
+                    marginLeft: '14%',
+                }}
+            />
+        );
+    };
+    _onPressItem = (item) => {
+        this.scanNFCcard()
+        this._showModal(item);
+    };
+    _showModal = (item) => this.setState({
+        modal_active: true,
+        user_firstName: item.firstName,
+        user_lastName: item.lastName,
+        user_email: item.email,
+        user_avatarpath: item.avatarPath,
+    })
+    _handleItem = ({ item }) => (
+        <ListItem
+            leftAvatar={{ source: { uri: 'https://xrs-users-management.herokuapp.com/avatars/default.png' } }}
+            title={`${item.firstName} ${item.lastName}`}
+            subtitle={item.email}
+            onPress={() => this._onPressItem(item)}
+        />
+    )
+    saveChanges = () => {
+        console.log(this.state.user_email)
+        console.log(this.state.ADMINNFCID_CLIENT)
+        console.log('scanned')
+        this.setState({ modal_active: false, ADMINNFCID_CLIENT: null })
+    }
+
 
     render() {
         if (this.state.back) {
             return <Home />
         } else
             return (<>
+                <Modal testID={'modal'} isVisible={this.state.modal_active} animationIn='bounceInDown'>
+                    {this.state.ADMINNFCID_CLIENT !== null ?
+                        <View style={styles.content}>
+                            <Image
+                                style={styles.tinyLogo}
+                                source={{ uri: 'https://xrs-users-management.herokuapp.com/' + this.state.user_avatarpath }}
+                            />
+                            <Text style={styles.contentTitle}>{this.state.user_firstName}</Text>
+                            <Text style={styles.contentTitle} >{this.state.user_lastName}</Text>
+                            <Text style={styles.contentTitle}>{this.state.user_email}</Text>
+                            {/* <Text style={styles.contentTitle}>{this.state.user_avatarpath}</Text> */}
+                            <Text>{this.state.ADMINNFCID_CLIENT !== null ? 'TAG ID ' + this.state.ADMINNFCID_CLIENT : null}</Text>
+                            <Button testID={'close-button'} onPress={this.saveChanges} title="SAVE" />
+
+                        </View>
+                        :
+                        <View style={styles.content}>
+                            <Image
+                                style={styles.tinyLogo}
+                                source={{ uri: 'https://xrs-users-management.herokuapp.com/' + this.state.user_avatarpath }}
+                            />
+                            <Text style={styles.contentTitle}>{this.state.user_firstName}</Text>
+                            <Text style={styles.contentTitle} >{this.state.user_lastName}</Text>
+                            <Text style={styles.contentTitle}>{this.state.user_email}</Text>
+                            {/* <Text style={styles.contentTitle}>{this.state.user_avatarpath}</Text> */}
+                            <Text>{this.state.ADMINNFCID_CLIENT !== null ? this.state.ADMINNFCID_CLIENT : null}</Text>
+                            {/* <Button testID={'close-button'} onPress={this.scanNFCcard()} title="SCAN" /> */}
+                            <Image
+                                style={{ width: 200, height: 200 }}
+                                source={require('../assets/img/nfc-reading-motion.gif')} />
+
+                        </View>}
+                </Modal>
                 <View style={{ padding: 20 }}>
                     <Image
                         style={{ width: 50, height: 50 }}
                         source={require('../assets/img/logo.png')} />
                     <Text style={styles.title}>Asign Users Access Card</Text>
                 </View>
-                <View><Text>Hello</Text></View>
+                <View>
+                    <FlatList
+                        data={this.state.data}
+                        renderItem={this._handleItem}
+                        keyExtractor={item => item.email}
+                        ItemSeparatorComponent={this.separatorBoxes}
+                        ListHeaderComponent={this.renderHeader}
+
+                    /></View>
             </>
             );
     }

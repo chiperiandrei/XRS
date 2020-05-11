@@ -51,8 +51,8 @@ class App extends React.Component {
             created_by: '',
             email: '',
             ADMINNFCID_CLIENT: '',
-            valid_nfc: true,
-            valid_credintials: true,
+            valid_nfc: null,
+            valid_credintials: null,
             scannedTAG: false,
         };
         this.savedCompanyName = '';
