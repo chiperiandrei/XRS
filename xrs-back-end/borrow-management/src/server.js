@@ -1,20 +1,12 @@
 const express = require('express');
-const https = require('https');
 const fs = require('fs');
-const path = require('path');
 const app = express();
 const cors = require('cors');
-const mongose = require('mongoose');
 const morgan = require('morgan');
+const mongose = require('mongoose')
 const logfile = fs.createWriteStream('access.log', { flags: 'a' });
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
-
-//CERTIFICATES
-var options = {
-    key: fs.readFileSync(path.resolve('certificates/server.key')),
-    cert: fs.readFileSync(path.resolve('certificates/server.cert'))
-};
 
 
 //USE ROUTES
@@ -26,23 +18,13 @@ mongose.connect(process.env.DBCONNSTRINNG, { useNewUrlParser: true, useUnifiedTo
 });
 
 //MIDDLEWARE
-app.use(express.static('public'));
 app.use(express.json());
 app.use(morgan('combined', { stream: logfile }));
 app.use(cors());
 //MIDDLEWARE ROUTES
-
 app.use(process.env.BORROW_API_URL, crud_borrows);
 
 
-var httpsServer = https.createServer(options, app);
+app.get(process.env.BORROW_API_URL, (req, res) => res.send('Welcome to Borrow api'));
 
-// if (process.env.NODE_ENV !== 'production')
-//     httpsServer.listen(process.env.PORT, () => {
-//         console.log("Https server listing on port : " + process.env.PORT)
-//     });
-//
-
-app.get('/', (req, res) => res.send('Borrow microservice'));
-
-app.listen(process.env.PORT_BORROW, () => console.log(`Borrow management listening on port ${process.env.PORT_BORROW}!`))
+app.listen(process.env.PORT_BORROW, () => console.log(`File management listening on port ${process.env.PORT_BORROW}!`));

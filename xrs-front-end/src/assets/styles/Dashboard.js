@@ -7,14 +7,47 @@ grid-template-rows: 0.18fr 1fr;
 grid-column-gap: 12px;
 grid-row-gap: 6px;`;
 export const WelcomeLeftSide = styled.div`
+margin-top: 26%;
 grid-area: 1 / 1 / 3 / 2;
-background-color:red;
-height: 85vh;`;
+display:flex;
+flex-direction:column;
+align-items: center;
+& h1{
+    font-family:monospace;
+    font-size:xx-large;
+}
+& #avatar{
+    border-radius:50%;
+    height: 150px;
+    width: 150px;
+}
+& #no-borrows{
+    color: green;
+    font-size: x-large;
+}`;
 export const WelcomeCenterSide = styled.div`
+margin-top:20%;
 grid-area: 1 / 2 / 3 / 3;
-background-color:blue;
+font-family: monospace;
+& 
+#borrow-current{
+ background-color:'white'
+}
+& div form{
+    display:grid;
+    grid-template-columns: 1fr 2fr;
+}
+& button{
+    background-color:#45a1ff;
+}
+& span{
+    color:red;
+    font-weight: bold;
+    font-size: initial;
+}
 `;
 export const WelcomeRightSide = styled.div`
+margin-top:20%;
 grid-area: 1 / 3 / 3 / 4; 
 background-color:cyan;
 `;
@@ -55,7 +88,7 @@ grid-area: 4 / 2 / 5 / 5;
 height:18vh;
 font-family: cursive;
 `;
-export const Lately=styled.button`
+export const Lately = styled.button`
 background-color:#45a1ff;`;
-export const Submit=styled.button`
+export const Submit = styled.button`
 background-color:#45a1ff;`;

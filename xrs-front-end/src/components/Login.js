@@ -48,7 +48,6 @@ const Login = props => {
         }
         axios.post('http://localhost:5000/api/ums/login', data)
             .then(response => {
-                console.log(response.data)
                 dispatch(logInUser(response.data.token))
                 history.push("/dashboard")
             })

@@ -30,6 +30,7 @@ router.post('/login', async (req, res) => {
     if (!comparePassoword) return res.status(400).send("Wrong password");
     //create token for login
     const token = jwt.sign({
+        id:existsEmail._id,
         email: existsEmail.email,
         isOperator: existsEmail.isOperator,
         firstname: existsEmail.firstname,

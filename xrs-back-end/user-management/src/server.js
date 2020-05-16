@@ -7,6 +7,7 @@ const cors = require('cors');
 const mongose = require('mongoose');
 const morgan = require('morgan');
 const logfile = fs.createWriteStream('access.log', { flags: 'a' });
+const bodyParser = require('body-parser')
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -16,13 +17,14 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 //     cert: fs.readFileSync(path.resolve('certificates/server.cert'))
 // };
 
-
+app.use(bodyParser.urlencoded({ extended: true }))
 //USE ROUTES
 const authRoute = require('./routes/auth');
 const borrowRoute = require('./routes/borrowObject');
 const profileRoute = require('./routes/profile');
 const usersRoute = require('./routes/users');
 const asignNFCtags = require('./routes/assign_tags');
+const get_user_by_tag = require('./routes/get_user_by_tag');
 
 
 //CONNECT TO DATABASE
@@ -42,6 +44,8 @@ app.use(process.env.USER_API_URL + '/borrow', borrowRoute);
 app.use(process.env.USER_API_URL + '/profile', profileRoute);
 app.use(process.env.USER_API_URL + '/users', usersRoute);
 app.use(process.env.USER_API_URL + '/nfctags', asignNFCtags);
+app.use(process.env.USER_API_URL + '/getuserbytag', get_user_by_tag);
+
 
 
 
