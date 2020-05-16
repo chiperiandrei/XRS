@@ -1,60 +1,72 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert, Image, Button, StyleSheet, BackHandler } from 'react-native';
+import { View, Text, Alert, Image, StyleSheet, BackHandler, Vibration } from 'react-native';
 import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
-import axios from 'axios';
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import Home from './Home';
+import Axios from 'axios';
+import { SECRET_CODE, GET_USER_BY_TAG, RETURN_API } from "react-native-dotenv";
+
 
 const styles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: Colors.lighter,
-    },
-    engine: {
-        position: 'absolute',
-        right: 0,
-    },
-    body: {
-        backgroundColor: Colors.white,
-    },
     title: {
         color: 'dodgerblue',
         textAlign: 'center',
         fontSize: 30,
         paddingTop: '2%'
-    },
-    confirmReserve: {
-        backgroundColor: 'green',
-        height: '28%',
-        width: '80%',
-        left: '5%',
-        top: '70%'
-    },
-    textButton: {
-        fontSize: 25,
-        color: 'white',
-        left: '25%',
-        top: '13%'
-    },
-    confirmReturn: {
-        backgroundColor: 'black',
-        height: '28%',
-        width: '80%',
-        left: '5%',
-        top: '20%'
+    }, titleConfirmed: {
+        color: 'red',
+        textAlign: 'center',
+        fontSize: 30,
+        paddingTop: '2%'
     }
 });
-
 
 class Return extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: "",
-            DURATION: 100,
-            NFC_ID: "",
             back: false,
+            ADMINNFCID_CLIENT: null,
+            confirmed: false
         };
     }
+
+    // NFC AREA
+    scanNFCcard() {
+        const trigger = this.triggerNFC();
+
+        NfcManager.start();
+        NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+            this.setState({ ADMINNFCID_CLIENT: tag.id });
+            Vibration.vibrate(2);
+            NfcManager.unregisterTagEvent().catch(() => 0);
+            Axios.post(`${GET_USER_BY_TAG}${tag.id}`, {}, {
+                headers: {
+                    'token': `${SECRET_CODE}`
+                }
+            })
+                .then(response => {
+                    console.log(response.data)
+                    Axios.post(`${RETURN_API}${response.data.email}`, null, {
+                        headers: {
+                            'token': `${SECRET_CODE}`
+                        }
+                    })
+                        .then(res => {
+                            this.setState({ confirmed: true })
+                        })
+                        .catch(err => err.response.data)
+                })
+                .catch(err => console.log(err.response.data))
+        });
+    }
+    triggerNFC = async () => {
+        try {
+            await NfcManager.registerTagEvent();
+        } catch (e) {
+            console.warn('EXCEPTION', e);
+            NfcManager.unregisterTagEvent().catch(() => 0);
+        }
+    };
 
     backAction = () => {
         Alert.alert("Hold on!", "Are you sure you want to go back?", [
@@ -67,7 +79,9 @@ class Return extends React.Component {
         ]);
         return true;
     };
+
     componentDidMount() {
+        this.scanNFCcard();
         this.backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
             this.backAction
@@ -77,22 +91,31 @@ class Return extends React.Component {
 
     componentWillUnmount() {
         this.backHandler.remove();
+        NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
+        NfcManager.unregisterTagEvent().catch(() => 0);
     }
 
     render() {
+        console.log(this.state.ADMINNFCID_CLIENT)
         if (this.state.back) {
             return <Home />
         } else
             return (<>
-                <View style={{ padding: 20 }}>
-                    <Image
-                        style={{ width: 50, height: 50 }}
-                        source={require('../assets/img/logo.png')} />
-                    <Text style={styles.title}>XRS Return Object</Text>
-                </View>
-                <View><Text>Hello</Text></View>
+                {this.state.confirmed === false ?
+                    <View>
+                        <Text style={styles.title}>Scan your NFC CARD for return confirm</Text>
+                        <Image
+                            style={{ marginTop: 100 }}
+                            source={require('../assets/img/nfc-reading-motion.gif')} /></View> :
+                    <View>
+                        <Text style={styles.titleConfirmed}>Products returned!</Text>
+                        <Image
+                            style={{ marginTop: 100, height: 400, width: 400 }}
+                            source={require('../assets/img/return.gif')} /></View>}
+
             </>
             );
+
     }
 
 }

@@ -1,77 +1,22 @@
 import React from 'react';
-import { View, Text, ToastAndroid, Alert, Image, Button, StyleSheet, BackHandler, FlatList, ActivityIndicator, Vibration } from 'react-native';
+import { View, Text, Alert, Image, StyleSheet, BackHandler, Vibration } from 'react-native';
 import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
-import axios from 'axios';
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import Home from './Home';
 import Axios from 'axios';
-import { GET_USERS, SECRET_CODE, ADD_NFC_TAG, GET_USER_BY_TAG } from "react-native-dotenv";
-import { ListItem, SearchBar } from 'react-native-elements';
-import Modal from 'react-native-modal';
-import FlashMessage from "react-native-flash-message";
+import { SECRET_CODE, GET_USER_BY_TAG, CONFIRM_API } from "react-native-dotenv";
+
 
 const styles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: Colors.lighter,
-    },
-    engine: {
-        position: 'absolute',
-        right: 0,
-    },
-    body: {
-        backgroundColor: Colors.white,
-    },
     title: {
         color: 'dodgerblue',
         textAlign: 'center',
         fontSize: 30,
         paddingTop: '2%'
-    },
-    confirmReserve: {
-        backgroundColor: 'green',
-        height: '28%',
-        width: '80%',
-        left: '5%',
-        top: '70%'
-    },
-    textButton: {
-        fontSize: 25,
-        color: 'white',
-        left: '25%',
-        top: '13%'
-    },
-    confirmReturn: {
-        backgroundColor: 'black',
-        height: '28%',
-        width: '80%',
-        left: '5%',
-        top: '20%'
-    },
-    content: {
-        backgroundColor: 'white',
-        padding: 22,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-    },
-    contentTitle: {
-        fontSize: 20,
-        marginBottom: 12,
-    },
-    tinyLogo: {
-        width: 150,
-        height: 150,
-        borderRadius: 50,
-    },
-    flashMessage: {
-        position: 'absolute',
-        backgroundColor: 'green',
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 40,
-        top: 0
+    }, titleConfirmed: {
+        color: 'green',
+        textAlign: 'center',
+        fontSize: 30,
+        paddingTop: '2%'
     }
 });
 
@@ -79,23 +24,10 @@ class Confirm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: "",
-            DURATION: 100,
-            NFC_ID: "",
             back: false,
-            loading: false,
-            data: [],
-            error: null,
-            user_lastName: '',
-            user_firstName: '',
-            user_email: '',
-            user_avatarpath: '',
-            modal_active: false,
             ADMINNFCID_CLIENT: null,
-            confirm_message: null,
-            flashMessage: false
+            confirmed: false
         };
-        this.arrayholder = [];
     }
 
     // NFC AREA
@@ -113,7 +45,16 @@ class Confirm extends React.Component {
                 }
             })
                 .then(response => {
-                    Axios.post()
+                    console.log(response.data)
+                    Axios.post(`${CONFIRM_API}${response.data.email}`, null, {
+                        headers: {
+                            'token': `${SECRET_CODE}`
+                        }
+                    })
+                        .then(res => {
+                            this.setState({ confirmed: true })
+                        })
+                        .catch(err => err.response.data)
                 })
                 .catch(err => console.log(err.response.data))
         });
@@ -160,13 +101,21 @@ class Confirm extends React.Component {
             return <Home />
         } else
             return (<>
-                <View>
-                    <Text style={styles.title}>Scan your NFC CARD for borrow confirm</Text>
-                    <Image
-                        style={{ marginTop: 100 }}
-                        source={require('../assets/img/nfc-reading-motion.gif')} /></View>
+                {this.state.confirmed === false ?
+                    <View>
+                        <Text style={styles.title}>Scan your NFC CARD for borrow confirm</Text>
+                        <Image
+                            style={{ marginTop: 100 }}
+                            source={require('../assets/img/nfc-reading-motion.gif')} /></View> :
+                    <View>
+                        <Text style={styles.titleConfirmed}>Products confirmed!</Text>
+                        <Image
+                            style={{ marginTop: 100, height: 400, width: 400 }}
+                            source={require('../assets/img/confirmed.gif')} /></View>}
+
             </>
             );
+
     }
 
 }
