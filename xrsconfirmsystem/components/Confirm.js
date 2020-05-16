@@ -113,10 +113,6 @@ class Confirm extends React.Component {
                 }
             })
                 .then(response => {
-                    const data_borrow={
-                        person_id:response.data.id,
-                        
-                    }
                     Axios.post()
                 })
                 .catch(err => console.log(err.response.data))

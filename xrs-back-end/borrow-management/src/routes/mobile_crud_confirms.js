@@ -3,7 +3,7 @@ const Borrow = require('../models/Borrow');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const verifyToken = require('./verifyToken');
+const verifyToken = require('./verify_mobile_app');
 
 
 router.post('/:id', verifyToken, async (req, res) => {
