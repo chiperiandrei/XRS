@@ -25,13 +25,21 @@ const borrowModel = new mongoose.Schema({
     },
     status_at_borrow: {
         type: String,
-        enum : ['Not Damaged','Damaged'],
+        enum: ['Not Damaged', 'Damaged'],
         default: 'Not Damaged'
     },
     status_at_return: {
         type: String,
-        enum : ['Not Damaged','Damaged'],
+        enum: ['Not Damaged', 'Damaged'],
         default: 'Not Damaged'
+    },
+    date_taken: {
+        type: Date,
+        default: null
+    },
+    date_given: {
+        type: Date,
+        default: null
     }
 
 });

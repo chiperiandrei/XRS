@@ -36,7 +36,7 @@ const Register = props => {
     }
     const signUpHandler = e => {
 
-        axios.post('http://localhost:5000/api/ums/register', {
+        axios.post('https://xrs-users-management.herokuapp.com/api/ums/register', {
             firstname: fname,
             lastname: lname,
             email: email,

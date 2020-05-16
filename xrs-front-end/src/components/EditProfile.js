@@ -40,7 +40,7 @@ const EditProfile = props => {
         if (newPassword !== '') {
             newObj.password = newPassword
         }
-        Axios.post('http://localhost:5000/api/ums/users/' + props.userInfo.id, newObj, {
+        Axios.post('https://xrs-users-management.herokuapp.com/api/ums/users/' + props.userInfo.id, newObj, {
             headers: {
                 "auth-token": token.substr(1, token.length - 2)
             }

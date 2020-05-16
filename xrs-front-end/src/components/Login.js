@@ -46,7 +46,7 @@ const Login = props => {
             email: email,
             password: password
         }
-        axios.post('http://localhost:5000/api/ums/login', data)
+        axios.post('https://xrs-users-management.herokuapp.com/api/ums/login', data)
             .then(response => {
                 dispatch(logInUser(response.data.token))
                 history.push("/dashboard")

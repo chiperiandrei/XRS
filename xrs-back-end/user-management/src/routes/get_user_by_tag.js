@@ -4,6 +4,6 @@ const verifyToken = require('./verify_mobile_app');
 router.post('/:nfctag', verifyToken, async (req, res) => {
     const NFC = req.params.nfctag;
     const  user = await User.findOne({nfcToken:NFC})
-    res.send({email:user._id})
+    res.send({id:user._id})
 });
 module.exports = router;

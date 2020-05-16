@@ -211,7 +211,7 @@ class AddUsersAccessCard extends React.Component {
     })
     _handleItem = ({ item }) => (
         <ListItem
-            leftAvatar={{ source: { uri: 'https://xrs-users-management.herokuapp.com/avatars/default.png' } }}
+            leftAvatar={{ source: { uri: 'https://xrs-users-management.herokuapp.com/'+item.avatarPath } }}
             title={`${item.firstName} ${item.lastName}`}
             subtitle={item.email}
             onPress={() => this._onPressItem(item)}

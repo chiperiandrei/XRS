@@ -44,7 +44,7 @@ const WelcomeComponent = props => {
         const splitify = userInfo.id
         const formData = new FormData();
         formData.append('avatar', avatar);
-        await Axios.post('http://localhost:5000/api/ums/profile/avatar/' + splitify, formData, {
+        await Axios.post('https://xrs-users-management.herokuapp.com/api/ums/profile/avatar/' + splitify, formData, {
             headers: {
                 "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2),
                 'Content-Type': 'multipart/form-data'
@@ -63,7 +63,7 @@ const WelcomeComponent = props => {
     }
     const handleDefaultAvatar = async () => {
 
-        await Axios.post('http://localhost:5000/api/ums/profile/default_avatar', {}, {
+        await Axios.post('https://xrs-users-management.herokuapp.com/api/ums/profile/default_avatar', {}, {
             headers: {
                 "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2)
             }
@@ -82,7 +82,7 @@ const WelcomeComponent = props => {
         return <WelcomeContainer>
             <WelcomeLeftSide>
                 <h1>Welcome, {userInfo.firstname} {userInfo.lastname}</h1>
-                <img src={`http://localhost:5000/${userInfo.photoPath}`} alt="avatar" id="avatar" />
+                <img src={`https://xrs-users-management.herokuapp.com/${userInfo.photoPath}`} alt="avatar" id="avatar" />
                 {current_borrow !== null ? <h1 id="no-borrows">You have {current_borrow.length} borrows</h1> : null}
 
 
