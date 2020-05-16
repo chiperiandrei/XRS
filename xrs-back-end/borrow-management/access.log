@@ -899,3 +899,4 @@
 ::1 - - [16/May/2020:17:41:26 +0000] "POST /api/borrows/confirm/5ea1b26c313cd025201ac831 HTTP/1.1" 200 39 "-" "PostmanRuntime/7.24.1"
 ::1 - - [16/May/2020:17:41:29 +0000] "POST /api/borrows/confirm/5ea1b26c313cd025201ac831 HTTP/1.1" 200 39 "-" "PostmanRuntime/7.24.1"
 ::1 - - [16/May/2020:17:41:32 +0000] "POST /api/borrows/return/5ea1b26c313cd025201ac831 HTTP/1.1" 401 13 "-" "PostmanRuntime/7.24.1"
+::1 - - [16/May/2020:17:41:48 +0000] "POST /api/borrows/return/5ea1b26c313cd025201ac831 HTTP/1.1" 200 22 "-" "PostmanRuntime/7.24.1"

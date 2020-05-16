@@ -31,4 +31,4 @@ app.use(process.env.BORROW_API_URL + '/return', borrow_return);
 
 app.get(process.env.BORROW_API_URL, (req, res) => res.send('Welcome to Borrow api'));
 
-app.listen(process.env.PORT_BORROW, () => console.log(`Borrow management listening on port ${process.env.PORT_BORROW}!`));
+app.listen(process.env.PORT, () => console.log(`Borrow management listening on port ${process.env.PORT}!`));
