@@ -25,10 +25,12 @@ const ProductEdit = props => {
                 .then(function (response) {
                     let products = []
                     products = response.data.map(product => {
+                        const myDate = new Date(product.added)
+                        var displayDate = myDate.getMonth() + '/' + myDate.getDate() + '/' + myDate.getFullYear() + ' ' + myDate.getHours() + ':' + myDate.getMinutes();
                         return {
                             name: product.name,
                             category: product.category,
-                            dateadded: product.added,
+                            dateadded: displayDate,
                             id: product._id
                         }
                     }
@@ -59,7 +61,7 @@ const ProductEdit = props => {
                     title: 'Image', field: 'image', render: rowData => (
                         <img
                             style={{ height: 36, borderRadius: '50%' }}
-                            src='https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg'
+                            src='http://localhost:4001/uploads/5ec3733f940ea119d4074b6e/-res_925a89f932555b908b7cc509b8f7e4f1_450x450_lg0k.jpg'
                         />
                     )
                 },

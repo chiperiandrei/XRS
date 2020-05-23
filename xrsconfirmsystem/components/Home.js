@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, AsyncStorage, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, AsyncStorage, Image, StyleSheet, Text, TouchableOpacity, View, BackHandler } from 'react-native';
 import axios from 'axios';
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Return from "./Return";
@@ -72,8 +72,27 @@ class Home extends React.Component {
             showEditUsers: false,
         };
     }
+    backAction = () => {
+        Alert.alert(
+            'Exit App',
+            'Exiting the application?', [{
+                text: 'Cancel',
+                style: 'cancel'
+            }, {
+                text: 'OK',
+                onPress: () => BackHandler.exitApp()
+            },], {
+            cancelable: false
+        }
+        )
+        return true;
+    };
 
     componentDidMount() {
+        this.backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            this.backAction
+        );
         AsyncStorage.getItem("company_name").then((value) => {
             this.setState({ "company_name": value });
         })
@@ -89,6 +108,8 @@ class Home extends React.Component {
     }
 
     componentWillUnmount() {
+        this.backHandler.remove();
+
     }
 
     render() {

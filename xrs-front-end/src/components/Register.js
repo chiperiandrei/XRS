@@ -15,6 +15,8 @@ const Register = props => {
     const [password, setPassword] = useState('');
     const [fname, setFName] = useState('');
     const [lname, setLName] = useState('');
+    const [nfcid, setNfcid] = useState('')
+    const [message, setMessage] = useState('');
 
     const handlerEmailInput = e => {
         setEmail(e.target.value)
@@ -31,16 +33,25 @@ const Register = props => {
 
         setLName(e.target.value)
     };
+    const handleCardAccess = e => {
+        setNfcid(e.target.value)
+        axios.get('http://localhost:5000/api/ums/tags/' + e.target.value)
+            .then(response => {
+                setMessage('')
+            })
+            .catch(err => setMessage('NOT AVAILABLE'))
+    }
     const handleAfterSubmit = () => {
         history.push("/login")
     }
     const signUpHandler = e => {
 
-        axios.post('https://xrs-users-management.herokuapp.com/api/ums/register', {
+        axios.post('http://localhost:5000/api/ums/register', {
             firstname: fname,
             lastname: lname,
             email: email,
-            password: password
+            password: password,
+            nfcToken: nfcid
         }).then(response => {
             toast.success("Account successfully created!")
             // eslint-disable-next-line
@@ -79,6 +90,9 @@ const Register = props => {
 
         <label htmlFor="psw"><b>Password</b></label>
         <input type="password" onChange={handlerPasswordInput} placeholder="Password" name="psw" required />
+        <label htmlFor="card"><b>Card</b></label>
+        <input type="text" onChange={handleCardAccess} placeholder="Card" name="card" required />{message}
+
         <RegisterBTN type='submit' onClick={signUpHandler}>Register</RegisterBTN>
         <ToastContainer autoClose={2000} />
 

@@ -4,26 +4,33 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('./verifyToken');
 const fs = require('fs')
+const path = require('path')
 let multer = require("multer")
+const moveFile = require('move-file');
 
 const DIR = './public/uploads';
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const { id } = req.params;
-        const dir = `./public/uploads/${id}`
-        fs.exists(dir, exist => {
-            if (!exist) {
-                return fs.mkdir(dir, error => cb(error, dir))
-            }
-            return cb(null, dir)
-        })
+        const dir = `./public/uploads/temp/`;
+        cb(null, dir)
     },
     filename: (req, file, cb) => {
-        const fileName = file.originalname.toLowerCase().split(' ').join('-');
-        cb(null, '-' + fileName)
+        cb(null, req.params.id + '_' + file.originalname)
     }
 });
+
+const moveFilesTo = async (id, newPath) => {
+    fs.readdir('./public/uploads/temp/', (err, files) => {
+        if (err)
+            throw err;
+        files.map(file => {
+            if (file.includes(id) === true) {
+                moveFile('./public/uploads/temp/' + file, `./public/uploads/${id}/` + file)
+            }
+        })
+    })
+
+}
 
 var uploadImages = multer({
     storage: storage,
@@ -39,13 +46,8 @@ var uploadImages = multer({
 
 router.post('/upload/:id', verifyToken, uploadImages.array('imgCollection'), (req, res) => {
     console.log(req.params)
-    const reqFiles = [];
-    const url = req.protocol + '://' + req.get('host')
-    for (var i = 0; i < req.files.length; i++) {
-        reqFiles.push(url + '/public/' + req.files[i].filename)
-    }
+    moveFilesTo(req.params.id, `uploads/${req.params.id}`)
     res.send(true)
-    console.log(req.files);
 
 });
 

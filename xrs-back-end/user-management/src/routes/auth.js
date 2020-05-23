@@ -9,10 +9,11 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hPassword = await bcrypt.hash(req.body.password, salt);
     const user = new User({
-        firstname:req.body.firstname,
+        firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
-        password: hPassword
+        password: hPassword,
+        nfcToken: req.body.nfcToken
     });
     const existsEmail = await User.findOne({ email: req.body.email });
     if (existsEmail) return res.status(400).send('Users exists');
@@ -30,7 +31,7 @@ router.post('/login', async (req, res) => {
     if (!comparePassoword) return res.status(400).send("Wrong password");
     //create token for login
     const token = jwt.sign({
-        id:existsEmail._id,
+        id: existsEmail._id,
         email: existsEmail.email,
         isOperator: existsEmail.isOperator,
         firstname: existsEmail.firstname,
