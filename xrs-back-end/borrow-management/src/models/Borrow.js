@@ -21,7 +21,7 @@ const borrowModel = new mongoose.Schema({
     },
     returned: {
         type: Boolean,
-        default: true
+        default: false
     },
     status_at_borrow: {
         type: String,
@@ -40,6 +40,10 @@ const borrowModel = new mongoose.Schema({
     date_given: {
         type: Date,
         default: null
+    },
+    i_will_pick: {
+        type: Boolean,
+        default: false
     }
 
 });

@@ -49,7 +49,11 @@ font-family: monospace;
 export const WelcomeRightSide = styled.div`
 margin-top:20%;
 grid-area: 1 / 3 / 3 / 4; 
-background-color:cyan;
+font-family: cursive;
+font-size: x-large;
+& #small-image{
+    height: 60px;
+}
 `;
 
 export const ImageSetupGrid = styled.div`

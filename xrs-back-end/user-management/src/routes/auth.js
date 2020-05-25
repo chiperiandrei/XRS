@@ -17,6 +17,8 @@ router.post('/register', async (req, res) => {
     });
     const existsEmail = await User.findOne({ email: req.body.email });
     if (existsEmail) return res.status(400).send('Users exists');
+    const existsNFCTAG = await User.findOne({ nfcToken: req.body.nfcToken });
+    if (existsNFCTAG) return res.status(400).send('NFC TAG has been taken');
     try {
         const usersave = await user.save();
         res.status(200).send({ user: user._id });

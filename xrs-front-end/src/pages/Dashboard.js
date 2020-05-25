@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../components/Header";
+import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 import WelcomeComponent from '../components/Welcome';
 
-import { useSelector } from "react-redux";
 
 const Dashboard = props => {
     const company_info = useSelector(state => state.company_info)

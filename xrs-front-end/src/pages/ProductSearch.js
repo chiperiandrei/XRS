@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
-import '../assets/css/NotFound.css'
-import Footer from "../components/Footer";
-import Product from "../components/Product";
-import { ContainerProducts } from '../assets/styles/ProductSearchPage';
-import { useSelector } from "react-redux";
 import Axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import '../assets/css/NotFound.css';
+import { ContainerProducts } from '../assets/styles/ProductSearchPage';
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import Product from "../components/Product";
 
 const ProductSearch = props => {
     const company_info = useSelector(state => state.company_info);
     const token = localStorage.getItem("user_info");
     const [select, setSelect] = useState('all');
     const [allProducts, setAllProducts] = useState(null);
+    const userInfo = useSelector(state => state.user_information)
     const getAllproducts = () => {
         return Axios.get('http://localhost:4001/api/products', {
             headers: {
@@ -26,6 +27,23 @@ const ProductSearch = props => {
             }
         })
     }
+    const info_reserved = () => {
+        if (allProducts && allProducts.reserved) {
+            allProducts.reserved.forEach((product) => {
+
+                Axios.get('http://localhost:4001/api/products/' + product.product, {
+                    headers: {
+                        "auth-token": token.substr(1, token.length - 2)
+                    }
+                })
+                    .then(res => {
+                        console.log(res.data)
+                    })
+                    .catch(err => console.log(err.response.data))
+            })
+
+        }
+    }
 
     useEffect(() => {
         Axios.all([getAllproducts(), getReserved()])
@@ -33,46 +51,31 @@ const ProductSearch = props => {
                 setAllProducts({ products: response[0].data, reserved: response[1].data })
             })
             .catch(err => console.log(err))
+
+
     }, [select])
 
-    const data = {
-        name: "Cablu retea",
-        specs: [
-            { property: "Lungime ", value: "30m" },
-            { property: "An fabricatie ", value: Date(Date.now()).toString() },
-            { property: "Tip ", value: "retea" },
-        ],
-        avalaible: true,
-        image_url: '../assets/img/cablu_retea.jpg'
-    }
-    const datano = {
-        name: "Monitor LOGITEQ",
-        specs: [
-            { property: "Frecventa ", value: "144hz" },
-            { property: "salut ", value: "plm" },
 
-        ],
-        avalaible: false,
-        image_url: '../assets/img/monitor.jpg',
-        date_until_reserved: Date(Date.now()).toString()
-    }
-    const handleSelect = e => {
-        setSelect(e.target.value)
+
+    function removeElement(array, elem) {
+        var index = array.indexOf(elem);
+        if (index > -1) {
+            array.splice(index, 1);
+        }
+        console.log(array)
     }
     return (
         <React.Fragment>
             <Header companyname={company_info !== null ? company_info.company_name : "X"} />
             <ContainerProducts>
-                {/* <select onChange={event => handleSelect(event)} defaultValue='all'>
-                    <option value="all">All</option>
-                    <option value="avalaible">Avalaible</option>
-                    <option value="reserved">Reserved</option>
-                </select>
-                {/* <input id="search" placeholder={select}></input> */}
-
-
-                {/* <Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} /><Product infos={data} /><Product infos={datano} />  */}
-                {allProducts !== null && allProducts.products !== null ? allProducts.products.map(product => <Product infos={product} reserved="false" />) : ''}
+                {allProducts && allProducts.reserved ? allProducts.reserved.forEach(element => {
+                    allProducts.products.forEach(product => {
+                        if (element.product === product._id) {
+                            removeElement(allProducts.products, product)
+                        }
+                    });
+                }) : null}
+                {allProducts !== null && allProducts.products !== null ? allProducts.products.map(product => <Product infos={product} user={userInfo} />) : ''}
             </ContainerProducts>
             <Footer datecreated={company_info !== null ? company_info.date_created : "2020"} authorname={company_info !== null ? `${company_info.operatorFname} ${company_info.operatorLname}` : "Andrei Chiperi"} />
         </React.Fragment>

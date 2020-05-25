@@ -8,10 +8,13 @@ router.post('/', verifyToken, async (req, res) => {
     User.find((err, doc) => {
         const users = doc.map(user => {
             return {
+
                 firstName: user.firstname,
                 lastName: user.lastname,
                 email: user.email,
-                avatarPath: user.avatarPath
+                joined: user.joined,
+                avatar: user.avatarPath,
+                nfc_tag: user.nfcToken
             }
         })
         res.status(200).send(users)
@@ -52,9 +55,25 @@ router.post('/:id', verifyTokenJWT, async (req, res) => {
     else {
         res.send('Something went wrong ❌')
     }
-
-
 });
+router.get('/', verifyTokenJWT, async (req, res) => {
+    await User.find((err, users) => {
+        const users_accounts = users.map(user => {
+            return {
+                firstName: user.firstname,
+                lastName: user.lastname,
+                email: user.email,
+                joined: user.joined,
+                confirmed_account: user.confirmed_account,
+                avatar: user.avatarPath,
+                nfc_tag: user.nfcToken
+            }
+        })
+        if (err)
+            res.send(err)
+        res.send(users_accounts)
+    })
+})
 
 
 module.exports = router;

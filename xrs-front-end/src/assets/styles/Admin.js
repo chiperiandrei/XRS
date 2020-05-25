@@ -37,6 +37,11 @@ grid-area: 1 / 1 / 6 / 2;
             background-color:#45a1ff;
             border-color: black;
         }
+        & #confirm{
+        background-color:green;
+        color:white;
+        border-color: black;
+    }
     }
 `;
 export const AddComponent = styled.div`

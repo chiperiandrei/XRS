@@ -1,9 +1,8 @@
 import React from "react";
-import '../assets/css/Header.css'
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from '../actions/userActions';
-import { isLogged } from '../utils';
+import '../assets/css/Header.css';
 const Header = props => {
     const url = window.location.pathname;
     const userData = useSelector(state => state.user_information);

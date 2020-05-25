@@ -1,13 +1,12 @@
-import React, { useState, Fragment, useEffect } from "react";
-import CreatableSelect from 'react-select/creatable';
 import Axios from "axios";
-
-
-
+import React, { Fragment, useEffect, useState } from "react";
+import CreatableSelect from 'react-select/creatable';
 //Notification section
-import { ToastContainer, ToastType } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+
+
+
 
 const ProductAdd = props => {
     const [inputValues, setInputValues] = useState([
@@ -15,7 +14,6 @@ const ProductAdd = props => {
     ])
     const [productName, setProductname] = useState('');
     const [category, setCategory] = useState(null);
-    const [incomingid, setIncomingid] = useState('');
     const token = localStorage.getItem("user_info");
     const [uploadData, setUpload] = useState(null);
     const [options, setOptions] = useState(null);
@@ -97,10 +95,6 @@ const ProductAdd = props => {
             }
         }).then(res => {
 
-            for (var value of uploadData.values()) {
-                console.log(value);
-            }
-
             Axios.post(`http://localhost:4001/api/products/upload/${res.data.product}`, uploadData, {
                 headers: {
                     "auth-token": token.substr(1, token.length - 2),
@@ -108,8 +102,7 @@ const ProductAdd = props => {
                 }
             })
                 .then(res => {
-                    console.log(res)
-                    toast.success("Files uploaded successfully!")
+                    toast.success("Product added sucessfully!")
                 })
                 .catch(err => toast.error(err.response.data))
         })

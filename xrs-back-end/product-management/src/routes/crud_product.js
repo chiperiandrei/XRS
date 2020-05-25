@@ -28,6 +28,13 @@ const moveFilesTo = async (id, newPath) => {
                 moveFile('./public/uploads/temp/' + file, `./public/uploads/${id}/` + file)
             }
         })
+        const arrayImages = files.map(file => 'uploads/' + id + '/' + file)
+        Product.findByIdAndUpdate(id, { images: arrayImages }, { new: true }, (err, doc) => {
+            if (err) {
+                throw err
+            }
+            console.log(doc)
+        })
     })
 
 }
@@ -46,6 +53,7 @@ var uploadImages = multer({
 
 router.post('/upload/:id', verifyToken, uploadImages.array('imgCollection'), (req, res) => {
     console.log(req.params)
+
     moveFilesTo(req.params.id, `uploads/${req.params.id}`)
     res.send(true)
 

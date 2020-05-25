@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import SetUp from '../components/SetUp/SetUp'
 import axios from 'axios';
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { saveCompanyInfo } from "../actions/companyInfoActions";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import SetUp from '../components/SetUp/SetUp';
 
 const Home = props => {
     const dispatch = useDispatch();

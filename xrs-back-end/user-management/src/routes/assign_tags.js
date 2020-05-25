@@ -13,4 +13,10 @@ router.post('/:email', verifyToken, async (req, res) => {
     }
 });
 
+router.get('/:nfctag', async (req, res) => {
+    const existsToken = await User.findOne({ nfcToken: req.params.nfctag });
+    if (existsToken) return res.status(400).send('Not avalaible exists');
+    res.send(true)
+});
+
 module.exports = router;

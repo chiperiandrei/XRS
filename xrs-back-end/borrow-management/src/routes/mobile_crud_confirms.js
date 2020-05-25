@@ -7,11 +7,11 @@ const verifyToken = require('./verify_mobile_app');
 
 
 router.post('/:id', verifyToken, async (req, res) => {
-    const doc = await Borrow.updateMany({ person_id: req.params.id, returned: true, date_taken: null }, { returned: false, date_taken: Date.now() }, (err, raw) => {
-        if (err)
-            res.status(404).send("Not found products")
-        else {
-            res.send("All products confirmed. Ready to take!!")
+    Borrow.updateMany({ 'person_id': req.params.id, 'i_will_pick': 'true', 'date_taken': null }, { date_taken: Date.now(), "i_will_take": false }, (err, raw) => {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(raw)
         }
     })
 });

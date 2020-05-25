@@ -45,7 +45,7 @@ class Confirm extends React.Component {
                 }
             })
                 .then(response => {
-                    console.log(response.data)
+                    console.log(response.data.email)
                     Axios.post(`${CONFIRM_API}${response.data.email}`, null, {
                         headers: {
                             'token': `${SECRET_CODE}`

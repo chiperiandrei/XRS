@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { WelcomeContainer, WelcomeRightSide, WelcomeLeftSide, TitleImageEvent, BoxLeft, BoxRight, BoxCenter, ImageSetupGrid, Lately, Submit, WelcomeCenterSide } from "../assets/styles/Dashboard";
-import EditProfile from "./EditProfile";
-import BorrowsHistory from "./BorrowsHistory";
-import { useSelector, useDispatch } from "react-redux";
 import Axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { updateToken } from "../actions/userActions";
+import { BoxCenter, BoxLeft, BoxRight, ImageSetupGrid, Lately, Submit, TitleImageEvent, WelcomeCenterSide, WelcomeContainer, WelcomeLeftSide, WelcomeRightSide } from "../assets/styles/Dashboard";
+import BorrowsHistory from "./BorrowsHistory";
+import EditProfile from "./EditProfile";
+import { addBorrow ,resetBorrow} from "../actions/borrowActions";
 const WelcomeComponent = props => {
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.user_information)
-    const [ok, setOk] = useState(false);
     const [avatar, setAvatar] = useState(null);
     const [current_borrow, setCurrent_borrow] = useState([])
-    let nr_borrows = 0;
-    let productcs = []
     useEffect(() => {
-        console.log(current_borrow)
-        console.log(userInfo)
         if (userInfo)
             Axios.get('http://localhost:4002/api/borrows/' + userInfo.id, {
                 headers: {
@@ -23,14 +19,15 @@ const WelcomeComponent = props => {
                 }
             }).then(res => {
                 setCurrent_borrow(res.data)
-
+                dispatch(resetBorrow())
                 res.data.map(product => {
                     Axios.get('http://localhost:4001/api/products/' + product.product, {
                         headers: {
                             "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2),
                         }
                     }).then(res => {
-                        productcs.push(res.data)
+                        console.log(res.data)
+                        dispatch(addBorrow(res.data))
                     })
                         .catch(err => console.log(err))
                 })
@@ -55,7 +52,6 @@ const WelcomeComponent = props => {
                 const token = JSON.stringify(response.data.token)
                 localStorage.setItem("user_info", token)
                 dispatch(updateToken(response.data.token))
-                setOk(true)
             })
             .catch((error) => {
                 console.log(error.response);

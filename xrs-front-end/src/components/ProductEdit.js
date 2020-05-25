@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
 import Axios from 'axios';
 import MaterialTable from 'material-table';
-
-
-
+import React, { useEffect, useState } from "react";
 //Notification section
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+
+
+
 
 
 const ProductEdit = props => {
@@ -25,16 +24,19 @@ const ProductEdit = props => {
                 .then(function (response) {
                     let products = []
                     products = response.data.map(product => {
+                        console.log(product)
                         const myDate = new Date(product.added)
                         var displayDate = myDate.getMonth() + '/' + myDate.getDate() + '/' + myDate.getFullYear() + ' ' + myDate.getHours() + ':' + myDate.getMinutes();
                         return {
                             name: product.name,
                             category: product.category,
                             dateadded: displayDate,
-                            id: product._id
+                            id: product._id,
+                            image: 'http://localhost:4001/' + product.images[0]
                         }
                     }
                     )
+
                     setAll(products.length)
                     resolve({
                         data: products,
@@ -59,11 +61,12 @@ const ProductEdit = props => {
             columns={[
                 {
                     title: 'Image', field: 'image', render: rowData => (
-                        <img
+                        <img src={rowData.image}
                             style={{ height: 36, borderRadius: '50%' }}
-                            src='http://localhost:4001/uploads/5ec3733f940ea119d4074b6e/-res_925a89f932555b908b7cc509b8f7e4f1_450x450_lg0k.jpg'
+                            alt="another"
+
                         />
-                    )
+                    ), editable: 'never'
                 },
                 { title: 'Name', field: 'name' },
                 { title: 'Category', field: 'category' },
@@ -75,20 +78,19 @@ const ProductEdit = props => {
                 onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
-                            {
-                                Axios.put(`http://localhost:4001/api/products/${oldData.id}`, newData, {
-                                    headers: {
-                                        "auth-token": token.substr(1, token.length - 2)
-                                    }
+                            Axios.put(`http://localhost:4001/api/products/${oldData.id}`, newData, {
+                                headers: {
+                                    "auth-token": token.substr(1, token.length - 2)
+                                }
+                            })
+                                .then(response => {
+                                    setChanged(!changed)
+                                    toast.success(response.data.message)
                                 })
-                                    .then(response => {
-                                        setChanged(!changed)
-                                        toast.success(response.data.message)
-                                    })
-                                    .catch(err => toast.error(err.response.data)
-                                    )
+                                .catch(err => toast.error(err.response.data)
+                                )
 
-                            }
+
                             resolve()
                         }, 1000)
                     }),

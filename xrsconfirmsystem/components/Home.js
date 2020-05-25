@@ -6,6 +6,7 @@ import Return from "./Return";
 import { Button } from 'react-native-elements';
 import Confirm from "./Confirm";
 import AddUsersAccessCard from "./AddUsersAccessCard";
+import AddCard from "./AddCards";
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
         height: '28%',
         width: '80%',
         left: '5%',
-        top: '70%'
+        top: '30%'
     },
     textButton: {
         fontSize: 25,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     container: {
         display: "flex",
         flexDirection: "column",
-        marginTop: 80
+        marginTop: 20
     },
 
     buttonAsignNFCID: {
@@ -70,6 +71,7 @@ class Home extends React.Component {
             showReturn: false,
             showConfirm: false,
             showEditUsers: false,
+            addCards: false,
         };
     }
     backAction = () => {
@@ -109,7 +111,6 @@ class Home extends React.Component {
 
     componentWillUnmount() {
         this.backHandler.remove();
-
     }
 
     render() {
@@ -124,42 +125,52 @@ class Home extends React.Component {
                 if (this.state.showEditUsers) {
                     return <AddUsersAccessCard />
                 } else
-                    return (<>
-                        <View style={{ padding: 20 }}>
-                            <Image
-                                style={{ width: 50, height: 50 }}
-                                source={require('../assets/img/logo.png')} />
-                            <Text style={styles.title}>{this.state.company_name} Objects Management</Text>
-                            <Text style={styles.title}>Hello, {this.state.created_by}</Text>
-                        </View>
+                    if (this.state.addCards) {
+                        return <AddCard />
+                    } else
+                        return (<>
+                            <View style={{ padding: 20 }}>
+                                <Image
+                                    style={{ width: 50, height: 50 }}
+                                    source={require('../assets/img/logo.png')} />
+                                <Text style={styles.title}>{this.state.company_name} Objects Management</Text>
+                                <Text style={styles.title}>Hello, {this.state.created_by}</Text>
+                            </View>
 
 
-                        <View style={styles.container}>
-                            <Button
-                                buttonStyle={styles.buttonReserve}
-                                icon={{ name: 'check' }}
-                                title='Confirm Reserve'
-                                onPress={() => {
-                                    this.setState({ showConfirm: true });
-                                }} />
-                            <Button
-                                buttonStyle={styles.buttonReturn}
-                                icon={{ name: 'check', type: 'font-awesome' }}
-                                title='Confirm Return'
-                                onPress={() => {
-                                    this.setState({ showReturn: true });
-                                }} />
-                            <Button
-                                buttonStyle={styles.buttonAsignNFCID}
-                                icon={{ name: 'id-card', type: 'font-awesome' }}
-                                title='Asign Access Card for Users'
-                                onPress={() => {
-                                    this.setState({ showEditUsers: true });
-                                }} />
-                        </View>
+                            <View style={styles.container}>
+                                <Button
+                                    buttonStyle={styles.buttonReserve}
+                                    icon={{ name: 'check' }}
+                                    title='Confirm Reserve'
+                                    onPress={() => {
+                                        this.setState({ showConfirm: true });
+                                    }} />
+                                <Button
+                                    buttonStyle={styles.buttonReturn}
+                                    icon={{ name: 'check', type: 'font-awesome' }}
+                                    title='Confirm Return'
+                                    onPress={() => {
+                                        this.setState({ showReturn: true });
+                                    }} />
+                                {/* <Button
+                                    buttonStyle={styles.buttonAsignNFCID}
+                                    icon={{ name: 'id-card', type: 'font-awesome' }}
+                                    title='Asign Access Card for Users'
+                                    onPress={() => {
+                                        this.setState({ showEditUsers: true });
+                                    }} /> */}
+                                <Button
+                                    buttonStyle={styles.buttonAsignNFCID}
+                                    icon={{ name: 'id-card', type: 'font-awesome' }}
+                                    title='Add Access Cards'
+                                    onPress={() => {
+                                        this.setState({ addCards: true });
+                                    }} />
+                            </View>
 
-                    </>
-                    );
+                        </>
+                        );
     }
 
 }

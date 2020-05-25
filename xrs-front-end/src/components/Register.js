@@ -35,9 +35,22 @@ const Register = props => {
     };
     const handleCardAccess = e => {
         setNfcid(e.target.value)
-        axios.get('http://localhost:5000/api/ums/tags/' + e.target.value)
+        const nfctag = e.target.value
+        axios.get('https://xrs-users-management.herokuapp.com/api/ums/tags/' + nfctag)
             .then(response => {
                 setMessage('')
+                axios.get('http://localhost:5000/api/ums/nfctags/' + nfctag)
+                    .then(res => {
+                        
+                        console.log('--------------')
+                        console.log(res.data)
+                        setMessage('')
+                    })
+                    .catch(err => {
+                        console.log('-----------+++++++++++---')
+                        setMessage('NOT AVAILABLE')
+                        console.log(err.response)
+                    })
             })
             .catch(err => setMessage('NOT AVAILABLE'))
     }
@@ -46,7 +59,7 @@ const Register = props => {
     }
     const signUpHandler = e => {
 
-        axios.post('http://localhost:5000/api/ums/register', {
+        axios.post('https://xrs-users-management.herokuapp.com/api/ums/register', {
             firstname: fname,
             lastname: lname,
             email: email,

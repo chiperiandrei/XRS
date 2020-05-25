@@ -17,6 +17,10 @@ const productModel = new mongoose.Schema({
         type: String,
         default: '/public/uploads/'
     },
+    images: {
+        type: Array,
+        default: []
+    },
     category: {
         type: String,
         default: ''

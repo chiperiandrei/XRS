@@ -52,7 +52,7 @@ class App extends React.Component {
             email: '',
             ADMINNFCID_CLIENT: '',
             valid_nfc: null,
-            valid_credintials: null,
+            valid_credintials: true,
             scannedTAG: false,
         };
         this.savedCompanyName = '';

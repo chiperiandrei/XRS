@@ -7,15 +7,18 @@ const verifyToken = require('./verifyToken');
 
 router.post('/', verifyToken, async (req, res) => {
     console.log(req.body)
-    const product = new Borrow({
+    const existBorrow = await Borrow.findOne({ product_id: req.body.product_id });
+    if (existBorrow) return res.status(400).send('Product has been reserved');
+    const borrow = new Borrow({
         product_id: req.body.product_id,
         person_id: req.body.person_id,
         end: req.body.end,
-        status_at_borrow: req.body.status_at_borrow
+        date_borrowed: req.body.start
+
     });
     try {
-        const usersave = await product.save();
-        res.status(200).send({ product: product._id });
+        const borrowsave = await borrow.save();
+        res.status(200).send({ borrowsave: borrowsave._id });
     } catch (e) {
         res.status(400).send(e);
     }
@@ -51,6 +54,22 @@ router.get('/:id', verifyToken, async (req, res) => {
             res.send(to_send)
         }
     })
+});
+router.post('/pick/:id', verifyToken, async (req, res) => {
+    try {
+        await Borrow.findOneAndUpdate({ product_id: req.params.id }, { i_will_pick: true }, { new: true }, (err, doc) => {
+            if (doc) {
+                return res.send("Product updated ✔️")
+            }
+            res.status(404).send("error during update")
+
+
+        })
+    } catch (error) {
+        res.error(error)
+    }
+
+
 });
 
 

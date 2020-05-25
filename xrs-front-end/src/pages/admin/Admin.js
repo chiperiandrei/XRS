@@ -4,7 +4,7 @@ import React, { useState } from "react";
 //Pages section
 import ProductAdd from '../../components/ProductAdd';
 import ProductEdit from '../../components/ProductEdit';
-
+import ConfirmAccounts from "../../components/ManageAccounts";
 //Components section
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -23,17 +23,24 @@ const Admin = props => {
     const handleEditProduct = () => {
         setAction('productedit')
     }
-    const [action, setAction] = useState('productadd');
+    const handleConfirmUsers = () => {
+        setAction('confirm_accounts')
+    }
+    const [action, setAction] = useState('confirm_accounts');
     const company_info = useSelector(state => state.company_info);
     let command = <CommandMenu>
         <h1>What do you want to do ?</h1>
-        <div>
+        <div><h1>PRODUCTS AREA</h1>
             <button id="add" onClick={handleAddProduct}>
                 Add product
         </button>
             <button id="edit" onClick={handleEditProduct}>
                 Edit product
+        </button><h1>USERS AREA</h1>
+            <button id="confirm" onClick={handleConfirmUsers}>
+                Manage Accounts
         </button>
+
         </div>
     </CommandMenu>
     const render = (component) => {
@@ -50,6 +57,9 @@ const Admin = props => {
         return render(component)
     } else if (action === 'productedit') {
         let component = <EditComponent><ProductEdit /></EditComponent>
+        return render(component)
+    } else if (action === 'confirm_accounts') {
+        let component = <EditComponent><ConfirmAccounts /></EditComponent>
         return render(component)
     }
 
