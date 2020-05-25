@@ -50,4 +50,4 @@ var httpsServer = https.createServer(options, app);
 
 app.get('/', (req, res) => res.send('Product microservice'));
 
-app.listen(process.env.PORT_PRODUCT, () => console.log(`Product management listening on port ${process.env.PORT_PRODUCT}!`))
+app.listen(process.env.PORT, () => console.log(`Product management listening on port ${process.env.PORT}!`))
