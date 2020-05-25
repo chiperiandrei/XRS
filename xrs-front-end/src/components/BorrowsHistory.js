@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const BorrowsHistory = props => {
     const handlePick = pick => {
-        Axios.post('http://localhost:4002/api/borrows/pick/' + pick, null, {
+        Axios.post('https://xrs-borrow-management.herokuapp.com/api/borrows/pick/' + pick, null, {
             headers: {
                 "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2),
             }

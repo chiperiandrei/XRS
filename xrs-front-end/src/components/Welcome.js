@@ -13,7 +13,7 @@ const WelcomeComponent = props => {
     const [current_borrow, setCurrent_borrow] = useState([])
     useEffect(() => {
         if (userInfo)
-            Axios.get('http://localhost:4002/api/borrows/' + userInfo.id, {
+            Axios.get('https://xrs-borrow-management.herokuapp.com/api/borrows/' + userInfo.id, {
                 headers: {
                     "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2),
                 }

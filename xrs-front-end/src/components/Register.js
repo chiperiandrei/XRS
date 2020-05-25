@@ -39,7 +39,7 @@ const Register = props => {
         axios.get('https://xrs-users-management.herokuapp.com/api/ums/tags/' + nfctag)
             .then(response => {
                 setMessage('')
-                axios.get('http://localhost:5000/api/ums/nfctags/' + nfctag)
+                axios.get('https://xrs-users-management.herokuapp.com/api/ums/nfctags/' + nfctag)
                     .then(res => {
                         
                         console.log('--------------')

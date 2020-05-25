@@ -22,7 +22,7 @@ const ManageAccounts = props => {
 
     let allUsers = query =>
         new Promise((resolve, reject) => {
-            Axios.get('http://localhost:5000/api/ums/users/', {
+            Axios.get('https://xrs-users-management.herokuapp.com/api/ums/users/', {
                 headers: {
                     "auth-token": token.substr(1, token.length - 2)
                 }

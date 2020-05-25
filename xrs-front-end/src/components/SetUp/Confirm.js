@@ -24,7 +24,7 @@ export class Confirm extends Component {
             email: email,
             password: password
         }
-        axios.post('http://localhost:5000/api/ums/register', data_for_login)
+        axios.post('https://xrs-users-management.herokuapp.com/api/ums/register', data_for_login)
             .then(function (response) {
                 console.log(response);
             })
@@ -33,7 +33,7 @@ export class Confirm extends Component {
             });
 
 
-        axios.post('http://localhost:4000/api/files/setup', data, {
+        axios.post('https://xrs-files-management.herokuapp.com/api/files/setup', data, {
             headers: {
                 "auth-token": 'SECRET_KEY_VERIFY_FOR_USE_APP'
             }

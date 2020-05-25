@@ -21,7 +21,7 @@ const ProductSearch = props => {
         })
     }
     const getReserved = () => {
-        return Axios.get('http://localhost:4002/api/borrows', {
+        return Axios.get('https://xrs-borrow-management.herokuapp.com/api/borrows', {
             headers: {
                 "auth-token": token.substr(1, token.length - 2)
             }

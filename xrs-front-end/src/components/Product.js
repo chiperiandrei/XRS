@@ -61,7 +61,7 @@ const Product = props => {
     let maxDate = moment(start_var).add(24, "hour")
 
     const handleSubmitReserve = () => {
-        Axios.post('http://localhost:4002/api/borrows/', {
+        Axios.post('https://xrs-borrow-management.herokuapp.com/api/borrows/', {
             product_id: props.infos._id,
             person_id: props.user.id,
             end: end.toDate(),
