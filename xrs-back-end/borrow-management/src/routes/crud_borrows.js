@@ -57,7 +57,7 @@ router.get('/:id', verifyToken, async (req, res) => {
 });
 router.post('/pick/:id', verifyToken, async (req, res) => {
     try {
-        await Borrow.findOneAndUpdate({ product_id: req.params.id }, { i_will_pick: true }, { new: true }, (err, doc) => {
+        await Borrow.findOneAndUpdate({ product_id: req.params.id, 'returned': false, 'date_taken': null }, { i_will_pick: true }, { new: true }, (err, doc) => {
             if (doc) {
                 return res.send("Product updated ✔️")
             }
