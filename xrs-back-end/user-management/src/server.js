@@ -61,4 +61,4 @@ app.use(process.env.USER_API_URL + '/tags', crud_cards);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-app.listen(process.env.PORT, () => console.log(`User management listening on port ${process.env.PORT}!`))
+app.listen(process.env.PORT, () => console.log(` User management listening on port ${process.env.PORT}!`))
