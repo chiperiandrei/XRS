@@ -24,7 +24,7 @@ router.get('/:id', verifyToken, async (req, res) => {
 router.post('/', verifyToken, async (req, res) => {
     await Borrow.findOneAndUpdate({ 'product_id': req.body.product_id, 'person_id': req.body.person_id, 'returned': false, 'date_given': null }, { returned: true, date_given: Date.now() }, { new: true }, (err, doc) => {
         if (doc) {
-            res.send("Success returned! ✔️")
+            res.status(200).send("Success returned! ✔️")
         }
         res.status(403).send("Error during request")
     })
