@@ -17,18 +17,18 @@ router.get('/:id', verifyToken, async (req, res) => {
             res.status(404).send("Borrows not found")
         }
     })
-    
+
 });
 
 
-router.post('/:id', verifyToken, async (req, res) => {
-    const doc = await Borrow.updateMany({ person_id: req.params.id, returned: false, date_given: null }, { returned: true, date_given: Date.now() }, (err, raw) => {
-        if (err)
-            res.status(404).send("Not found products")
-        else {
-            res.send("All products returned.")
+router.post('/', verifyToken, async (req, res) => {
+    await Borrow.findOneAndUpdate({ 'product_id': req.body.product_id, 'person_id': req.body.person_id, 'returned': false, 'date_given': null }, { returned: true, date_given: Date.now() }, { new: true }, (err, doc) => {
+        if (doc) {
+            res.send("Success returned! ✔️")
         }
+        res.status(403).send("Error during request")
     })
+
 });
 
 
