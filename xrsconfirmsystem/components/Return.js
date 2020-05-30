@@ -4,7 +4,7 @@ import NfcManager, { NfcEvents } from 'react-native-nfc-manager';
 import Home from './Home';
 import Axios from 'axios';
 import { SECRET_CODE, GET_USER_BY_TAG, RETURN_API } from "react-native-dotenv";
-
+import { ListItem } from 'react-native-elements'
 
 const styles = StyleSheet.create({
     title: {
@@ -28,6 +28,8 @@ class Return extends React.Component {
             ADMINNFCID_CLIENT: null,
             confirmed: false
         };
+        this.arrayholder = [];
+
     }
 
     // NFC AREA
@@ -81,7 +83,24 @@ class Return extends React.Component {
     };
 
     componentDidMount() {
+
         this.scanNFCcard();
+        Axios.get(`${RETURN_API}`, null, {
+            headers: {
+                token: `${SECRET_CODE}`
+            }
+        })
+            .then(response => {
+                console.log(response.data)
+                this.setState({
+                    data: response.data,
+                    error: null,
+                    loading: false,
+                });
+                this.arrayholder = response.data;
+            })
+            .catch(e => console.log(e))
+
         this.backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
             this.backAction

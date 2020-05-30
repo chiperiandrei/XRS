@@ -64,7 +64,7 @@ router.get('/', verifyTokenJWT, async (req, res) => {
                 lastName: user.lastname,
                 email: user.email,
                 joined: user.joined,
-                confirmed_account: user.confirmed_account,
+                isOperator: user.isOperator,
                 avatar: user.avatarPath,
                 nfc_tag: user.nfcToken
             }
@@ -75,5 +75,18 @@ router.get('/', verifyTokenJWT, async (req, res) => {
     })
 })
 
+
+router.post('/addoperator/:nfctag', verifyTokenJWT, async (req, res) => {
+    try {
+        const nou = await User.findOneAndUpdate({ nfcToken: req.params.nfctag }, { isOperator: true }, { new: true })
+        if (nou) {
+            res.status(200).send({ message: "Updated" })
+        }
+        res.statuus(404).send({ eroare: "eroare" })
+    } catch (error) {
+        res.status(401).send(error)
+    }
+
+})
 
 module.exports = router;

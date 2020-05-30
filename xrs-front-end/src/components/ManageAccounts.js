@@ -15,23 +15,31 @@ const ManageAccounts = props => {
     const [all, setAll] = useState(0)
     const handleMakeAdmin = (event, data) => {
 
-        console.log(data)
-        toast.success("Am apasat pe buton" + data.firstname)
+
+        Axios.post('http://localhost:5000/api/ums/users/addoperator/' + data.nfc_id, null, {
+            headers: {
+                "auth-token": token.substr(1, token.length - 2)
+            }
+        }).then(res => {
+            toast.success(data.firstname + " " + data.lastname + " is now operator")
+        })
+            .catch(err => {
+                toast.error("Something went wrong")
+            })
+
     }
 
 
     let allUsers = query =>
         new Promise((resolve, reject) => {
-            Axios.get('https://xrs-users-management.herokuapp.com/api/ums/users/', {
+            Axios.get('http://localhost:5000/api/ums/users/', {
                 headers: {
                     "auth-token": token.substr(1, token.length - 2)
                 }
             })
                 .then(function (response) {
-                    console.log(response.data)
                     let products = []
                     products = response.data.map(product => {
-                        console.log(product)
                         const myDate = new Date(product.joined)
                         var displayDate = myDate.getMonth() + '/' + myDate.getDate() + '/' + myDate.getFullYear() + ' ' + myDate.getHours() + ':' + myDate.getMinutes();
                         return {
@@ -39,7 +47,8 @@ const ManageAccounts = props => {
                             lastname: product.lastName,
                             joined: displayDate,
                             nfc_id: product.nfc_tag,
-                            image: 'https://xrs-users-management.herokuapp.com/' + product.avatar
+                            image: 'https://xrs-users-management.herokuapp.com/' + product.avatar,
+                            isOperator: product.isOperator === true ? 'yes' : 'no'
                         }
                     }
                     )
@@ -63,31 +72,28 @@ const ManageAccounts = props => {
             title="Manage users permissions"
             columns={[
                 {
-                title: 'Image', field: 'image', render: rowData => (
-                    <img src={rowData.image}
-                        style={{ height: 36, borderRadius: '50%' }}
-                        alt="another"
+                    title: 'Image', field: 'image', render: rowData => (
+                        <img src={rowData.image}
+                            style={{ height: 36, borderRadius: '50%' }}
+                            alt="another"
 
-                    />
-                ), editable: 'never'
-            },
-            { title: 'Firstname', field: 'firstname' },
-            { title: 'Lastname', field: 'lastname' },
-            { title: 'Joined', field: 'joined', type: 'date' },
-            {
-                title: 'NFC TAG',
-                field: 'nfc_id',
-            },
+                        />
+                    ), editable: 'never'
+                },
+                { title: 'Firstname', field: 'firstname' },
+                { title: 'Lastname', field: 'lastname' },
+                { title: 'Is Operator?', field: 'isOperator' },
+                { title: 'Joined', field: 'joined', type: 'date' },
+                {
+                    title: 'NFC TAG',
+                    field: 'nfc_id',
+                },
             ]}
-            // data={[
-            //     { image: 'http://localhost:4001/uploads/5ec8eaeb1afb2908583781ed/5ec8eaeb1afb2908583781ed_res_629ac4c0be91b2d8e4753671cb738547_450x450_ljj8.jpg', firstname: 'Mehmet', lastname: 'Baran', joined: 1987, birthCity: 63 },
-            //     { image: 'http://localhost:4001/uploads/5ec8eaeb1afb2908583781ed/5ec8eaeb1afb2908583781ed_res_629ac4c0be91b2d8e4753671cb738547_450x450_ljj8.jpg', firstname: 'Zerya Betül', lastname: 'Baran', joined: 2017, birthCity: 34 },
-            // ]}
             data={allUsers}
             actions={[
                 {
                     icon: 'save',
-                    tooltip: 'Save User',
+                    tooltip: 'Make Admin',
                     onClick: (event, rowData) => handleMakeAdmin(event, rowData)
                 }
             ]}
@@ -99,6 +105,7 @@ const ManageAccounts = props => {
                         variant="contained"
                         style={{ textTransform: 'none' }}
                         size="small"
+                        disabled={props.data.isOperator === "no" ? false : true}
                     >
                         MAKE OPERATOR
                     </Button>
@@ -106,7 +113,7 @@ const ManageAccounts = props => {
             }}
         />
 
-        <ToastContainer autoClose={2000} />
+        <ToastContainer autoClose={2000} draggable={true} />
 
     </div>
 

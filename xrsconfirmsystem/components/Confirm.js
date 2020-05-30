@@ -45,18 +45,19 @@ class Confirm extends React.Component {
                 }
             })
                 .then(response => {
-                    console.log(response.data.email)
-                    Axios.post(`${CONFIRM_API}${response.data.email}`, null, {
+                    console.log(response.data)
+                    Axios.post(`${CONFIRM_API}${response.data.id}`, null, {
                         headers: {
                             'token': `${SECRET_CODE}`
                         }
                     })
                         .then(res => {
+                            console.log(res.data)
                             this.setState({ confirmed: true })
                         })
-                        .catch(err => err.response.data)
+                        .catch(err => console.log("Something went wrong"))
                 })
-                .catch(err => console.log(err.response.data))
+                .catch(err => console.log("User not found"))
         });
     }
     triggerNFC = async () => {
