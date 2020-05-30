@@ -48,15 +48,19 @@ class Return extends React.Component {
             })
                 .then(response => {
                     console.log(response.data)
-                    Axios.post(`${RETURN_API}${response.data.email}`, null, {
+                    Axios.get(`${RETURN_API}${response.data.id}`, {
                         headers: {
                             'token': `${SECRET_CODE}`
                         }
                     })
                         .then(res => {
-                            this.setState({ confirmed: true })
+                            console.log(res.data)
+                            const produsele = res.data.map(product => {
+                                Axios.get('')
+                            })
+
                         })
-                        .catch(err => err.response.data)
+                        .catch(err => console.log(err.response.data))
                 })
                 .catch(err => console.log(err.response.data))
         });
@@ -85,21 +89,6 @@ class Return extends React.Component {
     componentDidMount() {
 
         this.scanNFCcard();
-        Axios.get(`${RETURN_API}`, null, {
-            headers: {
-                token: `${SECRET_CODE}`
-            }
-        })
-            .then(response => {
-                console.log(response.data)
-                this.setState({
-                    data: response.data,
-                    error: null,
-                    loading: false,
-                });
-                this.arrayholder = response.data;
-            })
-            .catch(e => console.log(e))
 
         this.backHandler = BackHandler.addEventListener(
             "hardwareBackPress",

@@ -3,6 +3,7 @@ const Product = require('../models/Product');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('./verifyToken');
+const verifyTokenMobike = require('./mobile_token');
 const fs = require('fs')
 const path = require('path')
 let multer = require("multer")
@@ -98,6 +99,20 @@ router.delete('/:id', verifyToken, async (req, res) => {
     }
 });
 router.get('/:id', verifyToken, async (req, res) => {
+    try {
+        Product.findById(req.params.id, (err, doc) => {
+            if (err) {
+                res.status(405).send(err)
+            }
+            res.status(200).send(doc)
+
+        })
+    } catch (e) {
+        res.send(400).send(e.message)
+
+    }
+});
+router.get('/mobile/:id', verifyTokenMobike, async (req, res) => {
     try {
         Product.findById(req.params.id, (err, doc) => {
             if (err) {
