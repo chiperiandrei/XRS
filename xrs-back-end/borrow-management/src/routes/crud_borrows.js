@@ -7,7 +7,7 @@ const verifyToken = require('./verifyToken');
 
 router.post('/', verifyToken, async (req, res) => {
     console.log(req.body)
-    const existBorrow = await Borrow.findOne({ product_id: req.body.product_id, date_taken: { $ne: null } });
+    const existBorrow = await Borrow.findOne({ product_id: req.body.product_id, 'returned': false });
     if (existBorrow) return res.status(400).send('Product has been reserved');
     const borrow = new Borrow({
         product_id: req.body.product_id,
