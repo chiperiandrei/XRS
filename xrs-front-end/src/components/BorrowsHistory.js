@@ -15,7 +15,7 @@ const BorrowsHistory = props => {
     }
     const [show, setShow] = useState(false)
     const borrows = useSelector(state => state.borrows)
-    const list = borrows.map(borrow => <li><img src={`http://localhost:4001/${borrow.images[0]}`} id="small-image" />{borrow.name} <input type="checkbox" onClick={() => handlePick(borrow._id)} id={borrow._id}></input></li>)
+    const list = borrows.map(borrow => <li><img src={`https://xrs-product-management.herokuapp.com/${borrow.images[0]}`} id="small-image" />{borrow.name} <input type="checkbox" onClick={() => handlePick(borrow._id)} id={borrow._id}></input></li>)
     if (show) {
         return <div><h1>Pick products for take</h1><ol>{list}</ol><button onClick={() => setShow(!show)}>Hide my current borrows</button></div>
     } else {

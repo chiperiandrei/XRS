@@ -21,7 +21,7 @@ const WelcomeComponent = props => {
                 setCurrent_borrow(res.data)
                 dispatch(resetBorrow())
                 res.data.map(product => {
-                    Axios.get('http://localhost:4001/api/products/' + product.product, {
+                    Axios.get('https://xrs-product-management.herokuapp.com/api/products/' + product.product, {
                         headers: {
                             "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2),
                         }

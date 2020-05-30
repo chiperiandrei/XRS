@@ -17,6 +17,7 @@ const ProductAdd = props => {
     const token = localStorage.getItem("user_info");
     const [uploadData, setUpload] = useState(null);
     const [options, setOptions] = useState(null);
+    const [loading, setLoading] = useState(false)
 
     const handleImageChange = e => {
 
@@ -36,7 +37,7 @@ const ProductAdd = props => {
         }
     }
     useEffect(() => {
-        Axios.get('http://localhost:4001/api/products/', {
+        Axios.get('https://xrs-product-management.herokuapp.com/api/products/', {
             headers: {
                 "auth-token": token.substr(1, token.length - 2)
             }
@@ -52,7 +53,7 @@ const ProductAdd = props => {
                 setOptions(categories)
             })
             .catch(err => console.log(err))
-    })
+    }, [loading])
 
 
     const handleAddSpec = () => {
@@ -89,26 +90,28 @@ const ProductAdd = props => {
             specs: convertedObject,
             category: category.value
         }
-        Axios.post('http://localhost:4001/api/products/', data, {
+        Axios.post('https://xrs-product-management.herokuapp.com/api/products/', data, {
             headers: {
                 "auth-token": token.substr(1, token.length - 2)
             }
         }).then(res => {
 
-            Axios.post(`http://localhost:4001/api/products/upload/${res.data.product}`, uploadData, {
+            Axios.post(`https://xrs-product-management.herokuapp.com/api/products/upload/${res.data.product}`, uploadData, {
                 headers: {
                     "auth-token": token.substr(1, token.length - 2),
                     'Content-Type': 'multipart/form-data'
                 }
             })
                 .then(res => {
+                    setLoading(true)
                     toast.success("Product added sucessfully!")
+
                 })
                 .catch(err => toast.error(err.response.data))
         })
             .catch(err => toast.error(err.response.data))
     }
-    
+
     return <form onSubmit={handleSubmit} encType="multipart/form-data">
         <ToastContainer autoClose={2000} />
         <div id="main-info">

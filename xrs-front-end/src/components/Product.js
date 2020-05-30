@@ -115,7 +115,7 @@ const Product = props => {
 
         </Modal>
 
-        <ImgProduct src={`http://localhost:4001/${props.infos.images[0]}`} alt='example of product' ></ImgProduct><h1>{props.infos.name}</h1><PriceProduct>Status:<Avalaible> Avalaible</Avalaible></PriceProduct><ul>{specs}</ul><ContainerButtonAvalaible onClick={handleOpen}>Reserve</ContainerButtonAvalaible>
+        <ImgProduct src={`https://xrs-product-management.herokuapp.com/${props.infos.images[0]}`} alt='example of product' ></ImgProduct><h1>{props.infos.name}</h1><PriceProduct>Status:<Avalaible> Avalaible</Avalaible></PriceProduct><ul>{specs}</ul><ContainerButtonAvalaible onClick={handleOpen}>Reserve</ContainerButtonAvalaible>
         <ToastContainer /></ContainerProduct>
 
 };

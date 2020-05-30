@@ -16,7 +16,7 @@ const ManageAccounts = props => {
     const handleMakeAdmin = (event, data) => {
 
 
-        Axios.post('http://localhost:5000/api/ums/users/addoperator/' + data.nfc_id, null, {
+        Axios.post('https://xrs-users-management.herokuapp.com/api/ums/users/addoperator/' + data.nfc_id, null, {
             headers: {
                 "auth-token": token.substr(1, token.length - 2)
             }
@@ -32,7 +32,7 @@ const ManageAccounts = props => {
 
     let allUsers = query =>
         new Promise((resolve, reject) => {
-            Axios.get('http://localhost:5000/api/ums/users/', {
+            Axios.get('https://xrs-users-management.herokuapp.com/api/ums/users/', {
                 headers: {
                     "auth-token": token.substr(1, token.length - 2)
                 }

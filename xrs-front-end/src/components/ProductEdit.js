@@ -16,7 +16,7 @@ const ProductEdit = props => {
 
     let allProducts = query =>
         new Promise((resolve, reject) => {
-            Axios.get('http://localhost:4001/api/products/', {
+            Axios.get('https://xrs-product-management.herokuapp.com/api/products/', {
                 headers: {
                     "auth-token": token.substr(1, token.length - 2)
                 }
@@ -32,7 +32,7 @@ const ProductEdit = props => {
                             category: product.category,
                             dateadded: displayDate,
                             id: product._id,
-                            image: 'http://localhost:4001/' + product.images[0]
+                            image: 'https://xrs-product-management.herokuapp.com/' + product.images[0]
                         }
                     }
                     )
@@ -78,7 +78,7 @@ const ProductEdit = props => {
                 onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
-                            Axios.put(`http://localhost:4001/api/products/${oldData.id}`, newData, {
+                            Axios.put(`https://xrs-product-management.herokuapp.com/api/products/${oldData.id}`, newData, {
                                 headers: {
                                     "auth-token": token.substr(1, token.length - 2)
                                 }
@@ -98,7 +98,7 @@ const ProductEdit = props => {
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
                             {
-                                Axios.delete(`http://localhost:4001/api/products/${oldData.id}`, {
+                                Axios.delete(`https://xrs-product-management.herokuapp.com/api/products/${oldData.id}`, {
                                     headers: {
                                         "auth-token": token.substr(1, token.length - 2)
                                     }

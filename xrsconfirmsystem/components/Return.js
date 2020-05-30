@@ -29,7 +29,10 @@ class Return extends React.Component {
             ADMINNFCID_CLIENT: null,
             confirmed: false,
             data: [],
-            checked: false
+            checked: false,
+            user_id: null,
+            confirm_message: null,
+            flashMessage: false
         };
         this.arrayholder = [];
 
@@ -63,6 +66,11 @@ class Return extends React.Component {
             data: newData,
         });
     };
+    closeFlashMessage() {
+        this.setState({
+            flashMessage: false
+        })
+    }
     separatorBoxes = () => {
         return (
             <View
@@ -76,12 +84,33 @@ class Return extends React.Component {
         );
     };
     returnItem = item => {
-        console.log(item)
+        console.log(this.state.user_id)
+        const data = {
+            product_id: item._id,
+            person_id: this.state.user_id
+        }
+        Axios.post(RETURN_API, data, {
+            headers: {
+                'token': `${SECRET_CODE}`
+            }
+        })
+            .then(rsponse => {
+                this.setState({
+                    flashMessage: true,
+                    confirm_message: rsponse.data
+                }, () => { setTimeout(() => this.closeFlashMessage(), 3000) })
+            })
+            .catch(err => {
+                this.setState({
+                    flashMessage: true,
+                    confirm_message: err
+                }, () => { setTimeout(() => this.closeFlashMessage(), 3000) })
+            })
     }
     _handleItem = ({ item }) => (
         <ListItem
 
-            leftAvatar={{ source: { uri: 'https://xrs-products-management.herokuapp.com/' + item.images[0] } }}
+            leftAvatar={{ source: { uri: 'https://xrs-product-management.herokuapp.com/' + item.images[0] } }}
             title={`${item.name}`}
             subtitle={item.category}
             buttonGroup={{ buttons: ['Return'], onPress: () => this.returnItem(item) }}
@@ -104,6 +133,7 @@ class Return extends React.Component {
                     'token': `${SECRET_CODE}`
                 }
             })
+            this.setState({ user_id: user_id })
 
             const { data: products } = await Axios.get(`${RETURN_API}${user_id}`, {
                 headers: {
@@ -196,7 +226,11 @@ class Return extends React.Component {
                             source={require('../assets/img/nfc-reading-motion.gif')} /></View> :
                     <View>
                         <Text style={styles.titleConfirmed}>Select products to return</Text>
-
+                        {this.state.flashMessage == true ?
+                            <Text>{this.state.confirm_message}</Text>
+                            :
+                            null
+                        }
                         <FlatList
                             data={this.state.data}
                             renderItem={this._handleItem}

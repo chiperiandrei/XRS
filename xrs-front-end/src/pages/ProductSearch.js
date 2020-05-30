@@ -10,11 +10,10 @@ import Product from "../components/Product";
 const ProductSearch = props => {
     const company_info = useSelector(state => state.company_info);
     const token = localStorage.getItem("user_info");
-    const [select, setSelect] = useState('all');
     const [allProducts, setAllProducts] = useState(null);
     const userInfo = useSelector(state => state.user_information)
     const getAllproducts = () => {
-        return Axios.get('http://localhost:4001/api/products', {
+        return Axios.get('https://xrs-product-management.herokuapp.com/api/products', {
             headers: {
                 "auth-token": token.substr(1, token.length - 2)
             }
@@ -27,23 +26,7 @@ const ProductSearch = props => {
             }
         })
     }
-    const info_reserved = () => {
-        if (allProducts && allProducts.reserved) {
-            allProducts.reserved.forEach((product) => {
 
-                Axios.get('http://localhost:4001/api/products/' + product.product, {
-                    headers: {
-                        "auth-token": token.substr(1, token.length - 2)
-                    }
-                })
-                    .then(res => {
-                        console.log(res.data)
-                    })
-                    .catch(err => console.log(err.response.data))
-            })
-
-        }
-    }
 
     useEffect(() => {
         Axios.all([getAllproducts(), getReserved()])
@@ -53,7 +36,7 @@ const ProductSearch = props => {
             .catch(err => console.log(err))
 
 
-    }, [select])
+    }, [])
 
 
 
