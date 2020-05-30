@@ -24,7 +24,7 @@ router.post('/', verifyToken, async (req, res) => {
     }
 });
 router.get('/', verifyToken, async (req, res) => {
-    Borrow.find({}, (err, documents) => {
+    Borrow.find({ 'returned': false }, (err, documents) => {
         if (err)
             res.status(404).send(err)
         else {
