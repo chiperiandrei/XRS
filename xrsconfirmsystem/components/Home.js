@@ -82,7 +82,14 @@ class Home extends React.Component {
                 style: 'cancel'
             }, {
                 text: 'OK',
-                onPress: () => BackHandler.exitApp()
+                onPress: async () => {
+                    let keys = ['company_name', 'created_by'];
+                    AsyncStorage.multiRemove(keys, (err) => {
+                        return BackHandler.exitApp()
+
+                    });
+
+                }
             },], {
             cancelable: false
         }

@@ -93,11 +93,6 @@ class App extends React.Component {
                 } catch (error) {
                     console.log(error.message);
                 }
-                try {
-                    await AsyncStorage.setItem('created_by', response.data.operatorLname + ' ' + response.data.operatorFname);
-                } catch (error) {
-                    console.log(error.message);
-                }
             })
             .catch(err => console.log(err));
     }
@@ -115,13 +110,14 @@ class App extends React.Component {
             )
             .then(response => {
                 this.setState({
-                    valid_credintials: response.data.value,
+                    valid_credintials: true,
                 });
             })
             .catch(e => {
+                console.log(e.response.data)
                 this.setState({
                     valid_credintials: null,
-                    error_message: 'Invalid credentials'
+                    error_message: e.response.data
                 });
             });
     }

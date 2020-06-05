@@ -56,18 +56,15 @@ router.post('/loginOperator', async (req, res) => {
         return res.status(400).send("You re not operator");
     }
     //create token for login
-    const token = jwt.sign({
-        id: existsEmail._id,
+    //create token for login
+    const userInfo = {
         email: existsEmail.email,
-        isOperator: existsEmail.isOperator,
         firstname: existsEmail.firstname,
         lastname: existsEmail.lastname,
         photoPath: existsEmail.avatarPath
-    }, process.env.SECRET_JWT_TOKEN);
+    };
     const user = User.findOne({ email: req.body.email }, (req, user) => {
-        res.header('auth-token', token).send({
-            token: token
-        });
+        res.send(userInfo);
     })
 });
 module.exports = router;
