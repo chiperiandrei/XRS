@@ -89,4 +89,17 @@ router.post('/addoperator/:nfctag', verifyTokenJWT, async (req, res) => {
 
 })
 
+router.post('/removeoperator/:nfctag', verifyTokenJWT, async (req, res) => {
+    try {
+        const nou = await User.findOneAndUpdate({ nfcToken: req.params.nfctag }, { isOperator: false }, { new: true })
+        if (nou) {
+            res.status(200).send({ message: "Updated" })
+        }
+        res.statuus(404).send({ eroare: "eroare" })
+    } catch (error) {
+        res.status(401).send(error)
+    }
+
+})
+
 module.exports = router;

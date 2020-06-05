@@ -14,18 +14,31 @@ const ManageAccounts = props => {
     const token = localStorage.getItem("user_info");
     const [all, setAll] = useState(0)
     const handleMakeAdmin = (event, data) => {
-
-
-        Axios.post('https://xrs-users-management.herokuapp.com/api/ums/users/addoperator/' + data.nfc_id, null, {
-            headers: {
-                "auth-token": token.substr(1, token.length - 2)
-            }
-        }).then(res => {
-            toast.success(data.firstname + " " + data.lastname + " is now operator")
-        })
-            .catch(err => {
-                toast.error("Something went wrong")
+        console.log(data)
+        if (data.isOperator === "no") {
+            Axios.post('https://xrs-users-management.herokuapp.com/api/ums/users/addoperator/' + data.nfc_id, null, {
+                headers: {
+                    "auth-token": token.substr(1, token.length - 2)
+                }
+            }).then(res => {
+                toast.success(data.firstname + " " + data.lastname + " is now operator")
             })
+                .catch(err => {
+                    toast.error("Something went wrong")
+                })
+        }
+        else {
+            Axios.post('https://xrs-users-management.herokuapp.com/api/ums/users/removeoperator/' + data.nfc_id, null, {
+                headers: {
+                    "auth-token": token.substr(1, token.length - 2)
+                }
+            }).then(res => {
+                toast.success(data.firstname + " " + data.lastname + " operator removed")
+            })
+                .catch(err => {
+                    toast.error("Something went wrong")
+                })
+        }
 
     }
 
@@ -78,15 +91,70 @@ const ManageAccounts = props => {
                             alt="another"
 
                         />
-                    ), editable: 'never'
+                    ),
+                    editable: 'never',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
                 },
-                { title: 'Firstname', field: 'firstname' },
-                { title: 'Lastname', field: 'lastname' },
-                { title: 'Is Operator?', field: 'isOperator' },
-                { title: 'Joined', field: 'joined', type: 'date' },
+                {
+                    title: 'Firstname', field: 'firstname',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
+                {
+                    title: 'Lastname',
+                    field: 'lastname',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
+                {
+                    title: 'Is Operator?',
+                    field: 'isOperator',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
+                {
+                    title: 'Joined',
+                    field: 'joined',
+                    type: 'date',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
                 {
                     title: 'NFC TAG',
                     field: 'nfc_id',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
                 },
             ]}
             data={allUsers}
@@ -94,20 +162,18 @@ const ManageAccounts = props => {
                 {
                     icon: 'save',
                     tooltip: 'Make Admin',
-                    onClick: (event, rowData) => handleMakeAdmin(event, rowData)
+                    onClick: (event, rowData) => handleMakeAdmin(event, rowData),
                 }
             ]}
             components={{
                 Action: props => (
                     <Button
                         onClick={(event) => props.action.onClick(event, props.data)}
-                        color="primary"
                         variant="contained"
-                        style={{ textTransform: 'none' }}
+                        style={{ color: 'white', textTransform: 'none', fontSize: 20, backgroundColor: props.data.isOperator === "no" ? "blue" : "red" }}
                         size="small"
-                        disabled={props.data.isOperator === "no" ? false : true}
                     >
-                        MAKE OPERATOR
+                        {props.data.isOperator === "no" ? "Make operator" : "Remove operator"}
                     </Button>
                 ),
             }}
