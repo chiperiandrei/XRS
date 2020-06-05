@@ -57,7 +57,7 @@ class Return extends React.Component {
         });
 
         const newData = this.arrayholder.filter(item => {
-            const itemData = `${item.email.toUpperCase()} ${item.lastName.toUpperCase()} ${item.firstName.toUpperCase()}`;
+            const itemData = `${item.name.toUpperCase()} ${item.category}`;
             const textData = text.toUpperCase();
 
             return itemData.indexOf(textData) > -1;

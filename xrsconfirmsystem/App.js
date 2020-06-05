@@ -40,6 +40,11 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingBottom: '10%',
     },
+    errorMessage: {
+        color: 'red',
+        fontSize: 28,
+        justifyContent: "center"
+    }
 });
 
 class App extends React.Component {
@@ -54,12 +59,13 @@ class App extends React.Component {
             valid_nfc: null,
             valid_credintials: null,
             scannedTAG: false,
+            error_message: ''
         };
         this.savedCompanyName = '';
     }
 
     handlerEmail = email => {
-        this.setState({ email: email });
+        this.setState({ email: email, error_message: '' });
     };
     handlerPassword = password => {
         this.setState({ password: password });
@@ -115,6 +121,7 @@ class App extends React.Component {
             .catch(e => {
                 this.setState({
                     valid_credintials: null,
+                    error_message: 'Invalid credentials'
                 });
             });
     }
@@ -127,20 +134,7 @@ class App extends React.Component {
             // this.cancelNFC();
             return <Home />;
         }
-        if (this.state.valid_nfc === false) {
-            Alert.alert('Tag error', 'Your ACCESS CARD IS INVALID', [
-                {
-                    text: 'Close',
-                },
-            ]);
-        }
-        if (this.state.valid_credintials === false) {
-            Alert.alert('Login error', 'Your email or password is invalid', [
-                {
-                    text: 'Close',
-                },
-            ]);
-        }
+
 
         return (
             <>
@@ -158,6 +152,7 @@ class App extends React.Component {
             </Text>
                     </View>
                     <View>
+                        {this.state.error_message !== '' ? <Text style={styles.errorMessage}>{this.state.error_message}</Text> : null}
                         <Input
                             placeholder="Email"
                             leftIcon={<Icon name="at" size={24} color="black" />}
