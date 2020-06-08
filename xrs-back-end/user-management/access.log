@@ -1379,3 +1379,4 @@
 ::1 - - [05/Jun/2020:13:11:25 +0000] "POST /api/ums/loginOperator HTTP/1.1" 400 19 "-" "PostmanRuntime/7.25.0"
 ::1 - - [05/Jun/2020:13:25:45 +0000] "POST /api/ums/loginOperator HTTP/1.1" 200 401 "-" "PostmanRuntime/7.25.0"
 ::1 - - [05/Jun/2020:13:26:11 +0000] "POST /api/ums/loginOperator HTTP/1.1" 200 214 "-" "PostmanRuntime/7.25.0"
+::1 - - [05/Jun/2020:13:26:41 +0000] "POST /api/ums/loginOperator HTTP/1.1" 200 164 "-" "PostmanRuntime/7.25.0"

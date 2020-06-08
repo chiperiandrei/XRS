@@ -108,7 +108,15 @@ class App extends React.Component {
                 `${VERIFY_EMAIL_PASSWORD}`,
                 data,
             )
-            .then(response => {
+            .then(async response => {
+                try {
+                    await AsyncStorage.setItem(
+                        'created_by',
+                        response.data.firstname + ' ' + response.data.lastname,
+                    );
+                } catch (error) {
+                    console.log(error.message);
+                }
                 this.setState({
                     valid_credintials: true,
                 });
