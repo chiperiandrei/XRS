@@ -9,6 +9,7 @@ import Admin from "./pages/admin/Admin";
 import PrivateRouteAdminPanel from "./components/PrivateRouteAdminPanel";
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
+import Contact from './pages/Contact';
 function App() {
 
     return (
@@ -17,6 +18,7 @@ function App() {
             <Route exact path='/login' component={Login} />
             <Route exact path='/createaccount' component={CreateAccount} />
             <Route exact path='/search' component={ProductSearch} />
+            <Route exact path='/contact' component={Contact} />
             <PrivateRouteAdminPanel exact path="/admin" component={Admin} />
             <PrivateRouteAdminPanel exact path="/admin/editproduct/:id" component={Admin} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />

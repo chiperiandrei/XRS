@@ -5,9 +5,9 @@ import { saveCompanyInfo } from "../actions/companyInfoActions";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import SetUp from '../components/SetUp/SetUp';
-import HomeApplication from "../components/HomeApplication";
+import ContactFormular from "../components/ContactForm";
 
-const Home = props => {
+const Contact = props => {
     const dispatch = useDispatch();
     const company_info = useSelector(state => state.company_info)
 
@@ -20,7 +20,7 @@ const Home = props => {
     }, [dispatch]);
     if (company_info !== null) {
         document.title = `${company_info.company_name} Reserve System`
-        return [<Header companyname={company_info.company_name} />, <HomeApplication company={company_info} />,
+        return [<Header companyname={company_info.company_name} />, <ContactFormular></ContactFormular>,
         <Footer datecreated={company_info.date_created} authorname={`${company_info.operatorFname} ${company_info.operatorLname}`} />]
     }
     else {
@@ -29,4 +29,4 @@ const Home = props => {
 
 }
 
-export default Home;
+export default Contact;

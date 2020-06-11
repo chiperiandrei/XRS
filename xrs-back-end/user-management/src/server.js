@@ -26,6 +26,7 @@ const usersRoute = require('./routes/users');
 const asignNFCtags = require('./routes/assign_tags');
 const get_user_by_tag = require('./routes/get_user_by_tag');
 const crud_cards = require('./routes/crud_cards');
+const contact = require('./routes/contact');
 
 
 //CONNECT TO DATABASE
@@ -47,6 +48,7 @@ app.use(process.env.USER_API_URL + '/users', usersRoute);
 app.use(process.env.USER_API_URL + '/nfctags', asignNFCtags);
 app.use(process.env.USER_API_URL + '/getuserbytag', get_user_by_tag);
 app.use(process.env.USER_API_URL + '/tags', crud_cards);
+app.use(process.env.USER_API_URL + '/contact', contact);
 
 
 

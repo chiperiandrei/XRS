@@ -2,6 +2,18 @@ const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.gusername,
+        pass: process.env.gpassword
+    }
+});
+
+
+
 
 //VALIDATE FIELDS
 // TODO : validate fields
@@ -21,6 +33,22 @@ router.post('/register', async (req, res) => {
     if (existsNFCTAG) return res.status(400).send('NFC TAG has been taken');
     try {
         const usersave = await user.save();
+        const mailOptions = {
+            from: 'xrs.licenta@gmail.com',
+            to: req.body.email,
+            subject: '[Register form] X Reserve System',
+            text : `Hello, ${req.body.firstname} ${req.body.lastname}!
+                    Welcome to our application. 
+                    Your access card key is ${req.body.nfcToken}.
+                    `
+        };
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err)
+                console.log(err)
+            else
+                console.log(info);
+        });
+        
         res.status(200).send({ user: user._id });
     } catch (e) {
         res.status(400).send(e);
