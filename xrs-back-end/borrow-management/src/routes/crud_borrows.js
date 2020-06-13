@@ -33,7 +33,8 @@ router.get('/', verifyToken, async (req, res) => {
                     owner: document.person_id,
                     product: document.product_id,
                     end: document.end,
-                    date_picked: document.date_selected_pick !== null ? document.date_selected_pick : null
+                    date_picked: document.date_selected_pick !== null ? document.date_selected_pick : null,
+                    date_taken: document.date_taken
                 }
             })
             res.send(to_send)
@@ -50,7 +51,8 @@ router.get('/:id', verifyToken, async (req, res) => {
                     owner: document.person_id,
                     product: document.product_id,
                     end: document.end,
-                    date_picked: document.date_selected_pick !== null ? document.date_selected_pick : null
+                    date_picked: document.date_selected_pick !== null ? document.date_selected_pick : null,
+                    date_taken: document.date_taken
                 }
             })
             res.send(to_send)

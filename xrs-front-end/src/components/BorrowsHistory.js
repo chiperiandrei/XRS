@@ -30,7 +30,7 @@ const BorrowsHistory = props => {
             name: borrow.name,
             image: 'https://xrs-product-management.herokuapp.com/' + borrow.images[0],
             id: borrow._id,
-            expire: `${Math.floor((result / (1000 * 60 * 60)) % 24)} hour, ${Math.floor((result / (1000 * 60)) % 60)} minutes`
+            expire: borrow.date_picked!==undefined?`${Math.floor((result / (1000 * 60 * 60)) % 24)} hour, ${Math.floor((result / (1000 * 60)) % 60)} minutes`:'Not selected yet.'
         }
     })
     if (show) {
