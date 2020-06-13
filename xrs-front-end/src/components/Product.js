@@ -76,9 +76,6 @@ const Product = props => {
                 toast.warn("For take it go with your access card to the operator")
             })
             .catch(err =>  toast.error(err.response.data))
-        console.log(start)
-        console.log(start)
-        console.log(props.infos._id)
     }
     const body = (
         <div style={modalStyle} className={classes.paper}>
@@ -94,6 +91,7 @@ const Product = props => {
                     setStart(startDate)
                     setEnd(endDate)
                 }}
+                smartMode
             >
                 <FormControl
                     id="formControlsTextB"

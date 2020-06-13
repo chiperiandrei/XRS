@@ -57,7 +57,7 @@ class App extends React.Component {
             email: '',
             ADMINNFCID_CLIENT: '',
             valid_nfc: null,
-            valid_credintials: true,
+            valid_credintials: null,
             scannedTAG: false,
             error_message: ''
         };

@@ -32,7 +32,8 @@ router.get('/', verifyToken, async (req, res) => {
                 return {
                     owner: document.person_id,
                     product: document.product_id,
-                    end: document.end
+                    end: document.end,
+                    date_picked: document.date_selected_pick !== null ? document.date_selected_pick : null
                 }
             })
             res.send(to_send)
@@ -57,7 +58,7 @@ router.get('/:id', verifyToken, async (req, res) => {
 });
 router.post('/pick/:id', verifyToken, async (req, res) => {
     try {
-        await Borrow.findOneAndUpdate({ product_id: req.params.id, 'returned': false, 'date_taken': null }, { i_will_pick: true,date_selected_pick:Date.now() }, { new: true }, (err, doc) => {
+        await Borrow.findOneAndUpdate({ product_id: req.params.id, 'returned': false, 'date_taken': null }, { i_will_pick: true, date_selected_pick: Date.now() }, { new: true }, (err, doc) => {
             if (doc) {
                 return res.send("Product updated ✔️")
             }

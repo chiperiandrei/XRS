@@ -26,7 +26,7 @@ router.post('/', verifyToken, async (req, res) => {
 
 
     try {
-        await Borrow.findOneAndUpdate({ 'product_id': req.body.product_id, 'person_id': req.body.person_id, 'returned': false, 'date_given': null, 'date_taken': { $ne: null } }, { returned: true, date_given: Date.now() }, { new: true }, (err, doc) => {
+        await Borrow.findOneAndUpdate({ 'product_id': req.body.product_id, 'person_id': req.body.person_id, 'returned': false, 'date_given': null, 'date_taken': { $ne: null } }, { returned: true, date_given: Date.now(), date_selected_pick: null }, { new: true }, (err, doc) => {
             if (doc) {
                 res.status(200).send("Success returned! ✔️")
             }

@@ -5,7 +5,7 @@ import { updateToken } from "../actions/userActions";
 import { BoxCenter, BoxLeft, BoxRight, ImageSetupGrid, Lately, Submit, TitleImageEvent, WelcomeCenterSide, WelcomeContainer, WelcomeLeftSide, WelcomeRightSide } from "../assets/styles/Dashboard";
 import BorrowsHistory from "./BorrowsHistory";
 import EditProfile from "./EditProfile";
-import { addBorrow ,resetBorrow} from "../actions/borrowActions";
+import { addBorrow, resetBorrow } from "../actions/borrowActions";
 const WelcomeComponent = props => {
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.user_information)
@@ -21,13 +21,15 @@ const WelcomeComponent = props => {
                 setCurrent_borrow(res.data)
                 dispatch(resetBorrow())
                 res.data.map(product => {
+                    console.warn(product)
                     Axios.get('https://xrs-product-management.herokuapp.com/api/products/' + product.product, {
                         headers: {
                             "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2),
                         }
                     }).then(res => {
-                        console.log(res.data)
-                        dispatch(addBorrow(res.data))
+                        let to_push = res.data
+                        to_push.date_picked=product.date_picked
+                        dispatch(addBorrow(to_push))
                     })
                         .catch(err => console.log(err))
                 })

@@ -22,7 +22,7 @@ const BorrowsHistory = props => {
     const [show, setShow] = useState(false)
     const borrows = useSelector(state => state.borrows)
     const elemets = borrows.map(borrow => {
-        let date_plus_2_hours = new Date(Date.parse(borrow.added))
+        let date_plus_2_hours = new Date(Date.parse(borrow.date_picked))
         let net_date_after_2_hours = date_plus_2_hours.setHours(date_plus_2_hours.getHours() + 2)
         let new_date = new Date(net_date_after_2_hours)
         let result = Math.abs(new_date - Date.now())
