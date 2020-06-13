@@ -22,10 +22,15 @@ const BorrowsHistory = props => {
     const [show, setShow] = useState(false)
     const borrows = useSelector(state => state.borrows)
     const elemets = borrows.map(borrow => {
+        let date_plus_2_hours = new Date(Date.parse(borrow.added))
+        let net_date_after_2_hours = date_plus_2_hours.setHours(date_plus_2_hours.getHours() + 2)
+        let new_date = new Date(net_date_after_2_hours)
+        let result = Math.abs(new_date - Date.now())
         return {
             name: borrow.name,
             image: 'https://xrs-product-management.herokuapp.com/' + borrow.images[0],
-            id: borrow._id
+            id: borrow._id,
+            expire: `${Math.floor((result / (1000 * 60 * 60)) % 24)} hour, ${Math.floor((result / (1000 * 60)) % 60)} minutes`
         }
     })
     if (show) {
@@ -60,7 +65,18 @@ const BorrowsHistory = props => {
                                 backgroundColor: '#45a1ff',
                                 fontSize: 17
                             }
-                        }
+                        },
+                        {
+                            title: 'Expires', field: 'expire',
+                            cellStyle: {
+                                fontSize: 15,
+                                backgroundColor: 'yellow'
+                            },
+                            headerStyle: {
+                                backgroundColor: '#45a1ff',
+                                fontSize: 17
+                            }
+                        },
                     ]
                 }
                 data={elemets}

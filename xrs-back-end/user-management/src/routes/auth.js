@@ -59,7 +59,8 @@ router.post('/login', async (req, res) => {
     if (!existsEmail) return res.status(400).send("Email not exists");
     const comparePassoword = await bcrypt.compare(req.body.password, existsEmail.password);
     if (!comparePassoword) return res.status(400).send("Wrong password");
-    //create token for login
+    
+    //create token for login and sign it with secret key
     const token = jwt.sign({
         id: existsEmail._id,
         email: existsEmail.email,

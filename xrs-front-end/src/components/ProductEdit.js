@@ -66,12 +66,62 @@ const ProductEdit = props => {
                             alt="another"
 
                         />
-                    ), editable: 'never'
+                    ),
+                    editable: 'never',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
                 },
-                { title: 'Name', field: 'name' },
-                { title: 'Category', field: 'category' },
-                { title: 'Date added', field: 'dateadded', editable: 'never' },
-                { title: 'id', field: 'id', hidden: true },
+                {
+                    title: 'Name',
+                    field: 'name',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
+                {
+                    title: 'Category',
+                    field: 'category',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
+                {
+                    title: 'Date added',
+                    field: 'dateadded',
+                    editable: 'never',
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
+                {
+                    title: 'id',
+                    field: 'id',
+                    hidden: true,
+                    cellStyle: {
+                        fontSize: 15
+                    },
+                    headerStyle: {
+                        backgroundColor: '#45a1ff',
+                        fontSize: 17
+                    }
+                },
             ]}
             data={allProducts}
             editable={{

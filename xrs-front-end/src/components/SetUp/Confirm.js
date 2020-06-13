@@ -19,21 +19,22 @@ export class Confirm extends Component {
 
         };
         const data_for_login = {
-            lastName: lastName,
+            lastname: lastName,
             firstname: firstName,
             email: email,
-            password: password
+            password: password,
+            isOperator: true,
+            nfcToken: NFCADMINID
         }
         axios.post('https://xrs-users-management.herokuapp.com/api/ums/register', data_for_login)
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            .then(response =>
+                console.log(response.data)
+            )
+            .catch(error =>
+                console.log(error.response));
 
 
-        axios.post('https://xrs-files-management.herokuapp.com/api/files/setup', data, {
+        axios.post('http://localhost:4000/api/files/setup', data, {
             headers: {
                 "auth-token": 'SECRET_KEY_VERIFY_FOR_USE_APP'
             }

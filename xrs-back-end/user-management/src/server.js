@@ -7,7 +7,14 @@ const cors = require('cors');
 const mongose = require('mongoose');
 const morgan = require('morgan');
 const logfile = fs.createWriteStream('access.log', { flags: 'a' });
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const swagger= require('swagger-generator-express');
+const options = {
+	title: "Users Management Service",
+	version: "1.0.0",
+	host: "localhost:5000",
+	basePath: "/",
+	schemes: ["http", "https"]};
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -62,5 +69,7 @@ app.use(process.env.USER_API_URL + '/contact', contact);
 //
 
 app.get('/', (req, res) => res.send('Hello World!'));
+
+swagger.serveSwagger(app, "/swagger", options, {routePath : './src/routes/'});
 
 app.listen(process.env.PORT, () => console.log(`User management listening on port ${process.env.PORT}!`))

@@ -12,7 +12,7 @@ const Contact = props => {
     const company_info = useSelector(state => state.company_info)
 
     useEffect(() => {
-        axios.get('https://xrs-files-management.herokuapp.com/api/files/setup')
+        axios.get('http://localhost:4000/api/files/setup')
             .then(response => {
                 dispatch(saveCompanyInfo(response.data))
             })

@@ -44,6 +44,10 @@ const borrowModel = new mongoose.Schema({
     i_will_pick: {
         type: Boolean,
         default: false
+    },
+    date_selected_pick: {
+        type: Date,
+        expires: 7200 //expires after 2 hours
     }
 
 });

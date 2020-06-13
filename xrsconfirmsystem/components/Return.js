@@ -84,7 +84,6 @@ class Return extends React.Component {
         );
     };
     returnItem = item => {
-        console.log(this.state.user_id)
         const data = {
             product_id: item._id,
             person_id: this.state.user_id
@@ -151,7 +150,7 @@ class Return extends React.Component {
             this.setState({ data: response_array, confirmed: true })
 
         } catch (error) {
-            console.log("error", error);
+            console.log("error", error.response.data);
         }
 
     }
@@ -213,7 +212,6 @@ class Return extends React.Component {
     }
 
     render() {
-        console.log(this.state.ADMINNFCID_CLIENT)
         if (this.state.back) {
             return <Home />
         } else
@@ -239,9 +237,6 @@ class Return extends React.Component {
                             ListHeaderComponent={this.renderHeader}
 
                         />
-                        {/* <Image
-                            style={{ marginTop: 100, height: 400, width: 400 }}
-                            source={require('../assets/img/return.gif')} /> */}
                     </View>}
 
             </>
