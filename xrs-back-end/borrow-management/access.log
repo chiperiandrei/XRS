@@ -2621,3 +2621,5 @@
 ::1 - - [13/Jun/2020:18:04:14 +0000] "GET /api/borrows/ HTTP/1.1" 200 108 "-" "PostmanRuntime/7.25.0"
 ::1 - - [13/Jun/2020:18:04:15 +0000] "GET /api/borrows/ HTTP/1.1" 200 108 "-" "PostmanRuntime/7.25.0"
 ::1 - - [13/Jun/2020:18:04:28 +0000] "GET /api/borrows/ HTTP/1.1" 200 149 "-" "PostmanRuntime/7.25.0"
+::1 - - [13/Jun/2020:18:17:44 +0000] "GET /api/borrows/ HTTP/1.1" 200 2 "-" "PostmanRuntime/7.25.0"
+::1 - - [13/Jun/2020:18:19:00 +0000] "GET /api/borrows/ HTTP/1.1" 200 149 "-" "PostmanRuntime/7.25.0"

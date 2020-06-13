@@ -49,7 +49,8 @@ router.get('/:id', verifyToken, async (req, res) => {
                 return {
                     owner: document.person_id,
                     product: document.product_id,
-                    end: document.end
+                    end: document.end,
+                    date_picked: document.date_selected_pick !== null ? document.date_selected_pick : null
                 }
             })
             res.send(to_send)

@@ -21,7 +21,7 @@ const WelcomeComponent = props => {
                 setCurrent_borrow(res.data)
                 dispatch(resetBorrow())
                 res.data.map(product => {
-                    console.warn(product)
+                    console.log(product)
                     Axios.get('https://xrs-product-management.herokuapp.com/api/products/' + product.product, {
                         headers: {
                             "auth-token": localStorage.getItem("user_info").substr(1, localStorage.getItem("user_info").length - 2),
@@ -29,6 +29,7 @@ const WelcomeComponent = props => {
                     }).then(res => {
                         let to_push = res.data
                         to_push.date_picked=product.date_picked
+                        console.log(to_push)
                         dispatch(addBorrow(to_push))
                     })
                         .catch(err => console.log(err))
